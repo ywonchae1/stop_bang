@@ -1,0 +1,86 @@
+.search--container{
+    display: flex;
+    flex-direction: row;
+    min-height: calc(100vh - 100px);
+    width: 100%;
+    margin-top: 80px;
+    padding: 0;
+}
+
+#map{
+    width: 70%;
+    z-index: 1;
+}
+
+.agency--container{
+    overflow:scroll;
+    max-height: calc(100vh - 100px);
+    width: 30%;
+    background-color: white;
+    text-align:center;
+}
+
+.agency--m--container{
+    text-align: center;
+    border-radius: 5px;
+    border: 2px solid #865DFF;
+    margin-bottom: 15px;
+    padding: 38px;
+}
+
+.agency--list{
+    padding: 30px;
+}
+
+.agency-details{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.agency--name{
+    padding-bottom: 10px;
+}
+
+/* 스크롤바 전체 영역에 배경색 지정 */
+::-webkit-scrollbar {
+    background-color: #865DFF;
+  }
+  
+
+  ::-webkit-scrollbar {
+    /* 스크롤바 전체 영역 */
+    width: 12px;
+    height: 4px;
+} 
+::-webkit-scrollbar-track {
+    /* 스크롤이 움직이는 영역  */
+    background-color: #f9f9f9;
+} 
+::-webkit-scrollbar-thumb {
+    /*  스크롤  */
+    background-color: #865DFF; 
+    border-radius:30px;
+} 
+
+
+.map--search--form{
+    position: absolute;
+    top: 5%; /*해당 요소를 부모 요소의 위쪽에서 5% 위치에 배치*/
+    left: 50%;
+    /*요소의 가로 방향 위치를 -50%, 세로 방향 위치를 -50%만큼 이동
+    요소의 중심점이 부모 요소의 가운데에 위치하도록 만들어 줍니다.*/
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    margin: auto;
+    width: 900px;
+
+
+}
+
+.map--search--form input{
+    padding: 9px;
+    border-radius: 10px;
+    border: 1px solid #865DFF;
+    margin-right: 6px;
+}

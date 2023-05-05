@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/css/search.css">
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ce54459ce01fd6e31cc81beb6a8ba76c
+"></script>
+
+<header>
+    <%- include('./layout/header'); %>
+</header>
+
+<body >
+
+
+<main>
+
+    <div class="search--container">
+      
+        <div id="map" style="margin-top: 2px;" >
+            <form class="map--search--form">
+                <input type="text" id="search-input" placeholder="검색어를 입력하세요">
+                <input type="text" id="search-input" placeholder="검색어를 입력하세요">
+                <input type="text" id="search-input" placeholder="검색어를 입력하세요">
+                <input type="text" id="search-input" placeholder="검색어를 입력하세요">
+              </form>  
+        </div>
+        
+        
+        
+        <div class="agency--container">
+        
+            <div class="agency--list">
+                <div style="margin-bottom: 20px;">
+                    <span>
+                        <span uk-icon="chevron-double-right"></span>
+                        부동산을 눌러 후기를 확인하세요 !</span> 
+                </div>     
+
+                <div class="agency--m--container">
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div style="padding-left: 7px;">별 3점 | </div>
+                        <div style="padding-left: 7px; padding-right:7px;"> 후기 20개 | </div>
+                        <div> 친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+                <div class="agency--m--container">
+                    
+                   <div class="agency--name">뫄뫄부동산</div>
+                   <div class="agency-details">
+                        <div>별 3점</div>
+                        <div>후기 20개</div>
+                        <div>친절하고 따뜻한</div>
+                   </div> 
+                </div>
+
+
+
+            </div>
+        
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    var container = document.getElementById('map'); 
+    var options = { 
+        center: new kakao.maps.LatLng(33.450701, 126.570667), 
+        level: 3 
+    };
+    
+    var map = new kakao.maps.Map(container, options);
+</script>
+
+</html>

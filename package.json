@@ -4,8 +4,8 @@
   "description": "A platform for people to share their experiences and write reviews of real estate agents and agencies.",
   "main": "main.js",
   "scripts": {
-    "start" : "node main.js",
-    "dev" :"nodemon main.js",
+    "start": "node main.js",
+    "dev": "nodemon main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,8 +22,11 @@
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
