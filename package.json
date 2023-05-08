@@ -1,11 +1,12 @@
 {
   "name": "stop_bang",
   "version": "1.0.0",
-  "description": "A platform for people to share their experiences and write reviews of real estate agents and agencies.",
+  "description": "",
   "main": "main.js",
+  "directories": {
+    "doc": "doc"
+  },
   "scripts": {
-    "start" : "node main.js",
-    "dev" :"nodemon main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,9 +25,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.22",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "mysql2": "^3.3.0",
+    "nodemon": "^2.0.22"
   }
 }
