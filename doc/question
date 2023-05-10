@@ -1,6 +1,0 @@
-1. db에 agentList가 부동산인가요?? 테이블명세서랑 속성이 약간 다른 것 같은데 설명 부탁드려도 될까요 !!
-
-2. agent에 데이터를 넣을 때 json파일 그대로 쓰는 건 어떻게 생각하시나요??
-https://www.joinc.co.kr/w/man/12/mysql/json
-
-3. db를 자동으로 만들어 주는 건 좋은데 저희 공부하는 단계니까 created_time, UNIQUE INDEX, ENGINE 이런 건 필요 없지 않을까요..?? 정확히 알고 사용하고 싶어서요! created_time 같은 경우에는 자동으로 갱신되는 거면 괜찮은데 그런 건가요??
