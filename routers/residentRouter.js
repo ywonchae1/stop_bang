@@ -2,7 +2,7 @@ const router = require("express").Router();
 const residentController = require("../controllers/residentController");
 
 router.get(
-  "/myreview",
+  "/myReview",
   residentController.myReview,
   residentController.myReviewView
 );
