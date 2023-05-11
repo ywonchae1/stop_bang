@@ -45,7 +45,7 @@ module.exports = {
     res.render("resident/bookmark");
   },
   deleteBookmark: (req, res) => {
-    res.locals.redirect = "/user/bookmark";
+    res.locals.redirect = "/resident/bookmark";
     next();
   },
   settings: (req, res, next) => {
@@ -66,7 +66,7 @@ module.exports = {
     next();
   },
   updateSettings: (req, res, next) => {
-    res.locals.redirect = "/user/settings";
+    res.locals.redirect = "/resident/settings";
     next();
   },
   // editPassword: (req, res, next) => {

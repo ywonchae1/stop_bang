@@ -16,8 +16,8 @@ router.post('/:cmp_nm/create', reviewController.createReview);
 //후기 추가 DB 반영
 router.post('/:cmp_nm/create_process', reviewController.creatingReview);
 
-//후기 수정
-router.post('/:rv_id/update', reviewController.updateReview);
+//후기 수정 버튼 눌렀을 때
+router.get('/:rv_id/update', reviewController.updateReview);
 
 //후기 수정 DB 반영
 router.post('/:rv_id/update_process', reviewController.updatingReview);

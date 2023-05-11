@@ -7,7 +7,10 @@ module.exports = {
 		let raRegno = body.raRegno;
 		let rate = body.rate;
 		let description = body.description;
-		let rawQuery = `INSERT INTO review(resident_r_id, agentList_ra_regno, rating, content) VALUES(?, ?, ?, ?)`;
+		let rawQuery = `
+		INSERT 
+		INTO review(resident_r_id, agentList_ra_regno, rating, content) 
+		VALUES(?, ?, ?, ?)`;
 		await db.query(rawQuery, [2, raRegno, rate, description]);
 		result();
 	},
@@ -15,20 +18,22 @@ module.exports = {
 	getReviewByRvId: async (params, result) => {
 		let reviewId = params.rv_id;
 		let rawQuery = `
-		SELECT rv_id, resident_r_id, r_username, cmp_nm, rating, content
+		SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, rating, content
 		FROM resident
-		JOIN (SELECT rv_id, resident_r_id, cmp_nm, rating, content
-					FROM review
-					JOIN agentList
-					ON agentList_ra_regno=ra_regno) newTable
+		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, rating, content
+			FROM review
+			JOIN agentList
+			ON agentList_ra_regno=ra_regno) newTable
 		ON resident.r_id=newTable.resident_r_id
 		WHERE newTable.rv_id=?` 
 		let res = await db.query(rawQuery, [reviewId]);
-		result(res[0]);
+		result(res[0][0]);
 	},
 
 	updateReviewProcess: async (params, body, result) => {
-		let rawQuery = `UPDATE review SET rating=?, content=? WHERE rv_id=?`;
+		let rawQuery = `
+		UPDATE review 
+		SET rating=?, content=? WHERE rv_id=?`;
 		let res = await db.query(rawQuery, [body.rate, body.description, params.rv_id]);
 		result(res);
 	}
