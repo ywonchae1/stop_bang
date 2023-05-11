@@ -1,7 +1,7 @@
-<div class="resident-myreivew" onclick="location.href='../realtor/<%=review.cmp_nm%>';">
+<div class="resident-myreview">
   <div class="myreview-info">
     <p class="hidden"><%= review.agentList_ra_regno %></p>
-    <div class="layout-row">
+    <div class="layout-row" onclick="location.href='../agent/<%=review.cmp_nm%>';">
       <h3><%= review.cmp_nm %></h3>
       <div class="layout-row">
         <% for( let index = 0; index < 5; index++ ) { %>
@@ -18,7 +18,7 @@
     <div class="layout-row">
       <p class="myreview-date"><%= `${Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(review.created_time)}` %>
         <% if (mine) { %>
-        작성 | <button onclick="">수정</button>
+        작성 | <button onclick="location.href='../review/<%= review.rv_id %>/update';">수정</button>
         <% } else { %>
         열람
         <% } %>
