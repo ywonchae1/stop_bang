@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
-app.use("/user", residentRouter);
+app.use("/resident", residentRouter);
 
 //공인중개사 페이지 접근
 app.use('/agent', agentRouter);
