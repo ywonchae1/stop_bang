@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title><%- title %></title>
+	</head>
+	<body>
+		<h1><%- title %></h1>
+		<form action='/review/<%- reviewId %>/update_process' method='post'>
+			<input type='hidden' name='raRagno' value=<%- raRagno %>>
+			<p><input type='text' name='rate' placeholder='별점0-5' value=<%= rate %>></p>
+			<p><textarea name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'><%- description %></textarea></p>
+			<input type='submit' value='등록'>
+		</form>
+		<form action='/<%- userName %>/myReviews' method='get'>
+			<input type='submit' value='취소'>
+		</form>
+	</body>
+</html>

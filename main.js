@@ -38,17 +38,6 @@ let loginDB = async() => { //이거 꼭 써야 할까?
 	//후기 접근
 	app.use('/review', reviewRouter);
 
-	//입주민 마이페이지 작성한 후기 페이지
-	app.get('/:r_username/myReviews', (req, res) => {
-		let userName = req.params.r_username;
-		let rawQuery = `SELECT r_id, rv_id, r_username, rating, content FROM resident JOIN review ON r_id=resident_r_id WHERE r_username=?`;
-		db.dbInfo.query(rawQuery, [userName], (err, myReviewsData) => {
-			let myReviewList = template.listHTML(myReviewsData, true);
-			let html = template.reviewHTML(`${userName}님의 소중한 후기`, myReviewList);
-			res.send(html);
-		});
-	});
-
 };
 loginDB();
 
