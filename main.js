@@ -25,33 +25,9 @@ app.use(express.urlencoded({extended:false}));
 //요청에 동봉된 쿠키해석해 req.cookies객체로 만듦
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-//세션 관리용(로그인, 세션쿠키)
-/*
-app.use(session({
-    resave:false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-        httpOnly: true,
-        secure: false,
-    },
-    name: 'session-cookie',
-}));
-*/
 
 app.use(morgan('dev'));
-/*
-app.use((req,res,next)=>{
-    console.log('모든 요청에 실행');
-    next();
-});
 
-
-
-app.get('/',(req,res)=>{
-    res.render('./views/index.ejs')
-});
-*/
 
 app.listen(app.get('port'),()=>{
 
@@ -59,11 +35,12 @@ app.listen(app.get('port'),()=>{
 });
 
 
-const indexRouter = require('./routers');
-const searchRouter = require('./routers/search');
 
-app.use('/',indexRouter);
+
+const searchRouter = require('./routers/search/searchRouter');
+
 app.use('/search',searchRouter);
+
 app.use((req,res,next)=>{
     res.status(404).send('Not Found');
 });

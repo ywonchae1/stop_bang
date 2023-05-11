@@ -65,9 +65,10 @@
 
 
 .map--search--form{
+    display: flex;
     position: absolute;
     top: 5%; /*해당 요소를 부모 요소의 위쪽에서 5% 위치에 배치*/
-    left: 50%;
+    left: 70%;
     /*요소의 가로 방향 위치를 -50%, 세로 방향 위치를 -50%만큼 이동
     요소의 중심점이 부모 요소의 가운데에 위치하도록 만들어 줍니다.*/
     transform: translate(-50%, -50%);
@@ -78,9 +79,41 @@
 
 }
 
-.map--search--form input{
+#myDropdown{
     padding: 9px;
     border-radius: 10px;
     border: 1px solid #865DFF;
     margin-right: 6px;
+}
+
+.myDropdown{
+    padding: 9px;
+    border-radius: 10px;
+    border: 1px solid #865DFF;
+    margin-right: 6px;
+}
+
+select:focus {
+    outline: none;
+  }
+
+.s-form{
+      display: flex;
+    
+}
+
+.s-form input{
+    padding: 9px;
+    border-radius: 10px;
+    border: 1px solid #865DFF;
+    margin-right: 6px;
+}
+
+input:focus {
+    outline: none;
+  }
+
+#search-submit{
+    background-color: #865DFF;
+    color: white;
 }
