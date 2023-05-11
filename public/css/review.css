@@ -7,6 +7,11 @@
   flex-direction: row;
 }
 
+.layout-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .resident-myreivew {
   display: flex;
   flex-direction: row;

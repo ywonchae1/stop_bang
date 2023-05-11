@@ -1,0 +1,22 @@
+/*전체 페이지에 적용할 스타일*/
+
+body {
+  height: 100vh;
+  max-height: fit-content;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  /* 링크 위에 마우스 포인터가 위치한 상태 */
+  color: var(--purple);
+}
+
+:root {
+  --black: #191825;
+  --deep-gray: #878787;
+  --purple: #865dff;
+}

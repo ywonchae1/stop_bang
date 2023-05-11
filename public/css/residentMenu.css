@@ -1,0 +1,22 @@
+/* .container {
+  display: flex;
+  flex-direction: row;
+} */
+
+.resident-menu {
+  float: left;
+  /* flex: 1; */
+  width: 15%;
+  height: 80vh;
+  min-width: fit-content;
+  margin: 20px 30px;
+}
+
+.r-menu-index {
+  color: var(--deep-gray);
+}
+
+.r-menu-button {
+  display: inline-block;
+  margin: 15px 10px;
+}
