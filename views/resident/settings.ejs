@@ -1,0 +1,32 @@
+<%- include('./residentMenu.ejs'); %>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <td><%= resident.r_username %></td>
+  </tr>
+  <tr>
+    <th>실명</th>
+    <td><%= resident.r_realname%></td>
+  </tr>
+  <tr>
+    <th>Phone</th>
+    <td><%= resident.r_phone%></td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td><%= resident.r_email%></td>
+  </tr>
+  <tr>
+    <th>생년월일</th>
+    <td>
+      <% if(resident.r_birth === null){ %>
+      <p>생년월일 입력하고 n휴지 받기</p>
+      <% } else {%><%= resident.r_birth%><% } %>
+    </td>
+  </tr>
+
+  <tr>
+    <th>Password</th>
+    <td>********</td>
+  </tr>
+</table>

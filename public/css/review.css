@@ -1,0 +1,28 @@
+.hidden {
+  display: none;
+}
+
+.layout-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.layout-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.resident-myreivew {
+  display: flex;
+  flex-direction: row;
+}
+
+.myreview-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.myreview-address {
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
