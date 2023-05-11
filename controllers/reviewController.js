@@ -30,13 +30,8 @@ exports.createReview = (req, res) => {
 //후기 추가 DB 반영
 exports.creatingReview = (req, res) => {
 	console.log(req.body);
-	let cmpName = req.params.cmp_nm;
-	let raRegno = req.body.raRegno;
-	let rate = req.body.rate;
-	let description = req.body.description;
-	let rawQuery = `INSERT INTO review(resident_r_id, agentList_ra_regno, rating, content) VALUES(3, ?, ?, ?)`;
-	db.dbInfo.query(rawQuery, [raRegno, rate, description], (err) => {
-		res.redirect(`/agent/${cmpName}`);
+	revewModel.updateReview(req.params, req.body, (querydata) => {
+		res.redirect(`agent/${querydata.cmp_nm}`);
 	});
 };
 
@@ -45,7 +40,7 @@ exports.creatingReview = (req, res) => {
 exports.updateReview = (req, res) => {
 	let reviewId = req.params.rv_id;
 	let rawQuery = `SELECT rv_id, resident_r_id, r_username, cmp_nm, rating, content FROM resident JOIN (SELECT rv_id, resident_r_id, cmp_nm, rating, content FROM review JOIN agentList ON agentList_ra_regno=ra_regno) newTable ON resident.r_id=newTable.resident_r_id WHERE newTable.rv_id=?` 
-	db.dbInfo.query(rawQuery, [reviewId], (err, reviewData) => {
+	db.query(rawQuery, [reviewId], (err, reviewData) => {
 		let cmpName = reviewData[0].cmp_nm;
 		let userName = reviewData[0].r_username;
 		let rate = reviewData[0].rating;
@@ -72,7 +67,7 @@ exports.updateReview = (req, res) => {
 exports.updatingReview = (req, res) => {
 	let reviewId = req.params.rv_id;
 	let rawQuery = `UPDATE review SET rating=?, content=? WHERE rv_id=?`;
-	db.dbInfo.query(rawQuery, [req.body.rate, req.body.description, reviewId], (err) => {
+	db.query(rawQuery, [req.body.rate, req.body.description, reviewId], (err) => {
 		res.redirect(`/resident/${req.body.userName}/myReviews`);
 	});
 };

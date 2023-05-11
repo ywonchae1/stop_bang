@@ -1,8 +1,10 @@
+
+
 //DB접속설정
 require('dotenv').config();
-const mysql2 = require('mysql2');
+const mysql2 = require('mysql2/promise');
 
-exports.dbInfo = mysql2.createConnection({
+const db = mysql2.createConnection({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PW,
@@ -11,3 +13,5 @@ exports.dbInfo = mysql2.createConnection({
 	waitForConnections: true,
 	insecureAuth: true
 });
+
+module.exports = db;
