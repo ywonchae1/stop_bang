@@ -26,6 +26,7 @@
     border: 2px solid #865DFF;
     margin-bottom: 15px;
     padding: 38px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .agency--list{
@@ -96,13 +97,13 @@
 select:focus {
     outline: none;
   }
-
+/*
 .s-form{
       display: flex;
     
-}
+}*/
 
-.s-form input{
+ input{
     padding: 9px;
     border-radius: 10px;
     border: 1px solid #865DFF;
@@ -116,4 +117,10 @@ input:focus {
 #search-submit{
     background-color: #865DFF;
     color: white;
+    border: none;
+   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#search-submit:hover{
+    cursor : pointer;
 }

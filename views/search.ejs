@@ -39,11 +39,9 @@
 
              </select>
              
-             <form action="/submit" method="post" class="s-form">
              <!--<label for="name">Name:</label>-->
-               <input type="text" id="name" name="name" autocomplete="off"><br><br>
-               <input type="submit" value="검색" id="search-submit">
-             </form>
+               <input type="text" id="agencyName" name="agencyName" autocomplete="off"><br><br>
+               <input type="submit" value="검색" id="search-submit" onclick="onClickAgencyName()">
           </div>
 
           
@@ -76,7 +74,7 @@
     var container = document.getElementById('map'); 
     var options = { 
         center: new kakao.maps.LatLng(37.591682, 127.022124), 
-        level: 3 
+        level: 6 
     };
     /*
    
@@ -110,14 +108,102 @@
          const JungguDong = ['광희동1가',' 광희동2가','남대문로1가',' 남대문로2가',' 남대문로3가',' 남대문로4가',' 남대문로5가',' 남산동1가',' 남산동2가',' 남산동3가',' 남창동',  '남학동', '다동',  '만리동1가',' 만리동2가',' 명동1가',' 명동2가',' 무교동',' 무학동', '묵정동', '방산동', ' 봉래동1가','  봉래동2가','  북창동 ', '산림동', '삼각동', '서소문동', '소공동', '수표동', '수하동',  '순화동', '신당동',  '쌍림동' ,'예관동' ,'예장동' ,'오장동', '을지로1가',' 을지로2가',' 을지로3가',' 을지로4가',' 을지로5가',' 을지로6가',' 을지로7가',' 의주로1가',' 의주로2가',' 인현동1가',' 인현동2가',' 입정동','장교동', '장충동1가',' 장충동2가',' 저동1가',' 저동2가',' 정동 ',' 주교동',  '주자동', '중림동', '초동' , '충무로1가',' 충무로2가',' 충무로4가',' 충무로5가',' 충정로1가','  태평로1가','  태평로2가','필동1가',' 필동2가',' 필동3가','황학동', '회현동1가',' 회현동2가',' 회현동3가',' 흥인동'];
          const jungrang = ['망우동','면목동','묵동','상봉동','신내동','중화동'];
 
+   function onClickAgencyName(){
 
-function onChangeSido() {
-            const gu = document.getElementById('gu').value;
-            console.log(gu);
 
-            // 두 번째 드롭다운 메뉴 초기화
-            const dongSelect = document.getElementById('dong');
-            dongSelect.innerHTML = '';
+      const agencyName = document.getElementById('agencyName').value;
+      const selectedGu = $('#gu').val();
+      const selectedDong = $('#dong').val();
+
+      
+      console.log("an agency Dong : "+selectedGu);
+      console.log("an agency Dong : "+selectedDong);
+      console.log("an agency Dong : "+agencyName);
+      $.ajax({
+
+               url: '/search/agencyName',
+               type: 'GET',
+               data: { sgg_nm: selectedGu, bjdong_nm: selectedDong, cmp_nm: agencyName},
+              
+               
+               success: function(result) {
+                  console.log(result);
+                  const parentDiv = document.getElementById('agency--list');
+
+                  parentDiv.innerHTML = '';
+
+                  console.log(result);
+                  for (let i = 0; i < result.rows.length; i++) {
+                    
+                     //console.log(result.rows[i].cmp_nm);
+                 
+
+                     // 부모 element
+                     const parentDiv = document.getElementById('agency--list');
+
+                     // container div
+                     const containerDiv = document.createElement('div');
+                     containerDiv.classList.add('agency--m--container');
+
+                     // agency name div
+                     const nameDiv = document.createElement('div');
+                     nameDiv.classList.add('agency--name');
+                     nameDiv.id = 'agency--name';
+                     nameDiv.innerText = result.rows[i].cmp_nm;
+                     containerDiv.appendChild(nameDiv);
+
+                     // agency details div
+                     const detailsDiv = document.createElement('div');
+                     detailsDiv.classList.add('agency-details');
+
+                     // 별 3점 div
+                     const ratingDiv = document.createElement('div');
+                     ratingDiv.style.paddingLeft = '7px';
+                     ratingDiv.innerText = '별 3점 | ';
+                     detailsDiv.appendChild(ratingDiv);
+
+                     // 후기 20개 div
+                     const reviewDiv = document.createElement('div');
+                     reviewDiv.style.paddingLeft = '7px';
+                     reviewDiv.style.paddingRight = '7px';
+                     reviewDiv.innerText = '후기 20개 | ';
+                     detailsDiv.appendChild(reviewDiv);
+
+                     // 친절하고 따뜻한 div
+                     const descriptionDiv = document.createElement('div');
+                     descriptionDiv.innerText = '친절하고 따뜻한';
+                     detailsDiv.appendChild(descriptionDiv);
+
+                     // container div를 parentDiv에 추가
+                     containerDiv.appendChild(detailsDiv);
+                     parentDiv.appendChild(containerDiv);
+                     }
+
+
+                  
+                
+                  
+                
+               },
+               error: function(xhr, status, error) {
+                  console.error(error);
+               }
+            });
+
+         }
+
+
+      
+   
+
+
+   function onChangeSido() {
+               const gu = document.getElementById('gu').value;
+               console.log(gu);
+
+               // 두 번째 드롭다운 메뉴 초기화
+               const dongSelect = document.getElementById('dong');
+               dongSelect.innerHTML = '';
 
                         // 선택된 시/도 값에 따라 두 번째 드롭다운 메뉴의 옵션 생성
             if (gu === '강남구') {
@@ -481,21 +567,23 @@ function onChangeSido() {
             const selectedGu = $('#gu').val();
             const selectedDong = $('#dong').val();
 
-            console.log("selected Gu: " + selectedGu);
-            console.log("selected Dong: "+ selectedDong);
+            //console.log("selected Gu: " + selectedGu);
+            //console.log("selected Dong: "+ selectedDong);
            
             const searchParam =   selectedGu +' '+ selectedDong;
-            console.log("검색할 주소 : "+searchParam);
+            //console.log("검색할 주소 : "+searchParam);
             
-            
+
             var geocoder = new kakao.maps.services.Geocoder();
 
             var callback = function(result, status) {
                if (status === kakao.maps.services.Status.OK) {
                   
                   console.log(result);
+
+                  //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
                   var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                  // 결과값으로 받은 위치를 마커로 표시합니다
+
                   var marker = new kakao.maps.Marker({
                         map: map,
                         position: coords
