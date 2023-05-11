@@ -1,5 +1,4 @@
 const express = require("express");
-const layouts = require("express-ejs-layouts");
 //const morgan = require("morgan"); //추가적인 로그 볼수있게
 const cookieParser = require("cookie-parser");
 const session = require("express-session");

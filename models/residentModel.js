@@ -6,14 +6,14 @@ let residentModel = {
       const res = await sql.query(
         `SELECT  rv_id, cmp_nm, address, agentList_ra_regno, rating, content, created_time 
           FROM review
-          INNER JOIN agentlist
-          ON agentlist.ra_regno = agentlist_ra_regno
+          INNER JOIN agentList
+          ON agentList.ra_regno = agentList_ra_regno
           WHERE resident_r_id = ?`,
         [id]
       );
       result(res);
     } catch (error) {
-      result(null, res);
+      result(null, error);
     }
   },
   getOpenedReviewById: async (id, result) => {
@@ -24,13 +24,13 @@ let residentModel = {
           INNER JOIN review 
           ON opened_review.review_rv_id = review.rv_id 
           INNER JOIN agentList
-          ON agentList_ra_regno=agentlist.ra_regno
+          ON agentList_ra_regno=agentList.ra_regno
           WHERE opened_review.resident_r_id = ? `,
         [id]
       );
       result(res);
     } catch (error) {
-      result(null, res);
+      result(null, error);
     }
   },
   getBookMarkById: async (id, result) => {
@@ -38,14 +38,14 @@ let residentModel = {
       const res = await sql.query(
         `SELECT bm_id, agentList_ra_regno, cmp_nm, address 
           FROM bookmark 
-          INNER JOIN agentlist 
+          INNER JOIN agentList 
           ON agentList_ra_regno = ra_regno 
           WHERE resident_r_id = ? `,
         [id]
       );
       result(res);
     } catch (error) {
-      result(null, res);
+      result(null, error);
     }
   },
   getResidentById: async (id, result) => {
@@ -55,7 +55,7 @@ let residentModel = {
       ]);
       result(res);
     } catch (error) {
-      result(null, res);
+      result(null, error);
     }
   },
 };
