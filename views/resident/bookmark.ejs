@@ -1,0 +1,8 @@
+<%- include('./residentMenu.ejs'); %>
+<% bookmarks.forEach(bookmark => { %>
+<div class="">
+  <%= bookmark.bm_id %>
+  <h3><%= bookmark.cmp_nm %></h3>
+  <%= bookmark.address %>
+</div>
+<% }); %>

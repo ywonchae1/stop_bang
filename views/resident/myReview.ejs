@@ -1,0 +1,4 @@
+<%- include('./residentMenu.ejs'); %>
+<% reviews.forEach(review=> { %>
+<%- include('./residentReview.ejs', {review:review, mine:true}) %>
+<% }); %>
