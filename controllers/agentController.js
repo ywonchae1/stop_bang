@@ -1,6 +1,3 @@
-//html 템플릿
-const template = require('../views/template.js');
-
 //Models
 const agentModel = require('../models/agentModel.js');
 

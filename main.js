@@ -5,10 +5,6 @@ const app = express();
 const url = require('url');
 const fs = require('fs');
 
-//html 템플릿
-const template = require('./views/template.js');
-
-
 //post에서 body 받기
 const bodyParser = require('body-parser');
 // parse application/x-www-form-urlencoded
