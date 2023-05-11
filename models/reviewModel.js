@@ -8,7 +8,7 @@ module.exports = {
 		let rate = body.rate;
 		let description = body.description;
 		let rawQuery = `INSERT INTO review(resident_r_id, agentList_ra_regno, rating, content) VALUES(?, ?, ?, ?)`;
-		await db.query(rawQuery, [1, raRegno, rate, description]);
+		await db.query(rawQuery, [2, raRegno, rate, description]);
 		result();
 	},
 
