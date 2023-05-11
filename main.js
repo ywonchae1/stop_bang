@@ -1,42 +1,41 @@
-const port = 3000
-const http = require('http');
-const express = require('express');
+const express = require("express");
+const layouts = require("express-ejs-layouts");
+//const morgan = require("morgan"); //추가적인 로그 볼수있게
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const dotenv = require("dotenv");
+const path = require("path");
 const app = express();
-const url = require('url');
-const fs = require('fs');
-
-//post에서 body 받기
-const bodyParser = require('body-parser');
-// parse application/x-www-form-urlencoded
+const bodyParser = require('body-parser'); //post에서 body 받기
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
 app.use(bodyParser.json());
 
 //Routers
-const agentRouter = require('./routers/agentRouter.js');
-const reviewRouter = require('./routers/reviewRouter.js');
+const indexRouter = require("./routers/index"),
+	residentRouter = require("./routers/residentRouter"),
+	agentRouter = require('./routers/agentRouter.js'),
+	reviewRouter = require('./routers/reviewRouter.js');
 
 //View
 const layouts = require('express-ejs-layouts');
 app.set("view engine", "ejs");
+app.use(layouts);
 
-let loginDB = async() => { //이거 꼭 써야 할까?
+app.set("port", process.env.PORT || 3000);
 
-	const db = require('./config/db.js');
+app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-	app.get('/', (req, res) => {
-		res.send('Hello World!');
-	});
+app.use("/", indexRouter);
+app.use("/user", residentRouter);
 
-	//공인중개사 페이지 접근
-	app.use('/agent', agentRouter);
+//공인중개사 페이지 접근
+app.use('/agent', agentRouter);
 
-	//후기 접근
-	app.use('/review', reviewRouter);
+//후기 접근
+app.use('/review', reviewRouter);
 
-};
-loginDB();
-
-app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`);
+app.listen(app.get("port"), () => {
+	console.log(app.get("port"), "번 포트에게 대기중");
 });

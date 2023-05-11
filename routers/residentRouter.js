@@ -1,14 +1,43 @@
-const express = require('express');
-const router = express.Router();
+const router = require("express").Router();
+const residentController = require("../controllers/residentController");
 
-//Controllers
-const residnetController = require('../controllers/residentController.js');
+router.get(
+  "/myreview",
+  residentController.myReview,
+  residentController.myReviewView
+);
+router.get(
+  "/openreview",
+  residentController.openReview,
+  residentController.openReviewView
+);
+router.get(
+  "/bookmark",
+  residentController.bookmark,
+  residentController.bookmarkView
+);
+router.delete(
+  "/bookmark/:id/delete",
+  residentController.deleteBookmark,
+  residentController.redirectView
+);
+router.get(
+  "/settings",
+  residentController.settings,
+  residentController.settingsView
+);
+router.get("/settings/edit", residentController.editSettings);
+router.post(
+  "/settings/update",
+  residentController.updateSettings,
+  residentController.redirectView
+);
 
-router.use((req, res, next) => {
-	console.log('Router for resident page was started');
-	next();
-});
-
-router.get('/myReviews', residentController.reviewList);
+// router.get("/settings/password", residentController.editPassword);
+// router.post(
+//   "/settings/pwupdate",
+//   residentController.updatePassword,
+//   residentController.redirectView
+// );
 
 module.exports = router;

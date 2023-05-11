@@ -1,0 +1,33 @@
+<div class="resident-myreivew" onclick="location.href='../realtor/<%=review.cmp_nm%>';">
+  <div class="myreview-info">
+    <p class="hidden"><%= review.agentList_ra_regno %></p>
+    <div class="layout-row">
+      <h3><%= review.cmp_nm %></h3>
+      <div class="layout-row">
+        <% for( let index = 0; index < 5; index++ ) { %>
+        <% if (index < review.rating) { %>
+        <p>★</p>
+        <% } else { %>
+        <p>☆</p>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+
+    <p class="myreview-address"><%= review.address %></p>
+    <div class="layout-row">
+      <p class="myreview-date"><%= `${Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(review.created_time)}` %>
+        <% if (mine) { %>
+        작성 | <button onclick="">수정</button>
+        <% } else { %>
+        열람
+        <% } %>
+      </p>
+
+    </div>
+
+  </div>
+  <div class="myreview-content">
+    <%= review.content %>
+  </div>
+</div>

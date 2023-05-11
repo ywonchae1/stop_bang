@@ -1,0 +1,6 @@
+<%- include('./residentMenu.ejs'); %>
+<div class="layout-column">
+  <% reviews.forEach(review=> { %>
+  <%- include('./residentReview.ejs', {review:review, mine:true}) %>
+  <% }); %>
+</div>
