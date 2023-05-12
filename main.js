@@ -12,12 +12,10 @@ app.set('port', process.env.PORT || 3000);
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
 
-//static: 정적파일 제공
 //__dirname은 현재 파일의 절대경로로, path.join을 통해, pulbic 폴더를 합쳐 public폴더의 절대 경로 만들어줌.
 app.use('/',express.static(path.join(__dirname, 'public')));
 
 //폼 데이터, ajax 요청의 데이터 처리(json,url-encoded 처리)
-//멀티파트(이미지,동영상,파일)은 multer모듈로 처리
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
@@ -29,20 +27,17 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(morgan('dev'));
 
 
+
+
+const searchRouter = require('./routers/searchRouter');
+
+app.use('/search',searchRouter);
+
+
+
 app.listen(app.get('port'),()=>{
 
     console.log(app.get('port'),'번 포트에게 대기중');
 });
 
-
-
-
-const searchRouter = require('./routers/search/searchRouter');
-
-app.use('/search',searchRouter);
-
-app.use((req,res,next)=>{
-    res.status(404).send('Not Found');
-});
-
-
+        //"mysql": "^2.18.1",

@@ -40,8 +40,8 @@
              </select>
              
              <!--<label for="name">Name:</label>-->
-               <input type="text" id="agencyName" name="agencyName" autocomplete="off"><br><br>
-               <input type="submit" value="검색" id="search-submit" onclick="onClickAgencyName()">
+               <input type="text" id="agencyName" name="agencyName" autocomplete="off" onkeydown="if(event.keyCode==13) onClickAgencyName()"><br><br>
+               <input type="submit" value="검색" id="search-submit" onclick="onClickAgencyName()" >
           </div>
 
           

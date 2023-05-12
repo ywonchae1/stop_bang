@@ -1,7 +1,7 @@
 .search--container{
     display: flex;
     flex-direction: row;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 80px);
     width: 100%;
     margin-top: 80px;
     padding: 0;
@@ -124,3 +124,4 @@ input:focus {
 #search-submit:hover{
     cursor : pointer;
 }
+
