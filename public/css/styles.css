@@ -20,3 +20,15 @@ a:hover {
   --deep-gray: #878787;
   --purple: #865dff;
 }
+
+.grid {
+  display: grid;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

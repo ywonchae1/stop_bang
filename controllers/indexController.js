@@ -1,5 +1,5 @@
 module.exports = {
-  index: (req, res) => {
+  indexView: (req, res) => {
     res.render("index");
   },
 };

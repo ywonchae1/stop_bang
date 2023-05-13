@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ywonchae1/stop_bang#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
