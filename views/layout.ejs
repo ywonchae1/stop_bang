@@ -28,12 +28,30 @@
         <a href="/subscribers/new">
           <span class="button">이달의 공인중개사</span>
         </a>
-        <a href="/login">
+        <% if(auth) { %>
+        <a href="/auth/register/resident">
+          <span class="button">마이페이지</span>
+        </a>
+        <a href="/auth/logout">
+          <span>로그아웃</span>
+        </a>
+        <% } else { %>
+        <a href="/auth/register">
+          <span class="button">회원가입</span>
+        </a>
+        <a href="/auth/login">
           <span class="button">로그인</span>
         </a>
+        <% } %>
       </div>
     </div>
 
     <div class="container"><%- body %></div>
   </body>
 </html>
+
+<script>
+  function logout() {
+    fetch("/");
+  }
+</script>

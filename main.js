@@ -13,6 +13,11 @@ app.use(bodyParser.json());
 
 app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
+app.use((req, res, next) => {
+  res.locals.auth = req.cookies.authToken;
+  next();
+});
+
 //Routers
 const indexRouter = require("./routers/index"),
   residentRouter = require("./routers/residentRouter"),
@@ -40,8 +45,8 @@ app.use("/agent", agentRouter);
 //후기 접근
 app.use("/review", reviewRouter);
 
-// Auth API
-app.use("/api/auth", authRouter);
+// Auth
+app.use("/auth", authRouter);
 
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에게 대기중");
