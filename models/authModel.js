@@ -44,7 +44,7 @@ module.exports = {
       // 새로운 공인중개사 생성하기
       let rawQuery = `
     INSERT INTO agent (agentList_ra_regno, a_username, a_password, a_realname, a_email, a_image1, a_image2, a_image3) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); 
     `;
       await db.query(rawQuery, [
         params.agentList_ra_regno,
@@ -79,6 +79,7 @@ module.exports = {
     SELECT r_id, r_password FROM resident WHERE r_username = ?;
     `;
     res = await db.query(rawQuery, [params.username]);
+    console.log("🚀 ~ res:", res);
 
     // 사용자가 아니라면 DB에서 해당하는 공인중개사 정보 가져오기
     if (res[0].length === 0) {
