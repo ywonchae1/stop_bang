@@ -44,9 +44,17 @@ module.exports = {
   bookmarkView: (req, res) => {
     res.render("resident/bookmark");
   },
-  deleteBookmark: (req, res) => {
-    res.locals.redirect = "/resident/bookmark";
-    next();
+  deleteBookmark: (req, res, next) => {
+    console.log("here");
+    residentModel.deleteBookMarkById(req.params.id, (result, err) => {
+      if (result === null) {
+        console.log(result);
+        console.log("error occured: ", err);
+      } else {
+        res.locals.redirect = "/resident/bookmark";
+        next();
+      }
+    });
   },
   settings: (req, res, next) => {
     residentModel.getResidentById(2, (result, err) => {

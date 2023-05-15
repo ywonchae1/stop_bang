@@ -4,14 +4,11 @@ let residentModel = {
   getReviewById: async (id, result) => {
     try {
       const res = await sql.query(
-				`SELECT rv_id, r_id, r_username, cmp_nm, address, ra_regno, rating, content, newTable.created_time
-					FROM agentList
-					JOIN (SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, content, review.created_time 
-            FROM review
-            JOIN resident
-            ON r_id=resident_r_id
-            WHERE r_id=?) newTable
-					ON ra_regno=agentList_ra_regno`,
+        `SELECT  rv_id, cmp_nm, address, agentList_ra_regno, review.rating AS rating, content, created_time 
+          FROM review
+          INNER JOIN agentList
+          ON agentList.ra_regno = agentList_ra_regno
+          WHERE resident_r_id = ?`,
         [id]
       );
       result(res);
@@ -22,7 +19,7 @@ let residentModel = {
   getOpenedReviewById: async (id, result) => {
     try {
       const res = await sql.query(
-        `SELECT review_rv_id as rv_id, cmp_nm, address, agentList_ra_regno, rating, content, opened_review.created_time AS created_time 
+        `SELECT review_rv_id as rv_id, cmp_nm, address, agentList_ra_regno, review.rating AS rating, content, opened_review.created_time AS created_time 
         FROM opened_review 
           INNER JOIN review 
           ON opened_review.review_rv_id = review.rv_id 
@@ -48,6 +45,17 @@ let residentModel = {
       );
       result(res);
     } catch (error) {
+      result(null, error);
+    }
+  },
+  deleteBookMarkById: async (b_id, result) => {
+    try {
+      const res = await sql.query(`DELETE FROM bookmark WHERE bm_id = ?`, [
+        b_id,
+      ]);
+      result(res);
+    } catch (error) {
+      console.error(error);
       result(null, error);
     }
   },
