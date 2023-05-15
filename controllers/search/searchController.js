@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require("../../config/db");
-
+const searchModel = require('../../models/searchModel');
 const router = express.Router();
 
 
@@ -14,9 +14,8 @@ exports.getAgency = async(req,res) => {
     console.log(`get agencies // sgg_nm: ${sgg_nm}, bjdong_nm: ${bjdong_nm}`);
 
     try {
-        const query = `SELECT * FROM agencies WHERE sgg_nm = ? AND bjdong_nm = ?`;
-        const [rows, fields] = await db.query(query, [sgg_nm, bjdong_nm]);
-        console.log('agencies info ', rows);
+        const rows = await searchModel.getAgenciesModel(sgg_nm,bjdong_nm);
+    
         res.json({ rows: rows });
     } catch (err) {
         console.error(err.stack)
@@ -31,14 +30,8 @@ exports.getOneAgency = async(req, res) => {
     const bjdong_nm = req.query.bjdong_nm;
     const cmp_nm = '%'+req.query.cmp_nm+'%';
 
-    //console.log('searching an agency...........');
-    //console.log(`sgg_nm: ${sgg_nm}, bjdong_nm: ${bjdong_nm}, cmp_nm: ${cmp_nm}`);
-
     try {
-        const query = `SELECT * FROM agencies WHERE sgg_nm = ? AND bjdong_nm = ? AND cmp_nm LIKE ?`;
-        //console.log(query);    
-            const [rows, fields]  = await db.query(query, [sgg_nm, bjdong_nm, cmp_nm]);          
-                //if (error) throw error;
+            const rows = await searchModel.getOneAgencyModel(sgg_nm,bjdong_nm,cmp_nm);
                  console.log('*****An agency info : ', rows);
                  res.json({ rows: rows });
         } catch (err) {

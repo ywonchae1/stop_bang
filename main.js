@@ -39,5 +39,3 @@ app.listen(app.get('port'),()=>{
 
     console.log(app.get('port'),'번 포트에게 대기중');
 });
-
-        //"mysql": "^2.18.1",
