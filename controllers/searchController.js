@@ -1,7 +1,5 @@
-const express = require('express');
-const db = require("../../config/db");
-const searchModel = require('../../models/searchModel');
-const router = express.Router();
+const db = require("../config/db");
+const searchModel = require('../models/searchModel');
 
 
 //컨트롤러 함수에서는 데이터베이스에서 부동산중개업소 정보를 조회하는 비즈니스 로직을 수행
