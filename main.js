@@ -23,8 +23,10 @@ const indexRouter = require("./routers/index"),
   residentRouter = require("./routers/residentRouter"),
   agentRouter = require("./routers/agentRouter.js"),
   reviewRouter = require("./routers/reviewRouter.js"),
-  authRouter = require("./routers/authRouter.js");
+  authRouter = require("./routers/authRouter.js"),
+  searchRouter = require('./routers/searchRouter');
 
+  
 //View
 const layouts = require("express-ejs-layouts");
 app.set("view engine", "ejs");
@@ -38,6 +40,10 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
 app.use("/resident", residentRouter);
+
+//검색페이지 접근
+app.use('/search',searchRouter);
+
 
 //공인중개사 페이지 접근
 app.use("/agent", agentRouter);
