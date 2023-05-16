@@ -19,3 +19,9 @@
   display: inline-block;
   margin: 15px 10px;
 }
+
+.user-label {
+  display: inline-block;
+  width: 100px;
+  padding-bottom: 26px;
+}

@@ -16,7 +16,7 @@ router.get(
   residentController.bookmark,
   residentController.bookmarkView
 );
-router.delete(
+router.post(
   "/bookmark/:id/delete",
   residentController.deleteBookmark,
   residentController.redirectView
