@@ -1,672 +1,628 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="/css/search.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ce54459ce01fd6e31cc81beb6a8ba76c&libraries=services,clusterer,drawing"></script>
 
-<header>
-    <%- include('./header'); %>
-</header>
 
-<body >
+<body>
 
 
-<main>
-
+  <main>
     <div class="search--container">
-      
-        <div id="map" style="margin-top: 2px;" >
+      <div id="map" style="margin-top: 2px;">
+        <div class="map--search--form">
+          <select id="myDropdown" class="myDropdown">
+            <option value="">서울특별시</option>
+          </select>
+          <select id="gu" name="gu" onchange="onChangeSido()" class="myDropdown">
+            <option value="">구</option>
 
-         <div class="map--search--form">
-            <select id="myDropdown" class="myDropdown">
-               <option value="">서울특별시</option>
-            </select>
+            <% for (let i = 0; i < gu_options.length; i++) { %>
+            <option value="<%= gu_options[i] %>"><%= gu_options[i] %></option>
+            <% } %>
 
-            <select id="gu" name="gu" onchange="onChangeSido()" class="myDropdown">
-               <option value="">구</option>
-                 
-               <% for (let i = 0; i < gu_options.length; i++) { %>
-                     <option value="<%= gu_options[i] %>"><%= gu_options[i] %></option>
-                  <% } %>
-            
-               </select>
+          </select>
 
-               
-            <select  id="dong" name="dong" onchange="onChangeDong()" class="myDropdown">
-               <option value="">동</option>
+          <select id="dong" name="dong" onchange="onChangeDong()" class="myDropdown">
+            <option value="">동</option>
 
-             </select>
-             
-             <!--<label for="name">Name:</label>-->
-               <input type="text" id="agencyName" name="agencyName" autocomplete="off" onkeydown="if(event.keyCode==13) onClickAgencyName()"><br><br>
-               <input type="submit" value="검색" id="search-submit" onclick="onClickAgencyName()" >
-          </div>
-
-          
+          </select>
+          <!--<label for="name">Name:</label>-->
+          <input type="text" id="agencyName" name="agencyName" autocomplete="off" onkeydown="if(event.keyCode==13) onClickAgencyName()"><br><br>
+          <input type="submit" value="검색" id="search-submit" onclick="onClickAgencyName()">
         </div>
-        
-        
-        
-        <div class="agency--container">
-        
-            <div style="margin-top: 25px;">
-               <span>
-                  <span uk-icon="chevron-double-right"></span>
-                  부동산을 눌러 후기를 확인하세요 !</span> 
-         </div>     
+      </div>
 
-            <div class="agency--list" id="agency--list">
-               
-               
-              
-
-            </div>
-        
+      <div class="agency--container">
+        <div style="margin-top: 25px;">
+          <span>
+            <span uk-icon="chevron-double-right"></span>
+            부동산을 눌러 후기를 확인하세요 !</span>
         </div>
+
+        <div class="agency--list" id="agency--list">
+        </div>
+      </div>
     </div>
 
 
 </body>
 <script>
-
-    var container = document.getElementById('map'); 
-    var options = { 
-        center: new kakao.maps.LatLng(37.591682, 127.022124), 
-        level: 6 
-    };
-    /*
+  var container = document.getElementById('map');
+  var options = {
+    center: new kakao.maps.LatLng(37.591682, 127.022124),
+    level: 6
+  };
+  /*
    
 */
-  
-    var map = new kakao.maps.Map(container, options);
 
-         const gangnamDongs = ['개포동', '논현동', '대치동', '도곡동', '삼성동', '세곡동', '수서동', '신사동', '압구정동', '역삼동', '율현동', '일원동', '자곡동'];
-         const gangDongs = ["강일동", "상일동", "명일동", "고덕동", "암사동", "천호동", "성내동", "길동"];
-         const gangbukDongs = [  "미아동",  "번동",  "수유동",  "우이동",  "인수동",  "강북구청",  "삼각산동",  "송중동",  "송천동",  "인덕원동",  "쌍문동",  "우이천동",  "번2동",  "번3동",  "삼양동",  "송천2동",  "송천동",  "우이동",  "인수동",  "창동",  "수유1동",  "수유2동",  "수유3동",  "수유4동",  "수유5동",  "우이청동"]
-         const gangseoDongs = [  "가양동",  "개화동",  "공항동",  "과해동",  "내발산동",  "등촌동",  "마곡동",  "방화동",  "염창동",  "오곡동",  "오쇠동",  "외발산동",  "화곡동" ,  "가양동",  "등촌동"]
-         const gwangakDongs = ["신림동", "난곡동", "신사동", "신원동", "서림동", "난향동", "조원동", "미성동", "은천동", "성현동", "보라매동", "청룡동", "낙성대동", "중앙동", "인헌동", "난우동", "성북동", "청림동", "남현동", "서원동", "신원동", "서림동", "신사동", "신림동", "대학동", "삼성동", "미성동", "관악동", "수림동", "신촌동", "서초동", "신원동", "신사동", "은천동", "조원동", "신림동", "청룡동", "성현동", "보라매동", "중앙동", "낙성대동", "인헌동", "서원동", "남현동", "청림동", "난우동", "서림동", "미성동", "대학동", "삼성동", "관악동", "신림동", "신사동", "서초동", "은천동", "조원동", "신원동", "보라매동", "성현동", "중앙동", "낙성대동", "남현동", "인헌동", "서원동", "청룡동", "청림동", "난우동", "서림동", "미성동", "대학동", "삼성동", "관악동", "수림동", "신촌동"];
-         const gwangjinDongs =["광장동", "군자동", "능동", "자양동", "중곡동", "화양동", "자양1동", "자양2동", "구의동", "용신동", "제기동", "전농동", "답십리동", "장안동"]
-         const guroDongs = ["고척동", "개봉동", "오류동", "구로동", "신도림동", "가리봉동", "구로1동", "구로3동", "구로4동", "구로5동", "독산1동", "독산2동", "독산3동", "궁동", "항동"]
-         const gumcheonDongs =["가산동", "독산동", "시흥동"]
-         const nowonDongs = ["월계동","공릉동","하계동","중계동","상계동"]
-         const dobongDongs = ["쌍문동","방학동","창동","도봉동"]
-         const dongdeamunDongs = ["청량리동", "회기동", "휘경동", "이문동", "면목동", "장안동", "답십리동", "전농동", "제기동", "신설동", "동대문동", "청운효자동", "혜화동"]
-         const dongjakGuDongs = ["본동","노량진동","상도1동","상도동","흑석동","동작동","사당동","대방동","신대방동"];
-         const mapoDongs = ['공덕동','구수동','노고산동','당인동','대흥동','도화동','동교동','마포동','망원동','상수동','상암동','서교동','성산동','신공덕동','신수동','신정동','아현동','연남동','염리동','용강동','중동','창전동','토정동','하중동'];
-         const seodaemunDong = ["미근동","천연동","홍제동","냉천동","북아현동","충정로2가","충정로3가","봉원동","신촌동","영천동","현저동","남가좌동","북가좌동","대현동","연희동","홍은동","창천동","신수동","대신동","옥천동","합동"]
-         const seochoDongs = ["서초동","잠원동","반포동","방배동","우면동","양재동","원지동","내곡동","염곡동","신원동"];
-         const seongDongs = ["금호동", "옥수동", "성수동1가", "성수동2가", "성수동3가", "송정동", "용답동", "왕십리도선동", "왕십리제2동", "마장동", "사근동", "행당동", "응봉동", "금호동1가", "금호동2가", "금호동3가", "금호동4가", "옥수동1가", "옥수동2가", "성수동1가제2지구", "성수동1가제3지구", "성수동1가제4지구", "성수동2가제1지구", "성수동2가제2지구", "성수동2가제3지구", "성수동2가제4지구", "성수동2가제5지구", "성수동2가제6지구", "성수동2가제7지구", "성수동2가제8지구", "성수동3가제1지구", "성수동3가제2지구", "성수동3가제3지구", "성수동3가제4지구", "성수동3가제5지구", "성수동3가제6지구", "성수동3가제7지구", "성수동3가제8지구", "성수동3가제9지구", "성수동3가제10지구", "성수동3가제11지구", "성수동3가제12지구", "성수동3가제13지구", "성수동3가제14지구", "성수동3가제15지구", "성수동3가제16지구", "성수동3가제17지구", "성수동3가제18지구", "성수동3가제19지구", "성수동3가제20지구", "성수동3가제21지구", "성수동3가제22지구", "성수동3가제23지구", "성수동3가제24지구", "성수동3가제25지구", "성수동3가제26지구", "성수동3가제27지구", "성수동3가제28지구", "성수동3가제29지구", "성수동3가제30지구", "성수동3가제31지구", "성수동3가제32지구", "성수동3가제33지구", "성수동3가제34지구", "성수동3가제35지구", "성수동3가제36지구", "성수동3가제37지구", "성수동3가제38지구", "성수동3가제39지구", "성수동3가제40지구", "성수동3가제41지구", "성수동3가제42지구", "성수동3가제43지구"]
-         const seongbukDongs = ['길음동','돈암동','동선동1가','동선동2가','동선동3가','동선동4가','동선동5가','동소문동1가','동소문동4가','동소문동2가','동소문동3가','동소문동4가','동소문동5가','동소문동6가','동소문동7가','보문동1가','보문동2가','보문동3가','보문동4가','보문동5가','보문동6가','보문동7가','삼선동1가','삼선동2가','삼선동3가','삼선동4가','삼선동5가','상월곡동','석관동','성북동','성북동1가','안암동1가','안암동2가','안암동3가','안암동4가','안암동5가','장위동','정릉동','종암동','하월곡동'];
-         const songpaDongs = ["가락동", "문정동", "방이동", "삼전동", "석촌동", "송파동", "신천동", "오금동", "잠실동", "장지동", "풍납동"];
-         const yangcheonDongs = ["목동","신월동","신정동"];
-         const YeongdeungpoDongs = ['당산동1가','당산동2가','당산동3가','당산동4가','당산동5가','당산동6가','당산동','도림동','문래동1가','문래동2가','문래동3가','문래동4가','문래동5가','문래동6가','영등포동1가','영등포동2가','영등포동3가','영등포동4가','영등포동5가','영등포동6가','영등포동7가','영등포동8가','영등포동','여의도동','대림동','신길동','양평동1가','양평동2가','양평동3가','양평동4가','양평동5가','양평동6가','양평동7가','양평동8가','양평동','영등포본동'];
-         const yongsanDongs = ['갈월동','남영동','도원동','동빙고동','동자동','문배동','보광동','산천동',' 서계동','서빙고동','신계동','신창동','용문동',' 용산동1가','용산동2가',' 용산동3가','용산동4가','용산동5가','용산동6가',' 원효로1가',' 원효로2가','원효로3가','원효로4가','이촌동',' 이태원동','주성동',' 청암동',' 청파동1가',' 청파동2가',' 청파동3가','  한강로1가',' 한강로2가',' 한강로3가',' 한남동',' 효창동',' 후암동'];
-         const eunpyeongGuDongs = ["갈현동","구산동","녹번동","대조동","불광동","수색동","신사동","역촌동","응암동","증산동","진관동"];
-         const jongnoDongs = ['가회동',' 견지동',' 경운동',' 계동','  공평동','  관수동',' 관철동',' 관훈동',' 교남동',' 교북동',' 구기동',' 궁정동',' 권농동',' 낙원동','  내수동',' 내자동',' 누상동',' 누하동','  당주동',' 도렴동',' 돈의동','동숭동',' 명륜1가', '명륜2가', '명륜3가', '명륜4가', '묘동',' 무악동','  봉익동',' 부암동','   사간동',' 사직동','  삼청동',' 서린동',' 세종로',  '소격동',' 송월동','  송현동','  수송동','  숭인동','  신교동','  신문로1가' ,'신문로2가', '신영동','  안국동',' 연건동',' 연지동',' 예지동',' 옥인동',' 와룡동',' 운니동',' 원남동',' 원서동',' 이화동',' 익선동',' 인사동',' 인의동','  장사동','  재동',' 적선동',' 종로1가', '종로2가' ,'종로3가 ','종로4가', '종로5가 ','종로6가', '중학동','  창성동',' 창신동',' 청운동',' 청진동',' 체부동',' 충신동',' 통의동',' 통인동','  팔판동',' 평동',' 평창동',' 필운동','  행촌동',' 혜화동',' 홍지동',' 홍파동',' 화동',' 효자동',' 효제동',' 훈정동' ];
-         const JungguDong = ['광희동1가',' 광희동2가','남대문로1가',' 남대문로2가',' 남대문로3가',' 남대문로4가',' 남대문로5가',' 남산동1가',' 남산동2가',' 남산동3가',' 남창동',  '남학동', '다동',  '만리동1가',' 만리동2가',' 명동1가',' 명동2가',' 무교동',' 무학동', '묵정동', '방산동', ' 봉래동1가','  봉래동2가','  북창동 ', '산림동', '삼각동', '서소문동', '소공동', '수표동', '수하동',  '순화동', '신당동',  '쌍림동' ,'예관동' ,'예장동' ,'오장동', '을지로1가',' 을지로2가',' 을지로3가',' 을지로4가',' 을지로5가',' 을지로6가',' 을지로7가',' 의주로1가',' 의주로2가',' 인현동1가',' 인현동2가',' 입정동','장교동', '장충동1가',' 장충동2가',' 저동1가',' 저동2가',' 정동 ',' 주교동',  '주자동', '중림동', '초동' , '충무로1가',' 충무로2가',' 충무로4가',' 충무로5가',' 충정로1가','  태평로1가','  태평로2가','필동1가',' 필동2가',' 필동3가','황학동', '회현동1가',' 회현동2가',' 회현동3가',' 흥인동'];
-         const jungrang = ['망우동','면목동','묵동','상봉동','신내동','중화동'];
+  var map = new kakao.maps.Map(container, options);
 
-   function onClickAgencyName(){
+  const gangnamDongs = ['개포동', '논현동', '대치동', '도곡동', '삼성동', '세곡동', '수서동', '신사동', '압구정동', '역삼동', '율현동', '일원동', '자곡동'];
+  const gangDongs = ["강일동", "상일동", "명일동", "고덕동", "암사동", "천호동", "성내동", "길동"];
+  const gangbukDongs = ["미아동", "번동", "수유동", "우이동", "인수동", "강북구청", "삼각산동", "송중동", "송천동", "인덕원동", "쌍문동", "우이천동", "번2동", "번3동", "삼양동", "송천2동", "송천동", "우이동", "인수동", "창동", "수유1동", "수유2동", "수유3동", "수유4동", "수유5동", "우이청동"]
+  const gangseoDongs = ["가양동", "개화동", "공항동", "과해동", "내발산동", "등촌동", "마곡동", "방화동", "염창동", "오곡동", "오쇠동", "외발산동", "화곡동", "가양동", "등촌동"]
+  const gwangakDongs = ["신림동", "난곡동", "신사동", "신원동", "서림동", "난향동", "조원동", "미성동", "은천동", "성현동", "보라매동", "청룡동", "낙성대동", "중앙동", "인헌동", "난우동", "성북동", "청림동", "남현동", "서원동", "신원동", "서림동", "신사동", "신림동", "대학동", "삼성동", "미성동", "관악동", "수림동", "신촌동", "서초동", "신원동", "신사동", "은천동", "조원동", "신림동", "청룡동", "성현동", "보라매동", "중앙동", "낙성대동", "인헌동", "서원동", "남현동", "청림동", "난우동", "서림동", "미성동", "대학동", "삼성동", "관악동", "신림동", "신사동", "서초동", "은천동", "조원동", "신원동", "보라매동", "성현동", "중앙동", "낙성대동", "남현동", "인헌동", "서원동", "청룡동", "청림동", "난우동", "서림동", "미성동", "대학동", "삼성동", "관악동", "수림동", "신촌동"];
+  const gwangjinDongs = ["광장동", "군자동", "능동", "자양동", "중곡동", "화양동", "자양1동", "자양2동", "구의동", "용신동", "제기동", "전농동", "답십리동", "장안동"]
+  const guroDongs = ["고척동", "개봉동", "오류동", "구로동", "신도림동", "가리봉동", "구로1동", "구로3동", "구로4동", "구로5동", "독산1동", "독산2동", "독산3동", "궁동", "항동"]
+  const gumcheonDongs = ["가산동", "독산동", "시흥동"]
+  const nowonDongs = ["월계동", "공릉동", "하계동", "중계동", "상계동"]
+  const dobongDongs = ["쌍문동", "방학동", "창동", "도봉동"]
+  const dongdeamunDongs = ["청량리동", "회기동", "휘경동", "이문동", "면목동", "장안동", "답십리동", "전농동", "제기동", "신설동", "동대문동", "청운효자동", "혜화동"]
+  const dongjakGuDongs = ["본동", "노량진동", "상도1동", "상도동", "흑석동", "동작동", "사당동", "대방동", "신대방동"];
+  const mapoDongs = ['공덕동', '구수동', '노고산동', '당인동', '대흥동', '도화동', '동교동', '마포동', '망원동', '상수동', '상암동', '서교동', '성산동', '신공덕동', '신수동', '신정동', '아현동', '연남동', '염리동', '용강동', '중동', '창전동', '토정동', '하중동'];
+  const seodaemunDong = ["미근동", "천연동", "홍제동", "냉천동", "북아현동", "충정로2가", "충정로3가", "봉원동", "신촌동", "영천동", "현저동", "남가좌동", "북가좌동", "대현동", "연희동", "홍은동", "창천동", "신수동", "대신동", "옥천동", "합동"]
+  const seochoDongs = ["서초동", "잠원동", "반포동", "방배동", "우면동", "양재동", "원지동", "내곡동", "염곡동", "신원동"];
+  const seongDongs = ["금호동", "옥수동", "성수동1가", "성수동2가", "성수동3가", "송정동", "용답동", "왕십리도선동", "왕십리제2동", "마장동", "사근동", "행당동", "응봉동", "금호동1가", "금호동2가", "금호동3가", "금호동4가", "옥수동1가", "옥수동2가", "성수동1가제2지구", "성수동1가제3지구", "성수동1가제4지구", "성수동2가제1지구", "성수동2가제2지구", "성수동2가제3지구", "성수동2가제4지구", "성수동2가제5지구", "성수동2가제6지구", "성수동2가제7지구", "성수동2가제8지구", "성수동3가제1지구", "성수동3가제2지구", "성수동3가제3지구", "성수동3가제4지구", "성수동3가제5지구", "성수동3가제6지구", "성수동3가제7지구", "성수동3가제8지구", "성수동3가제9지구", "성수동3가제10지구", "성수동3가제11지구", "성수동3가제12지구", "성수동3가제13지구", "성수동3가제14지구", "성수동3가제15지구", "성수동3가제16지구", "성수동3가제17지구", "성수동3가제18지구", "성수동3가제19지구", "성수동3가제20지구", "성수동3가제21지구", "성수동3가제22지구", "성수동3가제23지구", "성수동3가제24지구", "성수동3가제25지구", "성수동3가제26지구", "성수동3가제27지구", "성수동3가제28지구", "성수동3가제29지구", "성수동3가제30지구", "성수동3가제31지구", "성수동3가제32지구", "성수동3가제33지구", "성수동3가제34지구", "성수동3가제35지구", "성수동3가제36지구", "성수동3가제37지구", "성수동3가제38지구", "성수동3가제39지구", "성수동3가제40지구", "성수동3가제41지구", "성수동3가제42지구", "성수동3가제43지구"]
+  const seongbukDongs = ['길음동', '돈암동', '동선동1가', '동선동2가', '동선동3가', '동선동4가', '동선동5가', '동소문동1가', '동소문동4가', '동소문동2가', '동소문동3가', '동소문동4가', '동소문동5가', '동소문동6가', '동소문동7가', '보문동1가', '보문동2가', '보문동3가', '보문동4가', '보문동5가', '보문동6가', '보문동7가', '삼선동1가', '삼선동2가', '삼선동3가', '삼선동4가', '삼선동5가', '상월곡동', '석관동', '성북동', '성북동1가', '안암동1가', '안암동2가', '안암동3가', '안암동4가', '안암동5가', '장위동', '정릉동', '종암동', '하월곡동'];
+  const songpaDongs = ["가락동", "문정동", "방이동", "삼전동", "석촌동", "송파동", "신천동", "오금동", "잠실동", "장지동", "풍납동"];
+  const yangcheonDongs = ["목동", "신월동", "신정동"];
+  const YeongdeungpoDongs = ['당산동1가', '당산동2가', '당산동3가', '당산동4가', '당산동5가', '당산동6가', '당산동', '도림동', '문래동1가', '문래동2가', '문래동3가', '문래동4가', '문래동5가', '문래동6가', '영등포동1가', '영등포동2가', '영등포동3가', '영등포동4가', '영등포동5가', '영등포동6가', '영등포동7가', '영등포동8가', '영등포동', '여의도동', '대림동', '신길동', '양평동1가', '양평동2가', '양평동3가', '양평동4가', '양평동5가', '양평동6가', '양평동7가', '양평동8가', '양평동', '영등포본동'];
+  const yongsanDongs = ['갈월동', '남영동', '도원동', '동빙고동', '동자동', '문배동', '보광동', '산천동', ' 서계동', '서빙고동', '신계동', '신창동', '용문동', ' 용산동1가', '용산동2가', ' 용산동3가', '용산동4가', '용산동5가', '용산동6가', ' 원효로1가', ' 원효로2가', '원효로3가', '원효로4가', '이촌동', ' 이태원동', '주성동', ' 청암동', ' 청파동1가', ' 청파동2가', ' 청파동3가', '  한강로1가', ' 한강로2가', ' 한강로3가', ' 한남동', ' 효창동', ' 후암동'];
+  const eunpyeongGuDongs = ["갈현동", "구산동", "녹번동", "대조동", "불광동", "수색동", "신사동", "역촌동", "응암동", "증산동", "진관동"];
+  const jongnoDongs = ['가회동', ' 견지동', ' 경운동', ' 계동', '  공평동', '  관수동', ' 관철동', ' 관훈동', ' 교남동', ' 교북동', ' 구기동', ' 궁정동', ' 권농동', ' 낙원동', '  내수동', ' 내자동', ' 누상동', ' 누하동', '  당주동', ' 도렴동', ' 돈의동', '동숭동', ' 명륜1가', '명륜2가', '명륜3가', '명륜4가', '묘동', ' 무악동', '  봉익동', ' 부암동', '   사간동', ' 사직동', '  삼청동', ' 서린동', ' 세종로', '소격동', ' 송월동', '  송현동', '  수송동', '  숭인동', '  신교동', '  신문로1가', '신문로2가', '신영동', '  안국동', ' 연건동', ' 연지동', ' 예지동', ' 옥인동', ' 와룡동', ' 운니동', ' 원남동', ' 원서동', ' 이화동', ' 익선동', ' 인사동', ' 인의동', '  장사동', '  재동', ' 적선동', ' 종로1가', '종로2가', '종로3가 ', '종로4가', '종로5가 ', '종로6가', '중학동', '  창성동', ' 창신동', ' 청운동', ' 청진동', ' 체부동', ' 충신동', ' 통의동', ' 통인동', '  팔판동', ' 평동', ' 평창동', ' 필운동', '  행촌동', ' 혜화동', ' 홍지동', ' 홍파동', ' 화동', ' 효자동', ' 효제동', ' 훈정동'];
+  const JungguDong = ['광희동1가', ' 광희동2가', '남대문로1가', ' 남대문로2가', ' 남대문로3가', ' 남대문로4가', ' 남대문로5가', ' 남산동1가', ' 남산동2가', ' 남산동3가', ' 남창동', '남학동', '다동', '만리동1가', ' 만리동2가', ' 명동1가', ' 명동2가', ' 무교동', ' 무학동', '묵정동', '방산동', ' 봉래동1가', '  봉래동2가', '  북창동 ', '산림동', '삼각동', '서소문동', '소공동', '수표동', '수하동', '순화동', '신당동', '쌍림동', '예관동', '예장동', '오장동', '을지로1가', ' 을지로2가', ' 을지로3가', ' 을지로4가', ' 을지로5가', ' 을지로6가', ' 을지로7가', ' 의주로1가', ' 의주로2가', ' 인현동1가', ' 인현동2가', ' 입정동', '장교동', '장충동1가', ' 장충동2가', ' 저동1가', ' 저동2가', ' 정동 ', ' 주교동', '주자동', '중림동', '초동', '충무로1가', ' 충무로2가', ' 충무로4가', ' 충무로5가', ' 충정로1가', '  태평로1가', '  태평로2가', '필동1가', ' 필동2가', ' 필동3가', '황학동', '회현동1가', ' 회현동2가', ' 회현동3가', ' 흥인동'];
+  const jungrang = ['망우동', '면목동', '묵동', '상봉동', '신내동', '중화동'];
 
-
-      const agencyName = document.getElementById('agencyName').value;
-      const selectedGu = $('#gu').val();
-      const selectedDong = $('#dong').val();
-
-      
-      console.log("an agency Dong : "+selectedGu);
-      console.log("an agency Dong : "+selectedDong);
-      console.log("an agency Dong : "+agencyName);
-      $.ajax({
-
-               url: '/search/agencyName',
-               type: 'GET',
-               data: { sgg_nm: selectedGu, bjdong_nm: selectedDong, cmp_nm: agencyName},
-              
-               
-               success: function(result) {
-                  console.log(result);
-                  const parentDiv = document.getElementById('agency--list');
-
-                  parentDiv.innerHTML = '';
-
-                  console.log(result);
-                  for (let i = 0; i < result.rows.length; i++) {
-                    
-                     //console.log(result.rows[i].cmp_nm);
-                 
-
-                     // 부모 element
-                     const parentDiv = document.getElementById('agency--list');
-
-                     // container div
-                     const containerDiv = document.createElement('div');
-                     containerDiv.classList.add('agency--m--container');
-
-                     // agency name div
-                     const nameDiv = document.createElement('div');
-                     nameDiv.classList.add('agency--name');
-                     nameDiv.id = 'agency--name';
-                     nameDiv.innerText = result.rows[i].cmp_nm;
-                     containerDiv.appendChild(nameDiv);
-
-                     // agency details div
-                     const detailsDiv = document.createElement('div');
-                     detailsDiv.classList.add('agency-details');
-
-                     // 별 3점 div
-                     const ratingDiv = document.createElement('div');
-                     ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerText = '별 3점 | ';
-                     detailsDiv.appendChild(ratingDiv);
-
-                     // 후기 20개 div
-                     const reviewDiv = document.createElement('div');
-                     reviewDiv.style.paddingLeft = '7px';
-                     reviewDiv.style.paddingRight = '7px';
-                     reviewDiv.innerText = '후기 20개 | ';
-                     detailsDiv.appendChild(reviewDiv);
-
-                     // 친절하고 따뜻한 div
-                     const descriptionDiv = document.createElement('div');
-                     descriptionDiv.innerText = '친절하고 따뜻한';
-                     detailsDiv.appendChild(descriptionDiv);
-
-                     // container div를 parentDiv에 추가
-                     containerDiv.appendChild(detailsDiv);
-                     parentDiv.appendChild(containerDiv);
-                     }
+  function onClickAgencyName() {
 
 
-                  
-                
-                  
-                
-               },
-               error: function(xhr, status, error) {
-                  console.error(error);
-               }
-            });
-
-         }
+    const agencyName = document.getElementById('agencyName').value;
+    const selectedGu = $('#gu').val();
+    const selectedDong = $('#dong').val();
 
 
-      
-   
+    console.log("an agency Dong : " + selectedGu);
+    console.log("an agency Dong : " + selectedDong);
+    console.log("an agency Dong : " + agencyName);
+    $.ajax({
+
+      url: '/search/agencyName',
+      type: 'GET',
+      data: {
+        sgg_nm: selectedGu,
+        bjdong_nm: selectedDong,
+        cmp_nm: agencyName
+      },
 
 
-   function onChangeSido() {
-               const gu = document.getElementById('gu').value;
-               console.log(gu);
+      success: function(result) {
+        console.log(result);
+        const parentDiv = document.getElementById('agency--list');
 
-               // 두 번째 드롭다운 메뉴 초기화
-               const dongSelect = document.getElementById('dong');
-               dongSelect.innerHTML = '';
+        parentDiv.innerHTML = '';
 
-                        // 선택된 시/도 값에 따라 두 번째 드롭다운 메뉴의 옵션 생성
-            if (gu === '강남구') {
-                     // 서울특별시를 선택한 경우, 강남구의 동들을 옵션으로 추가
-                     
-                     
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gangnamDongs.length; i++) {
-                        const option = document.createElement('option');
-         
-                        option.value = gangnamDongs[i];
-                        option.text = gangnamDongs[i];
-                       
-                        dongSelect.appendChild(option);
-                     }
-                  } else if (gu === '강동구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gangDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = gangDongs[i];
-                        option.text = gangDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  } else if (gu === '강북구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gangbukDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = gangbukDongs[i];
-                        option.text = gangbukDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '강서구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gangseoDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = gangseoDongs[i];
-                        option.text = gangseoDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '관악구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gwangakDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = gwangakDongs[i];
-                        option.text = gwangakDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '광진구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gwangjinDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = gwangjinDongs[i];
-                        option.text = gwangjinDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '구로구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < guroDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = guroDongs[i];
-                        option.text = guroDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  } else if (gu === '금천구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < gumcheonDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = gumcheonDongs[i];
-                        option.text = gumcheonDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '노원구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < nowonDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = nowonDongs[i];
-                        option.text = nowonDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '도봉구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < dobongDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = dobongDongs[i];
-                        option.text = dobongDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '동대문구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < dongdeamunDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = dongdeamunDongs[i];
-                        option.text = dongdeamunDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '동작구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < dongjakGuDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = dongjakGuDongs[i];
-                        option.text = dongjakGuDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '마포구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < mapoDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = mapoDongs[i];
-                        option.text = mapoDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  } else if (gu === '서대문구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < seodaemunDong.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = seodaemunDong[i];
-                        option.text = seodaemunDong[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '서초구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < seochoDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = seochoDongs[i];
-                        option.text = seochoDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '성동구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < seongDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = seongDongs[i];
-                        option.text = seongDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '성북구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < seongbukDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = seongbukDongs[i];
-                        option.text = seongbukDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '송파구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < songpaDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = songpaDongs[i];
-                        option.text = songpaDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '양천구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < yangcheonDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = yangcheonDongs[i];
-                        option.text = yangcheonDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '영등포구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < YeongdeungpoDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value =  YeongdeungpoDongs[i];
-                        option.text =  YeongdeungpoDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '용산구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < yongsanDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = yongsanDongs[i];
-                        option.text = yongsanDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '은평구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < eunpyeongGuDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = eunpyeongGuDongs[i];
-                        option.text = eunpyeongGuDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  } else if (gu === '종로구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < jongnoDongs.length; i++) {
-                        const option = document.createElement('option');
-                        option.value =jongnoDongs[i];
-                        option.text = jongnoDongs[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '중구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < JungguDong.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = JungguDong[i];
-                        option.text = JungguDong[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  else if (gu === '중랑구') {
-                       
-                     const blankOption = document.createElement('option');
-                           blankOption.value = "";
-                           blankOption.text = "";
-                           dongSelect.appendChild(blankOption);
-                 
-                     for (let i = 0; i < jungrang.length; i++) {
-                        const option = document.createElement('option');
-                        option.value = jungrang[i];
-                        option.text = jungrang[i];
-                        dongSelect.appendChild(option);
-                     }
-                  }
-                  
-               
-                     }
+        console.log(result);
+        for (let i = 0; i < result.rows.length; i++) {
+
+          //console.log(result.rows[i].cmp_nm);
 
 
-      
-   
-      function onChangeDong() {
-         
-            const selectedGu = $('#gu').val();
-            const selectedDong = $('#dong').val();
+          // 부모 element
+          const parentDiv = document.getElementById('agency--list');
 
-            //console.log("selected Gu: " + selectedGu);
-            //console.log("selected Dong: "+ selectedDong);
-           
-            const searchParam =   selectedGu +' '+ selectedDong;
-            //console.log("검색할 주소 : "+searchParam);
-            
+          // container div
+          const containerDiv = document.createElement('div');
+          containerDiv.classList.add('agency--m--container');
 
-            var geocoder = new kakao.maps.services.Geocoder();
+          // agency name div
+          const nameDiv = document.createElement('div');
+          nameDiv.classList.add('agency--name');
+          nameDiv.id = 'agency--name';
+          nameDiv.innerText = result.rows[i].cmp_nm;
+          containerDiv.appendChild(nameDiv);
 
-            var callback = function(result, status) {
-               if (status === kakao.maps.services.Status.OK) {
-                  
-                  console.log(result);
+          // agency details div
+          const detailsDiv = document.createElement('div');
+          detailsDiv.classList.add('agency-details');
 
-                  //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
-                  var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+          // 별 3점 div
+          const ratingDiv = document.createElement('div');
+          ratingDiv.style.paddingLeft = '7px';
+          ratingDiv.innerText = '별 3점 | ';
+          detailsDiv.appendChild(ratingDiv);
 
-                  var marker = new kakao.maps.Marker({
-                        map: map,
-                        position: coords
-                  });
-                  map.setCenter(coords); 
+          // 후기 20개 div
+          const reviewDiv = document.createElement('div');
+          reviewDiv.style.paddingLeft = '7px';
+          reviewDiv.style.paddingRight = '7px';
+          reviewDiv.innerText = '후기 20개 | ';
+          detailsDiv.appendChild(reviewDiv);
 
-               }
-             };
-            geocoder.addressSearch(searchParam, callback);
+          // 친절하고 따뜻한 div
+          const descriptionDiv = document.createElement('div');
+          descriptionDiv.innerText = '친절하고 따뜻한';
+          detailsDiv.appendChild(descriptionDiv);
 
-            $.ajax({
-               url: '/search/agencies',
-               type: 'GET',
-               data: { sgg_nm: selectedGu, bjdong_nm: selectedDong },
-               success: function(result) {
-                  //console.log(result.rows.cmp_nm);
-                  const parentDiv = document.getElementById('agency--list');
-
-                  parentDiv.innerHTML = '';
-
-                  // console.log(result.rows.length);
-                  for (let i = 0; i < result.rows.length; i++) {
-                    
-                     //console.log(result.rows[i].cmp_nm);
-                 
-
-                     // 부모 element
-                     const parentDiv = document.getElementById('agency--list');
-
-                     // container div
-                     const containerDiv = document.createElement('div');
-                     containerDiv.classList.add('agency--m--container');
-
-                     // agency name div
-                     const nameDiv = document.createElement('div');
-                     nameDiv.classList.add('agency--name');
-                     nameDiv.id = 'agency--name';
-                     nameDiv.innerText = result.rows[i].cmp_nm;
-                     containerDiv.appendChild(nameDiv);
-
-                     // agency details div
-                     const detailsDiv = document.createElement('div');
-                     detailsDiv.classList.add('agency-details');
-
-                     // 별 3점 div
-                     const ratingDiv = document.createElement('div');
-                     ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerText = '별 3점 | ';
-                     detailsDiv.appendChild(ratingDiv);
-
-                     // 후기 20개 div
-                     const reviewDiv = document.createElement('div');
-                     reviewDiv.style.paddingLeft = '7px';
-                     reviewDiv.style.paddingRight = '7px';
-                     reviewDiv.innerText = '후기 20개 | ';
-                     detailsDiv.appendChild(reviewDiv);
-
-                     // 친절하고 따뜻한 div
-                     const descriptionDiv = document.createElement('div');
-                     descriptionDiv.innerText = '친절하고 따뜻한';
-                     detailsDiv.appendChild(descriptionDiv);
-
-                     // container div를 parentDiv에 추가
-                     containerDiv.appendChild(detailsDiv);
-                     parentDiv.appendChild(containerDiv);
-                     }
-
-
-                  
-                
-               },
-               error: function(xhr, status, error) {
-                  console.error(error);
-               }
-            });
-
-         }
+          // container div를 parentDiv에 추가
+          containerDiv.appendChild(detailsDiv);
+          parentDiv.appendChild(containerDiv);
+        }
 
 
 
 
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+      }
+    });
+
+  }
 
 
+
+
+  function onChangeSido() {
+    const gu = document.getElementById('gu').value;
+    console.log(gu);
+
+    // 두 번째 드롭다운 메뉴 초기화
+    const dongSelect = document.getElementById('dong');
+    dongSelect.innerHTML = '';
+
+    // 선택된 시/도 값에 따라 두 번째 드롭다운 메뉴의 옵션 생성
+    if (gu === '강남구') {
+      // 서울특별시를 선택한 경우, 강남구의 동들을 옵션으로 추가
+
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gangnamDongs.length; i++) {
+        const option = document.createElement('option');
+
+        option.value = gangnamDongs[i];
+        option.text = gangnamDongs[i];
+
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '강동구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gangDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = gangDongs[i];
+        option.text = gangDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '강북구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gangbukDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = gangbukDongs[i];
+        option.text = gangbukDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '강서구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gangseoDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = gangseoDongs[i];
+        option.text = gangseoDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '관악구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gwangakDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = gwangakDongs[i];
+        option.text = gwangakDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '광진구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gwangjinDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = gwangjinDongs[i];
+        option.text = gwangjinDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '구로구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < guroDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = guroDongs[i];
+        option.text = guroDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '금천구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < gumcheonDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = gumcheonDongs[i];
+        option.text = gumcheonDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '노원구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < nowonDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = nowonDongs[i];
+        option.text = nowonDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '도봉구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < dobongDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = dobongDongs[i];
+        option.text = dobongDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '동대문구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < dongdeamunDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = dongdeamunDongs[i];
+        option.text = dongdeamunDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '동작구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < dongjakGuDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = dongjakGuDongs[i];
+        option.text = dongjakGuDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '마포구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < mapoDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = mapoDongs[i];
+        option.text = mapoDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '서대문구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < seodaemunDong.length; i++) {
+        const option = document.createElement('option');
+        option.value = seodaemunDong[i];
+        option.text = seodaemunDong[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '서초구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < seochoDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = seochoDongs[i];
+        option.text = seochoDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '성동구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < seongDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = seongDongs[i];
+        option.text = seongDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '성북구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < seongbukDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = seongbukDongs[i];
+        option.text = seongbukDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '송파구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < songpaDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = songpaDongs[i];
+        option.text = songpaDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '양천구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < yangcheonDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = yangcheonDongs[i];
+        option.text = yangcheonDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '영등포구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < YeongdeungpoDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = YeongdeungpoDongs[i];
+        option.text = YeongdeungpoDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '용산구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < yongsanDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = yongsanDongs[i];
+        option.text = yongsanDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '은평구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < eunpyeongGuDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = eunpyeongGuDongs[i];
+        option.text = eunpyeongGuDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '종로구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < jongnoDongs.length; i++) {
+        const option = document.createElement('option');
+        option.value = jongnoDongs[i];
+        option.text = jongnoDongs[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '중구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < JungguDong.length; i++) {
+        const option = document.createElement('option');
+        option.value = JungguDong[i];
+        option.text = JungguDong[i];
+        dongSelect.appendChild(option);
+      }
+    } else if (gu === '중랑구') {
+
+      const blankOption = document.createElement('option');
+      blankOption.value = "";
+      blankOption.text = "";
+      dongSelect.appendChild(blankOption);
+
+      for (let i = 0; i < jungrang.length; i++) {
+        const option = document.createElement('option');
+        option.value = jungrang[i];
+        option.text = jungrang[i];
+        dongSelect.appendChild(option);
+      }
+    }
+
+
+  }
+
+
+
+
+  function onChangeDong() {
+
+    const selectedGu = $('#gu').val();
+    const selectedDong = $('#dong').val();
+
+    //console.log("selected Gu: " + selectedGu);
+    //console.log("selected Dong: "+ selectedDong);
+
+    const searchParam = selectedGu + ' ' + selectedDong;
+    //console.log("검색할 주소 : "+searchParam);
+
+
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    var callback = function(result, status) {
+      if (status === kakao.maps.services.Status.OK) {
+
+        console.log(result);
+
+        //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
+        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: coords
+        });
+        map.setCenter(coords);
+
+      }
+    };
+    geocoder.addressSearch(searchParam, callback);
+
+    $.ajax({
+      url: '/search/agencies',
+      type: 'GET',
+      data: {
+        sgg_nm: selectedGu,
+        bjdong_nm: selectedDong
+      },
+      success: function(result) {
+        //console.log(result.rows.cmp_nm);
+        const parentDiv = document.getElementById('agency--list');
+
+        parentDiv.innerHTML = '';
+
+        // console.log(result.rows.length);
+        for (let i = 0; i < result.rows.length; i++) {
+
+          //console.log(result.rows[i].cmp_nm);
+
+
+          // 부모 element
+          const parentDiv = document.getElementById('agency--list');
+
+          // container div
+          const containerDiv = document.createElement('div');
+          containerDiv.classList.add('agency--m--container');
+
+          // agency name div
+          const nameDiv = document.createElement('div');
+          nameDiv.classList.add('agency--name');
+          nameDiv.id = 'agency--name';
+          nameDiv.innerText = result.rows[i].cmp_nm;
+          containerDiv.appendChild(nameDiv);
+
+          // agency details div
+          const detailsDiv = document.createElement('div');
+          detailsDiv.classList.add('agency-details');
+
+          // 별 3점 div
+          const ratingDiv = document.createElement('div');
+          ratingDiv.style.paddingLeft = '7px';
+          ratingDiv.innerText = '별 3점 | ';
+          detailsDiv.appendChild(ratingDiv);
+
+          // 후기 20개 div
+          const reviewDiv = document.createElement('div');
+          reviewDiv.style.paddingLeft = '7px';
+          reviewDiv.style.paddingRight = '7px';
+          reviewDiv.innerText = '후기 20개 | ';
+          detailsDiv.appendChild(reviewDiv);
+
+          // 친절하고 따뜻한 div
+          const descriptionDiv = document.createElement('div');
+          descriptionDiv.innerText = '친절하고 따뜻한';
+          detailsDiv.appendChild(descriptionDiv);
+
+          // container div를 parentDiv에 추가
+          containerDiv.appendChild(detailsDiv);
+          parentDiv.appendChild(containerDiv);
+        }
+
+
+
+
+      },
+      error: function(xhr, status, error) {
+        console.error(error);
+      }
+    });
+
+  }
 </script>
 
 </html>

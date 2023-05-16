@@ -1,35 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.15/dist/css/uikit.min.css" />
-    <link rel="stylesheet" href="/css/header.css">
-    <!-- UIkit JS -->
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.15/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.15/dist/js/uikit-icons.min.js"></script>
 
-    <title>멈춰방</title>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- UIkit CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.15/dist/css/uikit.min.css" />
+  <link rel="stylesheet" href="/css/header.css">
+  <!-- UIkit JS -->
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.15/dist/js/uikit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.15/dist/js/uikit-icons.min.js"></script>
+
+  <title>멈춰방</title>
 </head>
 
 <header class="topbar">
-    <div class="topbar--container">
-        
-        <div class="logo">
-            <img src="/Images/logo.png" alt="stopbang" width="27" height="27">
-            <span><a href="">멈춰방</a></span>
-        </div>
-
-        <div class="menu">
-            <div><a href="">예약</a></div>
-            <div><a href="">이달의 공인중개사</a></div>
-            <div><a href="">로그인</a></div> 
-        </div>
-
-        
-
-
+  <div class="topbar--container">
+    <div class="logo">
+      <img src="/Images/logo.png" alt="stopbang" width="27" height="27">
+      <span><a href="/">멈춰방</a></span>
     </div>
+
+    <div class="menu">
+      <div>
+        <a href="/courses">
+          예약
+        </a>
+      </div>
+      <div>
+        <a href="/subscribers/new">
+          이달의 공인중개사
+        </a>
+      </div>
+      <div>
+        <a href="/resident/settings">
+          마이페이지
+        </a>
+      </div>
+
+      <% if(auth) { %>
+      <div>
+        <a href="/auth/register/resident">
+          마이페이지
+        </a>
+      </div>
+      <div>
+        <a href="/auth/logout">
+          로그아웃
+        </a>
+      </div>
+
+      <% } else { %>
+      <div>
+        <a href="/auth/register">
+          회원가입
+        </a>
+      </div>
+      <div>
+        <a href="/auth/login">
+          로그인
+        </a>
+      </div>
+
+      <% } %>
+    </div>
+  </div>
 </header>

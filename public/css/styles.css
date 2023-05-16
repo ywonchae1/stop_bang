@@ -1,8 +1,8 @@
 /*전체 페이지에 적용할 스타일*/
 
 body {
-  height: 100vh;
   max-height: fit-content;
+  padding-top: 80px;
 }
 
 a {
