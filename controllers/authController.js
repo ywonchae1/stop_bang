@@ -50,7 +50,7 @@ module.exports = {
       !body.password ||
       !body.realname ||
       !body.email ||
-      !body.image1
+      !body.authimage
     )
       return res.status(400).send("필수 항목 빠짐");
 
