@@ -24,9 +24,9 @@ const indexRouter = require("./routers/index"),
   agentRouter = require("./routers/agentRouter.js"),
   reviewRouter = require("./routers/reviewRouter.js"),
   authRouter = require("./routers/authRouter.js"),
-  searchRouter = require('./routers/searchRouter');
+  searchRouter = require('./routers/searchRouter'),
+	realtorRouter = require('./routers/realtorRouter');
 
-  
 //View
 const layouts = require("express-ejs-layouts");
 app.set("view engine", "ejs");
@@ -44,12 +44,14 @@ app.use("/resident", residentRouter);
 //검색페이지 접근
 app.use('/search',searchRouter);
 
-
 //공인중개사 페이지 접근
 app.use("/agent", agentRouter);
 
 //후기 접근
 app.use("/review", reviewRouter);
+
+//입주민이 보는 공인중개사 페이지 접근
+app.use("/realtor", realtorRouter);
 
 // Auth
 app.use("/auth", authRouter);

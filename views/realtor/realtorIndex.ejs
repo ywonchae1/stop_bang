@@ -1,0 +1,8 @@
+<h1><%- title %></h1>
+<% agentReviewData.forEach(review => { %>
+<%- include('./realtorReview.ejs', {rate: review.rating, author: review.r_username, description: review.content}) %>
+<% }); %>
+<form action=<%= direction %> method='post'>
+	<input type='hidden' name='raRegno' value=<%= raRegno %>>
+	<p><input type='submit' value='후기 작성하고 휴지 받기'></p>
+</form>

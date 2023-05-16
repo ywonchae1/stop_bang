@@ -17,7 +17,7 @@ module.exports = {
 	creatingReview: (req, res) => {
 		console.log(req.body);
 		reviewModel.createReviewProcess(req.params, req.body, () => {
-			res.redirect(`/agent/${req.params.cmp_nm}`);
+			res.redirect(`/realtor/${req.params.cmp_nm}`);
 		});
 	},
 

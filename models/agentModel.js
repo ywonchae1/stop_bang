@@ -109,6 +109,4 @@ module.exports = {
 		result(res);
 	},
 	*/
-
-	
 };

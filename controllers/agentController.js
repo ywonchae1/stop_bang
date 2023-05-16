@@ -23,6 +23,7 @@ module.exports = {
 			console.log("error occured: ", err);
 		  } else {
 			res.locals.agent = result[0][0];
+				next();
 		  }
 		});
 		await agentModel.getMainInfo(id, (result, err) => {
@@ -44,8 +45,6 @@ module.exports = {
 		});
 		next();
 	},
-
-	
 
 	agentProfileView: (req, res) => {
 		res.render("agent/agentIndex");

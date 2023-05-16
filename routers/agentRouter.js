@@ -44,16 +44,7 @@ router.get(
 	// agentController.myReviewView
   );
   //agent info 수정(영업시간,전화번호)
- router.get('/:id/update', agentController.updateEnteredInfo);
 
-  //후기 수정 DB 반영
- router.post('/:id/update_process', agentController.updatingEnteredInfo);
- router.use((req, res, next) => {
-	console.log('Router for agent page was started');
-	next();
-});
-
-//입주민이 보는 공인중개사 홈페이지
-router.get('/:cmp_nm', agentController.mainPage);
+router.get('/:id/update', agentController.updateEnteredInfo);
 
 module.exports = router;
