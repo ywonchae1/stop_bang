@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title><%- title %></title>
+	</head>
+	<body>
+		<h1><%- title %></h1>
+		<form action='/agent/<%- agentId %>/profile_update' method='post'>
+			<input type='hidden' name='raRegno' value=<%- raRegno %>>
+            <p>영업시간</p>
+			<p><input type='text' name='office_hour' placeholder='**:** ~ **:**' value=<%= contactNumber %>></p>
+            <p>부동산 연락처 <input type='text' name='contact' placeholder='부동산 연락처를 적어주세요' value=<%= contactNumber %>></p> for문
+            <p>공인중개사 연락처 <input type='text' name='telno' placeholder='공인중개사 연락처를 적어주세요' value=<%= telno %>></p>
+			<input type='submit' value='등록'>
+		</form>
+		<form action='/agent/<%- agentId %>' method='get'>
+			<input type='submit' value='취소'>
+		</form>
+	</body>
+</html>

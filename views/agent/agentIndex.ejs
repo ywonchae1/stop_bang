@@ -1,6 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+	</head>
+	<body>
+		<%- include('./agentProfile.ejs', {agent: agent}); %>
+		<%- include('./agentMainInfo.ejs', {agent: agentMainInfo}); %>
+		<%- include('./agentInformation.ejs', {agent: agentSubInfo}); %>
+
+<!--
 		<title><%- title %></title>
 	</head>
 	<body>
@@ -12,5 +19,7 @@
 			<input type='hidden' name='raRegno' value=<%= raRegno %>>
 			<p><input type='submit' value='후기 작성하고 휴지 받기'></p>
 		</form>
+    -->
+
 	</body>
 </html>
