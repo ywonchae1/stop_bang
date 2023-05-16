@@ -4,8 +4,8 @@
   "description": "A platform for people to share their experiences and write reviews of real estate agents and agencies.",
   "main": "main.js",
   "scripts": {
-    "start" : "node main.js",
-    "dev" :"nodemon main.js",
+    "start": "node main.js",
+    "dev": "nodemon main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,12 +19,18 @@
   },
   "homepage": "https://github.com/ywonchae1/stop_bang#readme",
   "dependencies": {
+    "ajax": "^0.0.4",
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.17.3",
-    "mysql": "^2.18.1",
+    "jquery": "^3.6.4",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.3.0",
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"

@@ -1,0 +1,27 @@
+.a {
+  color: pink;
+}
+
+.resident-menu {
+  float: left;
+  /* flex: 1; */
+  width: 15%;
+  height: 80vh;
+  min-width: fit-content;
+  margin: 20px 30px;
+}
+
+.r-menu-index {
+  color: var(--deep-gray);
+}
+
+.r-menu-button {
+  display: inline-block;
+  margin: 15px 10px;
+}
+
+.user-label {
+  display: inline-block;
+  width: 100px;
+  padding-bottom: 26px;
+}
