@@ -46,9 +46,7 @@
 
           
         </div>
-        
-        
-        
+            
         <div class="agency--container">
         
             <div style="margin-top: 25px;">
@@ -76,9 +74,7 @@
         center: new kakao.maps.LatLng(37.591682, 127.022124), 
         level: 6 
     };
-    /*
-   
-*/
+ 
   
     var map = new kakao.maps.Map(container, options);
 
@@ -86,7 +82,7 @@
          const gangDongs = ["강일동", "상일동", "명일동", "고덕동", "암사동", "천호동", "성내동", "길동"];
          const gangbukDongs = [  "미아동",  "번동",  "수유동",  "우이동",  "인수동",  "강북구청",  "삼각산동",  "송중동",  "송천동",  "인덕원동",  "쌍문동",  "우이천동",  "번2동",  "번3동",  "삼양동",  "송천2동",  "송천동",  "우이동",  "인수동",  "창동",  "수유1동",  "수유2동",  "수유3동",  "수유4동",  "수유5동",  "우이청동"]
          const gangseoDongs = [  "가양동",  "개화동",  "공항동",  "과해동",  "내발산동",  "등촌동",  "마곡동",  "방화동",  "염창동",  "오곡동",  "오쇠동",  "외발산동",  "화곡동" ,  "가양동",  "등촌동"]
-         const gwangakDongs = ["신림동", "난곡동", "신사동", "신원동", "서림동", "난향동", "조원동", "미성동", "은천동", "성현동", "보라매동", "청룡동", "낙성대동", "중앙동", "인헌동", "난우동", "성북동", "청림동", "남현동", "서원동", "신원동", "서림동", "신사동", "신림동", "대학동", "삼성동", "미성동", "관악동", "수림동", "신촌동", "서초동", "신원동", "신사동", "은천동", "조원동", "신림동", "청룡동", "성현동", "보라매동", "중앙동", "낙성대동", "인헌동", "서원동", "남현동", "청림동", "난우동", "서림동", "미성동", "대학동", "삼성동", "관악동", "신림동", "신사동", "서초동", "은천동", "조원동", "신원동", "보라매동", "성현동", "중앙동", "낙성대동", "남현동", "인헌동", "서원동", "청룡동", "청림동", "난우동", "서림동", "미성동", "대학동", "삼성동", "관악동", "수림동", "신촌동"];
+         const gwangakDongs = ["신림동", "봉천동","남현동"];
          const gwangjinDongs =["광장동", "군자동", "능동", "자양동", "중곡동", "화양동", "자양1동", "자양2동", "구의동", "용신동", "제기동", "전농동", "답십리동", "장안동"]
          const guroDongs = ["고척동", "개봉동", "오류동", "구로동", "신도림동", "가리봉동", "구로1동", "구로3동", "구로4동", "구로5동", "독산1동", "독산2동", "독산3동", "궁동", "항동"]
          const gumcheonDongs =["가산동", "독산동", "시흥동"]
@@ -132,12 +128,28 @@
 
                   parentDiv.innerHTML = '';
 
-                  console.log(result);
+                  var geocoder = new kakao.maps.services.Geocoder();
+
+                  var callback = function(result, status) {
+                     if (status === kakao.maps.services.Status.OK) {
+                        
+                        console.log(result);
+
+                        //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
+                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                        var marker = new kakao.maps.Marker({
+                              map: map,
+                              position: coords
+                        });
+                        map.setCenter(coords); 
+
+                     }
+                  };
+                  geocoder.addressSearch(result.rows[0].address, callback);
+                  
                   for (let i = 0; i < result.rows.length; i++) {
                     
-                     //console.log(result.rows[i].cmp_nm);
-                 
-
                      // 부모 element
                      const parentDiv = document.getElementById('agency--list');
 
