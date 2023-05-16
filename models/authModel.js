@@ -43,7 +43,7 @@ module.exports = {
 
       // 새로운 공인중개사 생성하기
       let rawQuery = `
-    INSERT INTO agent (agentList_ra_regno, a_username, a_password, a_realname, a_email, a_image1, a_image2, a_image3) 
+    INSERT INTO agent (agentList_ra_regno, a_username, a_password, a_realname, a_email, a_authimage) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); 
     `;
       await db.query(rawQuery, [
@@ -52,9 +52,7 @@ module.exports = {
         passwordHash,
         params.realname,
         params.email,
-        params.image1,
-        params.image2,
-        params.image3,
+        params.authimage,
       ]);
 
       // 새로 생성된 공인중개사의 id 가져오기
