@@ -1,0 +1,38 @@
+<table width="50%">
+    <tr>
+        <td>영업시간</td>
+        <td>
+            <% if(agent.a_id === null) { %>
+            <p>정보없음</p>
+            <% } else { %>
+                <%= agent.a_office_hour %>
+            <% } %>
+        </td>
+    </tr>
+    <tr>
+        <th>부동산 연락처</th>
+        <td>
+            <% if(agent.contact_number === null) { %>
+                <%= agent.telno%>
+            <% } else { %>
+                <%= agent.contact_number%>
+            <% } %>
+        </td>
+    </tr>
+    <tr>
+        <th>공인중개사 연락처</th>
+        <td>
+            <% if(agent.contact_number === null) { %>
+                <% if(agent.a_id === null) { %> 
+                    <%= agent.telno%>
+                <% } else {%>
+                    <%= agent.a_phone%>
+                <% } %> 
+            <% } else { %>
+                <%= agent.contact_number%>
+            <% } %>
+        </td>
+    </tr>
+</table>
+
+<!-- <a href="/agent/<%= agent.ra_regno %>/update %>">수정</a> -->

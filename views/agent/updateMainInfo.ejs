@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title><%- title %></title>
+	</head>
+	<body>
+		<h1><%- title %></h1>
+		<form action='/agent/<%- agentId %>/mainupdate' method='post'>
+			<input>사진 업로드는 어떻게 넣어야하지........
+			<p><textarea name='introduction' placeholder='본인의 부동산을 소개해주세요!'><%- introduction %></textarea></p>
+			<input type='submit' value='등록'>
+		</form>
+		<form action='/agent/<%- agentId %>' method='get'>
+			<input type='submit' value='취소'>
+		</form>
+	</body>
+</html>
