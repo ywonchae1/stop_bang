@@ -1,5 +1,4 @@
 const residentModel = require("../models/residentModel");
-const sql = require("../config/db");
 
 module.exports = {
   myReview: (req, res, next) => {
@@ -14,7 +13,7 @@ module.exports = {
     });
   },
   myReviewView: (req, res) => {
-    res.render("resident/myReview"); //나중에 경로 바꾸거나 할것(파일이름이랑 다르게하고싶음)
+    res.render("resident/myReview", { path: "myreview" });
   },
   openReview: (req, res, next) => {
     residentModel.getOpenedReviewById(2, (result, err) => {
@@ -28,7 +27,7 @@ module.exports = {
     });
   },
   openReviewView: (req, res) => {
-    res.render("resident/openReview");
+    res.render("resident/openReview", { path: "openreview" });
   },
   bookmark: (req, res, next) => {
     residentModel.getBookMarkById(2, (result, err) => {
@@ -42,7 +41,7 @@ module.exports = {
     });
   },
   bookmarkView: (req, res) => {
-    res.render("resident/bookmark");
+    res.render("resident/bookmark", { path: "bookmark" });
   },
   deleteBookmark: (req, res, next) => {
     console.log("here");
@@ -68,7 +67,7 @@ module.exports = {
     });
   },
   settingsView: (req, res) => {
-    res.render("resident/settings");
+    res.render("resident/settings", { path: "settings" });
   },
   editSettings: (req, res, next) => {
     next();

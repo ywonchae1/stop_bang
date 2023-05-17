@@ -1,12 +1,13 @@
 <%- include('./residentMenu.ejs'); %>
-<div classname="layout-column">
+<div class="layout-column mypage-container">
   <% bookmarks.forEach(bookmark => { %>
-  <div class="" onclick="location.href='../agent/<%=bookmark.agentList_ra_regno%>';">
+  <div class="mypage-bookmark" onclick="location.href='../agent/<%=bookmark.agentList_ra_regno%>';">
     <h3><%= bookmark.cmp_nm %></h3>
     <%= bookmark.address %>
+    <form class="mybookmark-button" action="/resident/bookmark/<%= bookmark.bm_id%>/delete" method="post">
+      <input type="submit" name="" value="삭제">
+    </form>
   </div>
-  <form action="/resident/bookmark/<%= bookmark.bm_id%>/delete" method="post">
-    <input type="submit" name="" value="삭제">
-  </form>
+
   <% }); %>
 </div>

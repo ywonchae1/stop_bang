@@ -5,11 +5,16 @@
 .layout-row {
   display: flex;
   flex-direction: row;
+  align-items: flex-end;
 }
 
 .layout-column {
   display: flex;
   flex-direction: column;
+}
+
+.mypage-container {
+  margin-top: 50px !important;
 }
 
 .resident-myreview {
@@ -25,4 +30,29 @@
 .myreview-address {
   text-overflow: ellipsis;
   word-break: break-all;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+.myreview-content {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.myreview-button {
+  width: 50px;
+}
+.myreview-date {
+  margin: 0;
+}
+
+.mypage-bookmark,
+.resident-myreview {
+  width: 90%;
+  padding: 20px 0;
+  border-bottom: 1px solid black;
+}
+.mybookmark-button {
+  float: right;
+  padding-right: 20px;
 }

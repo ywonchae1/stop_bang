@@ -526,11 +526,11 @@
     const selectedGu = $('#gu').val();
     const selectedDong = $('#dong').val();
 
-    //console.log("selected Gu: " + selectedGu);
-    //console.log("selected Dong: "+ selectedDong);
+    console.log("selected Gu: " + selectedGu);
+    console.log("selected Dong: " + selectedDong);
 
     const searchParam = selectedGu + ' ' + selectedDong;
-    //console.log("검색할 주소 : "+searchParam);
+    console.log("검색할 주소 : " + searchParam);
 
 
     var geocoder = new kakao.maps.services.Geocoder();
@@ -561,7 +561,7 @@
         bjdong_nm: selectedDong
       },
       success: function(result) {
-        //console.log(result.rows.cmp_nm);
+        console.log(result.rows.cmp_nm);
         const parentDiv = document.getElementById('agency--list');
 
         parentDiv.innerHTML = '';

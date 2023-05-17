@@ -10,28 +10,30 @@
     }
   }
 </script>
-<form classname="user-setting" action="/resident/settings/update" method="post">
-  <label class="user-label">아이디</label>
-  <input value="<%= resident.r_username %>" placeholder="아이디" readonly="true" />
-  <br />
-  <label class="user-label">실명</label>
-  <input value="<%= resident.r_realname %>" />
-  <br />
-  <label id="residentPhone" class="user-label">전화번호</label>
-  <input value="<%= resident.r_phone %>" />
-  <label id="checkPhoneMessage"></label>
-  <br />
-  <label class="user-label">이메일</label>
-  <input value="<%= resident.r_email %>" type="email" />
-  <br />
-  <label id="residentBirth" class="user-label">생년월일</label>
-  <input type="date" max="new Date()" placeholder="생년월일 입력하고 휴지 받기" value="<%= resident.r_birth === null ? '' : resident.r_birth %>" />
-  <br />
-  <button class="user-submit-button" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
-</form>
-<table class="table">
-  <tr>
-    <th>Password</th>
-    <td>********</td>
-  </tr>
-</table>
+<div class="mypage-container">
+  <form classname="user-setting" action="/resident/settings/update" method="post">
+    <label class="user-label">아이디</label>
+    <input value="<%= resident.r_username %>" placeholder="아이디" readonly="true" />
+    <br />
+    <label class="user-label">실명</label>
+    <input value="<%= resident.r_realname %>" />
+    <br />
+    <label id="residentPhone" class="user-label">전화번호</label>
+    <input value="<%= resident.r_phone %>" />
+    <label id="checkPhoneMessage"></label>
+    <br />
+    <label class="user-label">이메일</label>
+    <input value="<%= resident.r_email %>" type="email" />
+    <br />
+    <label id="residentBirth" class="user-label">생년월일</label>
+    <input type="date" max="new Date()" placeholder="생년월일 입력하고 휴지 받기" value="<%= resident.r_birth === null ? '' : resident.r_birth %>" />
+    <br />
+    <button class="user-submit-button" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
+  </form>
+  <table class="table">
+    <tr>
+      <th>Password</th>
+      <td>********</td>
+    </tr>
+  </table>
+</div>
