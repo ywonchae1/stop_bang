@@ -125,3 +125,9 @@ input:focus {
     cursor : pointer;
 }
 
+.custom-mark{
+    padding : 10px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 500;
+}

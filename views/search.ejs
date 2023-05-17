@@ -72,7 +72,7 @@
     var container = document.getElementById('map'); 
     var options = { 
         center: new kakao.maps.LatLng(37.591682, 127.022124), 
-        level: 6 
+        level: 3 
     };
  
   
@@ -575,17 +575,11 @@
       
    
       function onChangeDong() {
-         
             const selectedGu = $('#gu').val();
             const selectedDong = $('#dong').val();
-
-            //console.log("selected Gu: " + selectedGu);
-            //console.log("selected Dong: "+ selectedDong);
-           
             const searchParam =   selectedGu +' '+ selectedDong;
-            //console.log("검색할 주소 : "+searchParam);
             
-
+            /*
             var geocoder = new kakao.maps.services.Geocoder();
 
             var callback = function(result, status) {
@@ -605,23 +599,22 @@
                }
              };
             geocoder.addressSearch(searchParam, callback);
+            */
+
 
             $.ajax({
                url: '/search/agencies',
                type: 'GET',
                data: { sgg_nm: selectedGu, bjdong_nm: selectedDong },
                success: function(result) {
-                  //console.log(result.rows.cmp_nm);
+
                   const parentDiv = document.getElementById('agency--list');
 
                   parentDiv.innerHTML = '';
 
-                  // console.log(result.rows.length);
+                  //사이드바에 공인중개사 출력
                   for (let i = 0; i < result.rows.length; i++) {
-                    
-                     //console.log(result.rows[i].cmp_nm);
-                 
-
+              
                      // 부모 element
                      const parentDiv = document.getElementById('agency--list');
 
@@ -662,6 +655,93 @@
                      containerDiv.appendChild(detailsDiv);
                      parentDiv.appendChild(containerDiv);
                      }
+                  // 주소-좌표 변환 객체를 생성
+                  var geocoder = new kakao.maps.services.Geocoder();
+                  var places = new kakao.maps.services.Places();
+
+
+                  
+                     //지도에 여러 공인중개사 마커 출력
+                     for(let i=0; i < result.rows.length; i++){
+                                            
+                        
+                        geocoder.addressSearch(result.rows[i].address, callback);
+                        function getCmp(){
+                           //const cmpStyle = `<div class='custom-mark'> ${result.rows[i].cmp_nm} </div>`;
+                           return result.rows[i].cmp_nm;
+                           //return cmpStyle;
+                        }
+
+                        function callback(results, status) {
+                           
+                              console.log("results :"+ results[0]);
+                                if (status === kakao.maps.services.Status.OK) {
+                                 
+                                 //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
+                                 var coords = new kakao.maps.LatLng(results[0].y, results[0].x);
+                                 
+                                 // 결과값으로 받은 위치를 마커로 표시합니다
+                                 var marker = new kakao.maps.Marker({
+                                       map: map,
+                                       position: coords,
+
+                                 });
+           
+
+                                 kakao.maps.event.addListener(marker, 'mouseover', function() {
+                                    infowindow.open(map, marker);
+                                 });
+
+                                 kakao.maps.event.addListener(marker, 'mouseout', function() {
+                                    infowindow.close();
+                                 });  
+                                 
+                                 
+                                 kakao.maps.event.addListener(marker, 'click', function() {
+                                    console.log( getCmp());
+                                    const agencyName = document.getElementById('agencyName');
+                                    agencyName.value = getCmp();
+                                    onClickAgencyName();
+
+
+
+                                 });    
+                                 
+                                 //인포윈도우를 생성합니다
+                                 var infowindow = new kakao.maps.InfoWindow({
+                                    position : coords, 
+                                    content :  `<div class='custom-mark'> ${getCmp()} </div>`,
+                                 });
+                                  
+                                 
+                              }else{
+                                 console.log("didn't work");
+                              }
+                     };
+
+                     }
+                    
+                  
+
+                     var geocoder = new kakao.maps.services.Geocoder();
+
+                        var callback = function(result, status) {
+                           if (status === kakao.maps.services.Status.OK) {
+                              
+                              console.log(result);
+
+                              //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
+                              var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                              var marker = new kakao.maps.Marker({
+                                    map: map,
+                                    position: coords
+                              });
+                              map.setCenter(coords); 
+
+                           }
+                        };
+                        geocoder.addressSearch(searchParam, callback);
 
 
                   
