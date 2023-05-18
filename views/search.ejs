@@ -111,10 +111,11 @@
       const selectedGu = $('#gu').val();
       const selectedDong = $('#dong').val();
 
-      
+      /*      
       console.log("an agency Dong : "+selectedGu);
       console.log("an agency Dong : "+selectedDong);
       console.log("an agency Dong : "+agencyName);
+      */
       $.ajax({
 
                url: '/search/agencyName',
@@ -189,12 +190,7 @@
                      // container div를 parentDiv에 추가
                      containerDiv.appendChild(detailsDiv);
                      parentDiv.appendChild(containerDiv);
-                     }
-
-
-                  
-                
-                  
+                  }  
                 
                },
                error: function(xhr, status, error) {
