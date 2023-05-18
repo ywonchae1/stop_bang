@@ -11,12 +11,14 @@
   z-index: 1;
 }
 
-.agency--container {
-  overflow: scroll;
-  max-height: calc(100vh - 100px);
-  width: 30%;
-  background-color: white;
-  text-align: center;
+
+.agency--container{
+    overflow:scroll;
+    max-height: calc(100vh - 100px);
+    width: 30%;
+    background-color: white;
+    text-align:center;
+    color:black;
 }
 
 .agency--m--container {
@@ -44,8 +46,9 @@
 
 /* 스크롤바 전체 영역에 배경색 지정 */
 ::-webkit-scrollbar {
-  background-color: #865dff;
-}
+    background-color: --purple;
+  }
+  
 
 ::-webkit-scrollbar {
   /* 스크롤바 전체 영역 */
@@ -118,4 +121,15 @@ input:focus {
 
 #search-submit:hover {
   cursor: pointer;
+}
+.custom-mark{
+    padding : 10px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 500;
+}
+.starr{
+  color:#ebe300 ;
+  margin-right:4px;
+
 }
