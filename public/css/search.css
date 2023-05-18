@@ -18,6 +18,7 @@
     width: 30%;
     background-color: white;
     text-align:center;
+    color:black;
 }
 
 .agency--m--container{
@@ -45,7 +46,7 @@
 
 /* 스크롤바 전체 영역에 배경색 지정 */
 ::-webkit-scrollbar {
-    background-color: #865DFF;
+    background-color: --purple;
   }
   
 
@@ -130,4 +131,9 @@ input:focus {
     font-size: 12px;
     text-align: center;
     font-weight: 500;
+}
+.starr{
+  color:#ebe300 ;
+  margin-right:4px;
+
 }

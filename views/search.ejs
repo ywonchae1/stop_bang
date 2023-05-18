@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="/css/search.css">
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ce54459ce01fd6e31cc81beb6a8ba76c&libraries=services,clusterer,drawing"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <header>
     <%- include('./header'); %>
 </header>
@@ -72,7 +72,7 @@
     var container = document.getElementById('map'); 
     var options = { 
         center: new kakao.maps.LatLng(37.591682, 127.022124), 
-        level: 3 
+        level: 4 
     };
  
   
@@ -171,7 +171,7 @@
                      // 별 3점 div
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerText = '별 3점 | ';
+                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+'<span class="star--rating">'+3+'</span>';
                      detailsDiv.appendChild(ratingDiv);
 
                      // 후기 20개 div
@@ -578,28 +578,6 @@
             const selectedGu = $('#gu').val();
             const selectedDong = $('#dong').val();
             const searchParam =   selectedGu +' '+ selectedDong;
-            
-            /*
-            var geocoder = new kakao.maps.services.Geocoder();
-
-            var callback = function(result, status) {
-               if (status === kakao.maps.services.Status.OK) {
-                  
-                  console.log(result);
-
-                  //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
-                  var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                  var marker = new kakao.maps.Marker({
-                        map: map,
-                        position: coords
-                  });
-                  map.setCenter(coords); 
-
-               }
-             };
-            geocoder.addressSearch(searchParam, callback);
-            */
 
 
             $.ajax({
@@ -636,7 +614,7 @@
                      // 별 3점 div
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerText = '별 3점 | ';
+                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+3;
                      detailsDiv.appendChild(ratingDiv);
 
                      // 후기 20개 div
@@ -655,11 +633,9 @@
                      containerDiv.appendChild(detailsDiv);
                      parentDiv.appendChild(containerDiv);
                      }
+
                   // 주소-좌표 변환 객체를 생성
                   var geocoder = new kakao.maps.services.Geocoder();
-                  var places = new kakao.maps.services.Places();
-
-
                   
                      //지도에 여러 공인중개사 마커 출력
                      for(let i=0; i < result.rows.length; i++){
@@ -667,9 +643,7 @@
                         
                         geocoder.addressSearch(result.rows[i].address, callback);
                         function getCmp(){
-                           //const cmpStyle = `<div class='custom-mark'> ${result.rows[i].cmp_nm} </div>`;
                            return result.rows[i].cmp_nm;
-                           //return cmpStyle;
                         }
 
                         function callback(results, status) {
@@ -703,8 +677,6 @@
                                     agencyName.value = getCmp();
                                     onClickAgencyName();
 
-
-
                                  });    
                                  
                                  //인포윈도우를 생성합니다
@@ -732,20 +704,12 @@
 
                               //좌표객체 LatLng생성하고 map의 위치를 이 좌표로 설정해주기.
                               var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-                              var marker = new kakao.maps.Marker({
-                                    map: map,
-                                    position: coords
-                              });
+                             
                               map.setCenter(coords); 
 
                            }
                         };
                         geocoder.addressSearch(searchParam, callback);
-
-
-                  
-                
                },
                error: function(xhr, status, error) {
                   console.error(error);
