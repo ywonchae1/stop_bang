@@ -45,6 +45,7 @@ module.exports = {
         console.log("error occured: ", err);
       } else {
         res.locals.agentSubInfo = result[0][0];
+	  console.log(result[0]);
       }
     });
     next();

@@ -61,9 +61,7 @@ let residentModel = {
   },
   getResidentById: async (id, result) => {
     try {
-      const res = await sql.query("SELECT * FROM resident WHERE r_id = ?", [
-        id,
-      ]);
+      const res = await sql.query("SELECT * FROM resident WHERE r_id = ?", [id]);
       result(res);
     } catch (error) {
       result(null, error);

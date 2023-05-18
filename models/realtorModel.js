@@ -10,8 +10,8 @@ module.exports = {
 	FROM resident 
 	JOIN review 
 	ON r_id=resident_r_id) A 
-	ON agentList_ra_regno=ra_regno WHERE cmp_nm=?`;
-	let res = await db.query(rawQuery, [params.cmp_nm]);
+	ON agentList_ra_regno=ra_regno WHERE ra_regno=?`;
+	let res = await db.query(rawQuery, [params.ra_regno]);
 	result(res[0]);
     }
 };
