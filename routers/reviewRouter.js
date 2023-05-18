@@ -11,10 +11,10 @@ router.use((req, res, next) => {
 
 //(후기 작성하고 휴지 받기) 버튼 눌렀을 때
 //후기 추가
-router.post('/:cmp_nm/create', reviewController.createReview);
+router.post('/:ra_regno/create', reviewController.createReview);
 
 //후기 추가 DB 반영
-router.post('/:cmp_nm/create_process', reviewController.creatingReview);
+router.post('/:ra_regno/create_process', reviewController.creatingReview);
 
 //후기 수정 버튼 눌렀을 때
 router.get('/:rv_id/update', reviewController.updateReview);

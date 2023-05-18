@@ -14,18 +14,18 @@ app.use(bodyParser.json());
 app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
 app.use((req, res, next) => {
-  res.locals.auth = req.cookies.authToken;
-  next();
+    res.locals.auth = req.cookies.authToken;
+    next();
 });
 
 //Routers
 const indexRouter = require("./routers/index"),
-  residentRouter = require("./routers/residentRouter"),
-  agentRouter = require("./routers/agentRouter.js"),
-  reviewRouter = require("./routers/reviewRouter.js"),
-  authRouter = require("./routers/authRouter.js"),
-  searchRouter = require('./routers/searchRouter'),
-	realtorRouter = require('./routers/realtorRouter');
+    residentRouter = require("./routers/residentRouter"),
+    agentRouter = require("./routers/agentRouter.js"),
+    reviewRouter = require("./routers/reviewRouter.js"),
+    authRouter = require("./routers/authRouter.js"),
+    searchRouter = require('./routers/searchRouter'),
+    realtorRouter = require('./routers/realtorRouter');
 
 //View
 const layouts = require("express-ejs-layouts");
@@ -57,5 +57,5 @@ app.use("/realtor", realtorRouter);
 app.use("/auth", authRouter);
 
 app.listen(app.get("port"), () => {
-  console.log(app.get("port"), "번 포트에게 대기중");
+    console.log(app.get("port"), "번 포트에게 대기중");
 });

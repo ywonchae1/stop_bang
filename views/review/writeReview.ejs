@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<title><%- title %></title>
-	</head>
-	<body>
-		<h1><%- title %></h1>
-		<form action='/review/<%- cmpName %>/create_process' method='post'>
-			<input type='hidden' name='raRegno' value=<%- raRegno %>>
-			<p><input type='text' name='rate' placeholder='별점0-5'></p>
-			<p><textarea name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'></textarea></p>
-			<input type='submit' value='등록'>
-		</form>
-		<form action='/realtor/<%- cmpName %>' method='get'>
-			<input type='submit' value='취소'>
-		</form>
-	</body>
+    <head>
+	<title><%= realtor.cmp_nm %> 후기 작성하기</title>
+    </head>
+    <body>
+	<h1><%= realtor.cmp_nm %> 후기 작성하기</h1>
+	<form action='/review/<%- realtor.ra_regno %>/create_process' method='post'>
+	    <input type='hidden' name='raRegno' value=<%- realtor.ra_regno %>>
+	    <p><input type='text' name='rate' placeholder='별점0-5'></p>
+	    <p><textarea name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'></textarea></p>
+	    <input type='submit' value='등록'>
+	</form>
+	<form action='/realtor/<%- realtor.ra_regno %>' method='get'>
+	    <input type='submit' value='취소'>
+	</form>
+    </body>
 </html>
