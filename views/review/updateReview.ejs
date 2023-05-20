@@ -7,8 +7,10 @@
 	<h1><%- title %></h1>
 	<form action='/review/<%- reviewId %>/update_process' method='post'>
 	    <input type='hidden' name='raRegno' value=<%- raRegno %>>
+	    <input type='text' name='updatedTime' value=<%= updatedTime %>>
 	    <p><input type='text' name='rate' placeholder='별점0-5' value=<%= rate %>></p>
-	    <p><textarea name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'><%- description %></textarea></p>
+	    <p><textarea name='originDesc' readonly><%- description %></textarea></p>
+	    <p><textarea name='description' placeholder='당신의 후기를 수정하세요(이미 작성된 후기는 수정할 수 없습니다.)'></textarea></p>
 	    <input type='submit' value='등록'>
 	</form>
 	<form action='/resident/myReview' method='get'>

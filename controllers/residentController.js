@@ -8,7 +8,6 @@ module.exports = {
 	else {
 	residentModel.getReviewById(r_id, (result, err) => {
 	    if (result === null) {
-		console.log(result);
 		console.log("error occured: ", err);
 	    } else {
 		res.locals.reviews = result[0];
@@ -27,7 +26,6 @@ module.exports = {
 	else {
 	residentModel.getOpenedReviewById(2, (result, err) => {
 	    if (result === null) {
-		console.log(result);
 		console.log("error occured: ", err);
 	    } else {
 		res.locals.openReviews = result[0];
@@ -42,7 +40,6 @@ module.exports = {
     bookmark: (req, res, next) => {
 	residentModel.getBookMarkById(2, (result, err) => {
 	    if (result === null) {
-		console.log(result);
 		console.log("error occured: ", err);
 	    } else {
 		res.locals.bookmarks = result[0];
@@ -57,7 +54,6 @@ module.exports = {
 	console.log("here");
 	residentModel.deleteBookMarkById(req.params.id, (result, err) => {
 	    if (result === null) {
-		console.log(result);
 		console.log("error occured: ", err);
 	    } else {
 		res.locals.redirect = "/resident/bookmark";
@@ -72,7 +68,6 @@ module.exports = {
 	else {
 	residentModel.getResidentById(r_id, (result, err) => {
 	    if (result === null) {
-		console.log(result);
 		console.log("error occured: ", err);
 	    } else {
 		res.locals.resident = result[0][0];

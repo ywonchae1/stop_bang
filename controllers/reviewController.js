@@ -16,7 +16,7 @@ module.exports = {
     creatingReview: (req, res) => {
 	//쿠키로부터 로그인 계정 알아오기
 	let r_id = req.cookies.authToken;
-	if(r_id == NULL) res.send('로그인이 필요합니다.');
+	if(r_id == null) res.send('로그인이 필요합니다.');
 	reviewModel.createReviewProcess(r_id, req.params, req.body, () => {
 	    res.redirect(`/realtor/${req.params.ra_regno}`);
 	});
@@ -30,6 +30,7 @@ module.exports = {
 	    let raRegno = residentReview.ra_regno;
 	    let rate = residentReview.rating;
 	    let description = residentReview.content;
+	    let updatedTime = residentReview.check_point;
 
 	    let title = `${cmpName} - ${userName}님의 후기 수정하기`
 	    res.render('review/updateReview.ejs', 
@@ -39,7 +40,8 @@ module.exports = {
 		    raRegno: raRegno, 
 		    rate: rate, 
 		    description: description, 
-		    userName: userName
+		    userName: userName,
+		    updatedTime: updatedTime
 		});
 	});
     },
