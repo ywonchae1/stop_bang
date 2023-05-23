@@ -1,3 +1,1 @@
 # stop_bang
-
-jijijij

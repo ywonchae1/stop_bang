@@ -1,9 +1,54 @@
 <main>
-  <form action="/auth/register/agent" name="register" method="post">
-    <label for="username">아이디</label>
-    <input name="username" placeholder="아이디 입력" />
-    <label for="password">비밀번호</label>
-    <input name="password" placeholder="비밀번호 입력" />
+  <form
+    action="/auth/register/agent"
+    class="grid gap-4"
+    name="register"
+    method="post"
+  >
+    <div class="grid gap-2">
+      <label for="username">아이디</label>
+      <input name="username" placeholder="아이디 입력" />
+    </div>
+
+    <div class="grid gap-2">
+      <label for="password">비밀번호</label>
+      <input
+        name="password"
+        placeholder="비밀번호 입력"
+        type="password"
+        value="passwordk"
+      />
+    </div>
+
+    <div class="grid gap-2">
+      <label for="phone">핸드폰</label>
+      <input
+        name="phone"
+        placeholder="핸드폰 번호 입력"
+        value="12312-213-123"
+      />
+    </div>
+
+    <div class="grid gap-2">
+      <label for="realname">실명</label>
+      <input name="realname" placeholder="실명 입력" value="실명" />
+    </div>
+
+    <div class="grid gap-2">
+      <label for="email">본인 확인 이메일 (필수)</label>
+      <input
+        name="email"
+        placeholder="이메일 입력"
+        type="email"
+        value="email@nvermoc.mod"
+      />
+    </div>
+
+    <div class="grid gap-2">
+      <label for="birth">생년월일 (선택)</label>
+      <input name="birth" placeholder="생년월일 입력" value="19980412" />
+    </div>
+
     <button type="submit">회원가입</button>
   </form>
 </main>

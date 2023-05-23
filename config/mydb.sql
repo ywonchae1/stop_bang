@@ -23,7 +23,7 @@ USE `mydb` ;
 CREATE TABLE IF NOT EXISTS `mydb`.`resident` (
   `r_id` INT NOT NULL AUTO_INCREMENT,
   `r_username` VARCHAR(45) NOT NULL,
-  `r_password` VARCHAR(256) NOT NULL,
+  `r_password` VARCHAR(45) NOT NULL,
   `r_phone` VARCHAR(45),
   `r_realname` VARCHAR(15) NOT NULL,
   `r_email` VARCHAR(45) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`agent` (
   `a_id` INT NOT NULL AUTO_INCREMENT,
   `agentList_ra_regno` VARCHAR(30) NOT NULL,
   `a_username` VARCHAR(45) NOT NULL,
-  `a_password` VARCHAR(256) NOT NULL,
+  `a_password` VARCHAR(45) NOT NULL,
   `a_realname` VARCHAR(45) NOT NULL,
   `a_email` VARCHAR(45) NOT NULL,
 	`a_phone` VARCHAR(45) NOT NULL,
