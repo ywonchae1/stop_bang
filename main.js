@@ -25,7 +25,8 @@ const indexRouter = require("./routers/index"),
   reviewRouter = require("./routers/reviewRouter.js"),
   authRouter = require("./routers/authRouter.js"),
   searchRouter = require('./routers/searchRouter'),
-	realtorRouter = require('./routers/realtorRouter');
+	realtorRouter = require('./routers/realtorRouter'),
+	adminRouter = require('./routers/adminRouter');
 
 //View
 const layouts = require("express-ejs-layouts");
@@ -55,6 +56,9 @@ app.use("/realtor", realtorRouter);
 
 // Auth
 app.use("/auth", authRouter);
+
+//Admin
+app.use("/admin", adminRouter);
 
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에게 대기중");

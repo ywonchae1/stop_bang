@@ -65,6 +65,8 @@
   border-radius: 30px;
 }
 
+
+
 .map--search--form {
   display: flex;
   position: absolute;
@@ -95,11 +97,7 @@
 select:focus {
   outline: none;
 }
-/*
-.s-form{
-      display: flex;
-    
-}*/
+
 
 input {
   padding: 9px;

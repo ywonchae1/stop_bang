@@ -20,7 +20,7 @@
             <select id="myDropdown" class="myDropdown">
                <option value="">서울특별시</option>
             </select>
-
+            
             <select id="gu" name="gu" onchange="onChangeSido()" class="myDropdown">
                <option value="">구</option>
                  
@@ -30,12 +30,10 @@
             
                </select>
 
-               
             <select  id="dong" name="dong" onchange="onChangeDong()" class="myDropdown">
                <option value="">동</option>
 
              </select>
-             
              <!--<label for="name">Name:</label>-->
                <input type="text" id="agencyName" name="agencyName" autocomplete="off" onkeydown="if(event.keyCode==13) onClickAgencyName()"><br><br>
                <input type="submit" value="검색" id="search-submit" onclick="onClickAgencyName()" >
@@ -160,7 +158,7 @@
                      const nameDiv = document.createElement('div');
                      nameDiv.classList.add('agency--name');
                      nameDiv.id = 'agency--name';
-                     nameDiv.innerText = result.rows[i].cmp_nm;
+                     nameDiv.innerHTML = `<a href="/realtor/${result.rows[i].ra_regno}">${result.rows[i].cmp_nm}</a>`;
                      containerDiv.appendChild(nameDiv);
 
                      // agency details div
@@ -599,7 +597,8 @@
                      const nameDiv = document.createElement('div');
                      nameDiv.classList.add('agency--name');
                      nameDiv.id = 'agency--name';
-                     nameDiv.innerText = result.rows[i].cmp_nm;
+                     //nameDiv.innerText = result.rows[i].cmp_nm;
+                     nameDiv.innerHTML = `<a href="/realtor/${result.rows[i].ra_regno}">${result.rows[i].cmp_nm}</a>`;
                      containerDiv.appendChild(nameDiv);
 
                      // agency details div
