@@ -4,7 +4,7 @@ const db = require('../config/db.js');
 module.exports = {
     getReviewByRaRegno: async (params, result) => {
 	let rawQuery=`
-	SELECT rv_id, r_username, rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
+	SELECT rv_id, r_username, A.rating AS rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
 	FROM agentList 
 	JOIN(SELECT rv_id, r_username, agentList_ra_regno, rating, content, review.created_time AS created_time 
 	FROM resident 
