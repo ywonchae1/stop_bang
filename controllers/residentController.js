@@ -93,22 +93,30 @@ module.exports = {
         if (result === null) {
           console.log("error occured: ", err);
         } else {
-          console.log(result);
           res.locals.redirect = "/resident/settings";
-          //   res.locals.resident = result[0][0];
           next();
         }
       });
     }
   },
-  // editPassword: (req, res, next) => {
-  //   next();
-  // },
-  // updatePassword: (req, res, next) => {
-  //   res.locals.redirect = "/user/settings";
-  //   res.locals.subscriber = subscriber;
-  //   next();
-  // },
+  updatePassword: (req, res, next) => {
+    const r_id = req.cookies.authToken;
+    if (r_id === null) res.send("로그인이 필요합니다.");
+    else {
+      residentModel.updateResidentPassword(r_id, req.body, (result, err) => {
+        if (result === null) {
+          if (err === "pwerror") {
+            // res.locals.pwerr = "pwerror";
+            res.locals.redirect = "/resident/settings";
+            next();
+          }
+        } else {
+          res.locals.redirect = "/resident/settings";
+          next();
+        }
+      });
+    }
+  },
   redirectView: (req, res, next) => {
     let redirectPath = res.locals.redirect;
     if (redirectPath !== undefined) res.redirect(redirectPath);

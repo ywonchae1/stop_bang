@@ -33,11 +33,10 @@ router.post(
   residentController.redirectView
 );
 
-// router.get("/settings/password", residentController.editPassword);
-// router.post(
-//   "/settings/pwupdate",
-//   residentController.updatePassword,
-//   residentController.redirectView
-// );
+router.post(
+  "/settings/pwupdate",
+  residentController.updatePassword,
+  residentController.redirectView
+);
 
 module.exports = router;

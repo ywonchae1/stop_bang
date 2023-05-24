@@ -19,9 +19,12 @@
     if (pw !== pw2) {
       document.getElementById("checkpw").innerText = "비밀번호를 다시 확인해주세요.";
       return false;
+    } else if (pw.length < 6) {
+      document.getElementById("checkpw").innerText = "비밀번호를 5자 이상으로 설정해주세요.";
+      return false;
     } else {
       document.getElementById("checkpw").innerText = "";
-      return false;
+      return true;
     }
   }
 </script>
@@ -47,25 +50,25 @@
     <div>
       <label class="user-label">🧻 나의 휴지</label>
       <span class="uk-badge"><%= resident.r_point%></span>
-      <span> ※휴지란? 후기를 열람하기 위해 사용하는 포인트입니다. 후기를 작성하여 획득할 수 있습니다.</span>
+      <span class="abouttissue"> ※휴지란? 후기를 열람하기 위해 사용하는 포인트입니다. 후기를 작성하여 획득할 수 있습니다.</span>
     </div>
     <button class=" user-submit-button uk-button uk-button-default" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
   </form>
   <br />
+
   <h3 class="mypage-hr">비밀번호 재설정</h3>
-  <!-- <form classname="user-setting" action="/resident/settings/updatepassword" method="post"> -->
-  <form>
+  <form action="/resident/settings/pwupdate" method="post">
     <label class="user-label">🔑 현재 비밀번호</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
+      <input class="uk-input uk-form-width-medium" name="oldpassword" type="password" aria-label="Not clickable icon" required />
     </div>
     <br />
 
     <label class="user-label">🔓 새 비밀번호</label>
     <div class="uk-inline">
-      <input id="newpw" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+      <input id="newpw" name="password" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
     </div>
     <br />
     <label class="user-label">🔒 새 비밀번호 확인</label>
