@@ -29,3 +29,9 @@
   width: 140px;
   padding-bottom: 26px;
 }
+
+#checkpw,
+#checkPhoneMessage,
+.abouttissue {
+  padding-left: 10px;
+}
