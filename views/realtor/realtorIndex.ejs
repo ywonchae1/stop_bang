@@ -1,6 +1,5 @@
 <h1><%= title %></h1>
 <% agentReviewData.forEach(review => { %>
-	<% console.log(review) %>
 <%- include('./realtorReview.ejs', {createdTime: review.created_time, rate: review.rating, author: review.r_username, description: review.content}) %>
 <% }); %>
 <form action=<%= direction %> method='post'>
