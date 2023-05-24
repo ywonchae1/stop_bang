@@ -31,15 +31,21 @@
         <div>
           <a href="/subscribers/new"> 이달의 공인중개사 </a>
         </div>
-
+       
         <% if(auth) { %>
         <div>
           <a href="/resident/settings"> 마이페이지 </a>
         </div>
+        <% if(is_admin == 1) { %>
+          <div>
+          <a href="/admin"> 관리자 </a>
+          </div>
+          <% } %>
         <div>
           <a href="/auth/logout"> 로그아웃 </a>
         </div>
 
+        
         <% } else { %>
         <div>
           <a href="/auth/register"> 회원가입 </a>
