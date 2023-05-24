@@ -42,3 +42,12 @@ a:hover {
   background-color: var(--purple) !important;
   color: white !important;
 }
+.uk-icon[uk-icon="icon: bookmark; ratio:3; highlight"] svg polygon {
+  fill: var(--purple);
+  stroke: var(--purple) !important;
+}
+
+.bookmark-button {
+  border: none;
+  background-color: transparent;
+}
