@@ -6,7 +6,7 @@
   float: left;
   /* flex: 1; */
   width: 15%;
-  height: 80vh;
+  height: 100vh;
   min-width: fit-content;
   margin: 0 30px;
 }
@@ -26,6 +26,6 @@
 
 .user-label {
   display: inline-block;
-  width: 100px;
+  width: 140px;
   padding-bottom: 26px;
 }

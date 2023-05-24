@@ -61,7 +61,21 @@ let residentModel = {
   },
   getResidentById: async (id, result) => {
     try {
-      const res = await sql.query("SELECT * FROM resident WHERE r_id = ?", [id]);
+      const res = await sql.query("SELECT * FROM resident WHERE r_id = ?", [
+        id,
+      ]);
+      result(res);
+    } catch (error) {
+      result(null, error);
+    }
+  },
+  updateResident: async (id, body, result) => {
+    try {
+      const res = await sql.query(
+        `UPDATE resident SET r_phone=?, r_email=?, r_birth=? 
+      WHERE r_id=?`,
+        [body.phone, body.email, body.birth, id]
+      );
       result(res);
     } catch (error) {
       result(null, error);

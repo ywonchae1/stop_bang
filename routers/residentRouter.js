@@ -26,7 +26,7 @@ router.get(
   residentController.settings,
   residentController.settingsView
 );
-router.get("/settings/edit", residentController.editSettings);
+
 router.post(
   "/settings/update",
   residentController.updateSettings,

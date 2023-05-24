@@ -1,5 +1,9 @@
 <%- include('./residentMenu.ejs'); %>
 <div class="layout-column mypage-container">
+  <% if(bookmarks.length === 0) { %>
+  <div>아직 북마크를 하지 않았어요!</div>
+  <a href="/search">🏃‍♀️부동산 살펴보러 가기💨</a>
+  <% } else { %>
   <% bookmarks.forEach(bookmark => { %>
   <div class="mypage-bookmark" onclick="location.href='../agent/<%=bookmark.agentList_ra_regno%>';">
     <h3><%= bookmark.cmp_nm %></h3>
@@ -8,6 +12,6 @@
       <input type="submit" name="" value="삭제">
     </form>
   </div>
-
   <% }); %>
+  <% } %>
 </div>

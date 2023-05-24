@@ -32,3 +32,13 @@ a:hover {
 .gap-2 {
   gap: 0.5rem;
 }
+
+.user-submit-button {
+  color: var(--purple) !important;
+  border-radius: 12px !important;
+}
+
+.user-submit-button:hover {
+  background-color: var(--purple) !important;
+  color: white !important;
+}

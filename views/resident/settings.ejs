@@ -2,42 +2,79 @@
 <script>
   function checkSetting() {
     let number = document.getElementById("residentPhone").value;
-    if (/^[0-9]{3}-[0-9]{2}-[0-9]{5}$/.test(number)) {
+    console.log(number);
+    if (/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/.test(number)) {
+      document.getElementById("checkPhoneMessage").innerText = "";
+      alert("변경 사항이 저장되었습니다.");
       return true;
     } else {
       document.getElementById("checkPhoneMessage").innerText = "010-0000-0000 형식으로 입력해주세요.";
       return false;
     }
   }
+
+  function checkPassword() {
+    let pw = document.getElementById("newpw").value;
+    let pw2 = document.getElementById("newpw2").value;
+    if (pw !== pw2) {
+      document.getElementById("checkpw").innerText = "비밀번호를 다시 확인해주세요.";
+      return false;
+    } else {
+      document.getElementById("checkpw").innerText = "";
+      return false;
+    }
+  }
 </script>
 <div class="mypage-container">
+  <h3 class="mypage-hr">계정 정보</h3>
   <form classname="user-setting" action="/resident/settings/update" method="post">
     <label class="user-label">🧸 아이디</label>
-    <input value="<%= resident.r_username %>" placeholder="아이디" readonly="true" />
+    <input class="uk-input uk-form-width-medium" name="username" value="<%= resident.r_username %>" placeholder="아이디" readonly="true" />
     <br />
     <label class="user-label">✅ 실명</label>
-    <input value="<%= resident.r_realname %>" />
+    <input class="uk-input uk-form-width-medium" value="<%= resident.r_realname %>" />
     <br />
-    <label id="residentPhone" class="user-label">📞 전화번호</label>
-    <input value="<%= resident.r_phone %>" />
+    <label class="user-label">📞 전화번호</label>
+    <input id="residentPhone" class="uk-input uk-form-width-medium" name="phone" value="<%= resident.r_phone %>" />
     <label id="checkPhoneMessage"></label>
     <br />
     <label class="user-label">📬 이메일</label>
-    <input value="<%= resident.r_email %>" type="email" />
+    <input class="uk-input uk-form-width-medium" name="email" value="<%= resident.r_email %>" type="email" />
     <br />
     <label id="residentBirth" class="user-label">🎂 생년월일</label>
-    <input type="date" max="new Date()" placeholder="생년월일 입력하고 휴지 받기" value="<%= resident.r_birth === null ? '' : resident.r_birth %>" />
+    <input class="uk-input uk-form-width-medium" name="birth" type="date" max="new Date()" placeholder="생년월일 입력하고 휴지 받기" value="<%= resident.r_birth === null ? '' : Intl.DateTimeFormat("fr-CA", {year: "numeric", month: "2-digit", day: "2-digit"}).format(resident.r_birth) %>" />
     <br />
     <div>
-	<label class="user-label">🧻 나의 휴지</label>
-	<span class="uk-badge"><%= resident.r_point%></span>
+      <label class="user-label">🧻 나의 휴지</label>
+      <span class="uk-badge"><%= resident.r_point%></span>
+      <span> ※휴지란? 후기를 열람하기 위해 사용하는 포인트입니다. 후기를 작성하여 획득할 수 있습니다.</span>
     </div>
-    <button class="user-submit-button" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
+    <button class=" user-submit-button uk-button uk-button-default" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
   </form>
-  <table class="table">
-    <tr>
-      <th>Password</th>
-      <td>********</td>
-    </tr>
-  </table>
+  <br />
+  <h3 class="mypage-hr">비밀번호 재설정</h3>
+  <!-- <form classname="user-setting" action="/resident/settings/updatepassword" method="post"> -->
+  <form>
+    <label class="user-label">🔑 현재 비밀번호</label>
+    <div class="uk-inline">
+      <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+      <input class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
+    </div>
+    <br />
+
+    <label class="user-label">🔓 새 비밀번호</label>
+    <div class="uk-inline">
+      <input id="newpw" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
+      <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+    </div>
+    <br />
+    <label class="user-label">🔒 새 비밀번호 확인</label>
+    <div class="uk-inline">
+      <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+      <input id="newpw2" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
+    </div>
+    <label id="checkpw"></label>
+    <br />
+    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkPassword()">비밀번호 변경하기</button>
+  </form>
 </div>
