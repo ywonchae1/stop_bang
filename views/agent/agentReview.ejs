@@ -1,0 +1,19 @@
+<div class="display-review">
+	<div style="float:left;"><%- author %></div>
+	<div style="float:right;">
+		<label>
+			<%= createdTime %>
+		</label>
+		<label>작성</label>
+	</div>
+	<div class="layout-row">
+		<% for( let index=0; index < 5; index++ ) { %>
+			<% if (index < rate) { %>
+				<p>★</p>
+			<% } else { %>
+				<p>☆</p>
+			<% } %>
+		<% } %>
+	</div>
+	<p><%- description %></p>
+</div>

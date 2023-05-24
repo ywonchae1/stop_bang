@@ -6,5 +6,10 @@
 		<%- include('./agentProfile.ejs', {agent: agent}); %>
 		<%- include('./agentMainInfo.ejs', {agent: agentMainInfo}); %>
 		<%- include('./agentInformation.ejs', {agent: agentSubInfo}); %>
+	</br>
+		<h1 class="uk-heading-divider">후기</h1>
+		<% agentReviewData.forEach(review => { %>
+		<%- include('./agentReview.ejs', {createdTime: review.created_time, rate: review.rating, author: review.r_username, description: review.content}) %>
+		<% }); %>
 	</body>
 </html>
