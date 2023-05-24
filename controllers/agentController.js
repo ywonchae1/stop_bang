@@ -45,7 +45,7 @@ module.exports = {
         console.log("error occured: ", err);
       } else {
         res.locals.agentSubInfo = result[0][0];
-	  console.log(result[0]);
+        console.log(result[0]);
       }
     });
     next();
@@ -204,4 +204,60 @@ module.exports = {
 		else next();
 	},
 	*/
+  settings: (req, res, next) => {
+    //쿠키로부터 로그인 계정 알아오기
+    let a_id = req.cookies.authToken;
+    if (a_id == null) res.send("로그인이 필요합니다.");
+    else {
+      agentModel.getAgentById(a_id, (result, err) => {
+        if (result === null) {
+          console.log("error occured: ", err);
+        } else {
+          res.locals.agent = result[0][0];
+          next();
+        }
+      });
+    }
+  },
+  settingsView: (req, res) => {
+    res.render("agent/settings");
+  },
+  updateSettings: (req, res, next) => {
+    let a_id = req.cookies.authToken;
+    const body = req.body;
+    if (a_id === null) res.send("로그인이 필요합니다.");
+    else {
+      agentModel.updateAgent(a_id, body, (result, err) => {
+        if (result === null) {
+          console.log("error occured: ", err);
+        } else {
+          res.locals.redirect = "/agent/settings";
+          next();
+        }
+      });
+    }
+  },
+  updatePassword: (req, res, next) => {
+    const a_id = req.cookies.authToken;
+    if (a_id === null) res.send("로그인이 필요합니다.");
+    else {
+      agentModel.updateAgentPassword(a_id, req.body, (result, err) => {
+        if (result === null) {
+          if (err === "pwerror") {
+            // res.locals.pwerr = "pwerror";
+            res.locals.redirect = "/agent/settings";
+            next();
+          }
+        } else {
+          res.locals.redirect = "/agent/settings";
+          next();
+        }
+      });
+    }
+  },
+  redirectView: (req, res, next) => {
+    let redirectPath = res.locals.redirect;
+    if (redirectPath !== undefined) res.redirect(redirectPath);
+    else next();
+  },
 };

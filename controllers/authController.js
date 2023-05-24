@@ -58,7 +58,7 @@ module.exports = {
     authModel.registerAgent(req.body, (userId) => {
       if (!userId) return;
 
-      // 회원가입 완료하면 공인중개사 userId를 쿠키에 저장하기
+      // 회원가입 완료하면 공인중개사 userId를 쿠키에 저장하기 -> 로그인 후에 되어야 하지 않을까..?
       res.cookie("authToken", userId, {
         maxAge: 86400_000,
         httpOnly: true,
@@ -79,13 +79,17 @@ module.exports = {
       return res.status(400).send("필수 항목 빠짐");
 
     // 로그인하기
-    authModel.getUser(req.body, (userId) => {
+    authModel.getUser(req.body, (userId, isAgent) => {
       // 오류났을 때
       if (!userId) return res.render("users/login");
 
-      // 로그인 성공하면 사용자/공인중개사 userId를 쿠키에 저장하기
+      // 로그인 성공하면 사용자/공인중개사 userId를 쿠키에 저장하기 -> 넘 취약해서 걱정돼요
+      res.cookie("authToken", userId, {
+        maxAge: 86400_000,
+        httpOnly: true,
+      });
       res
-        .cookie("authToken", userId, {
+        .cookie("userType", isAgent ? 0 : 1, {
           maxAge: 86400_000,
           httpOnly: true,
         })
