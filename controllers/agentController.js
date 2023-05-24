@@ -1,6 +1,5 @@
 //Models
 const agentModel = require("../models/agentModel.js");
-let id = "00599";
 
 module.exports = {
   myReview: (req, res) => {
@@ -22,30 +21,32 @@ module.exports = {
   },
 
   agentProfile: async (req, res, next) => {
-    await agentModel.getAgentProfile(id, (result, err) => {
+    await agentModel.getAgentProfile(req.params.id, (result, err) => {
       if (result === null) {
-        console.log(result);
         console.log("error occured: ", err);
       } else {
         res.locals.agent = result[0][0];
       }
     });
-    await agentModel.getMainInfo(id, (result, err) => {
+    await agentModel.getMainInfo(req.params.id, (result, err) => {
       if (result === null) {
-        console.log(result);
         console.log("error occured: ", err);
       } else {
-        console.log(result);
         res.locals.agentMainInfo = result;
       }
     });
-    await agentModel.getEnteredAgent(id, (result, err) => {
+    await agentModel.getEnteredAgent(req.params.id, (result, err) => {
       if (result === null) {
-        console.log(result);
         console.log("error occured: ", err);
       } else {
         res.locals.agentSubInfo = result[0][0];
-	  console.log(result[0]);
+      }
+    });
+    await agentModel.getReviewByRaRegno(req.params.id, (result, err) => {
+      if (result === null) {
+        console.log("error occured: ", err);
+      } else {
+        res.locals.agentReviewData = result;
       }
     });
     next();
