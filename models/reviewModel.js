@@ -37,7 +37,7 @@ module.exports = {
 	let rawQuery = `
 		SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, CONCAT(newTable.updated_time, "수정됨") AS check_point
 		FROM resident
-		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, rating, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
+		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, review.rating AS rating, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
 			FROM review
 			JOIN agentList
 			ON agentList_ra_regno=ra_regno) newTable
