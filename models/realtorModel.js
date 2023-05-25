@@ -13,5 +13,14 @@ module.exports = {
 	ON agentList_ra_regno=ra_regno WHERE ra_regno=?`;
 	let res = await db.query(rawQuery, [params.ra_regno]);
 	result(res[0]);
+    },
+
+    getRating: async (params, result) => {
+	let rawQuery = `
+	SELECT ROUND(AVG(rating), 1) AS agentRating
+	FROM review
+	WHERE agentList_ra_regno=?`
+	let res = await db.query(rawQuery, [params.ra_regno]);
+	result(res[0][0]);
     }
 };
