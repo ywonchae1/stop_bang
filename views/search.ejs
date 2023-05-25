@@ -170,7 +170,7 @@
                      // 별 3점 div
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+'<span class="star--rating">'+3+'</span>';
+                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+'<span class="star--rating">'+result.rows[i].agentRating+'</span>';
                      detailsDiv.appendChild(ratingDiv);
 
                      // 후기 20개 div
@@ -609,7 +609,9 @@
                      // 별 3점 div
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+3;
+                     if (result.rows[i].agentRating === null)
+                        ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+0;
+                     else ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+result.rows[i].agentRating;
                      detailsDiv.appendChild(ratingDiv);
 
                      // 후기 20개 div
