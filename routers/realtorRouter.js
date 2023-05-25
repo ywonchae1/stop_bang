@@ -10,6 +10,10 @@ router.use((req, res, next) => {
 });
 
 //입주민이 보는 공인중개사 홈페이지
-router.get('/:ra_regno', realtorController.mainPage);
+router.get(
+    '/:ra_regno',
+    realtorController.mainPage,
+    realtorController.realtorView
+);
 
 module.exports = router;
