@@ -38,6 +38,15 @@ module.exports = {
     result(res[0][0]);
   },
 
+  getRating: async (ra_regno, result) => {
+	let rawQuery = `
+	SELECT ROUND(AVG(rating), 1) AS agentRating
+	FROM review
+	WHERE agentList_ra_regno=?`
+	let res = await db.query(rawQuery, [ra_regno]);
+	result(res[0][0]);
+    },
+
   getReviewByRaRegno: async (ra_regno, result) => {
     let rawQuery=`
     SELECT rv_id, r_username, A.rating AS rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 

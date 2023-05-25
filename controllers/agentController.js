@@ -34,7 +34,14 @@ module.exports = {
       } else {
         res.locals.agentMainInfo = result;
       }
-    });
+   });
+      await agentModel.getRating(req.params.id, (result, err) => {
+	  if (result === null) {
+	    console.log("error occured: ", err);
+	  } else {
+	    res.locals.agentRating = result;
+	  }
+      });
     await agentModel.getEnteredAgent(req.params.id, (result, err) => {
       if (result === null) {
         console.log("error occured: ", err);
