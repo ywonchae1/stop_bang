@@ -1,6 +1,12 @@
 <%- include('./residentMenu.ejs'); %>
 <div class="layout-column mypage-container">
+  <h3 class="mypage-hr">내가 작성한 후기</h3>
+  <% if(reviews.length === 0) { %>
+  <div>아직 후기를 작성하지 않았어요!</div>
+  <a href="/search">🏃‍♀️부동산 살펴보러 가기💨</a>
+  <% } else { %>
   <% reviews.forEach(review=> { %>
   <%- include('./residentReview.ejs', {review:review, mine:true}) %>
   <% }); %>
+  <% } %>
 </div>

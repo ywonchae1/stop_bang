@@ -2,19 +2,18 @@
 <span>평균 별점</span>
 <span class="uk-badge"><%= rating.agentRating %></span>
 <% agentReviewData.forEach(review => { %>
-<%- include('./realtorReview.ejs', {review: review, opened: openedReviewData, canOpen: canOpen}) %>
+<%- include('./realtorReview.ejs', {review: review, opened: openedReviewData, canOpen: canOpen, tags:review.tags, tagsData:tagsData}) %>
 <% }); %>
 
 <% let flag = true; %>
 <% agentReviewData.forEach(review => { %>
 <% if(review.r_id == r_id) %>
 <% flag = false;}); %>
-
 <% if(flag) { %>
-    <form action=<%= direction %> method='post'>
-	    <input type='hidden' name='raRegno' value=<%= agentReviewData.ra_regno %>>
-	    <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
-    </form>
+<form action=<%= direction %> method='post'>
+  <input type='hidden' name='raRegno' value=<%= agentReviewData.ra_regno %>>
+  <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
+</form>
 <% } else { %>
 <p>이미 후기를 작성하셨습니다.</p>
 <% } %>

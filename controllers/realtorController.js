@@ -1,5 +1,6 @@
 //Models
-const realtorModel = require('../models/realtorModel.js');
+const realtorModel = require("../models/realtorModel.js");
+const tags = require("../public/assets/tag.js");
 
 module.exports = {
     mainPage: async (req, res, next) => {
@@ -24,6 +25,7 @@ module.exports = {
 		console.log("error occured: ", err);
 	    } else {
 		res.locals.rating = agentRating;
+    res.locals.tagsData = tags.tags;
 	    }
 	});
 	next();
@@ -39,5 +41,23 @@ module.exports = {
 	await realtorModel.insertOpenedReview(r_id, rv_id, () => {
 	    res.redirect(`/realtor/${req.params.ra_regno}`);
 	});
+},
+
+  updateBookmark: (req, res) => {
+    const r_id = req.cookies.authToken;
+    if (r_id === null) res.send("로그인이 필요합니다.");
+    else {
+      let body = {
+        raRegno: req.params.ra_regno,
+        isBookmark: req.body.bookmarkData,
+      };
+      realtorModel.updateBookmark(r_id, body, (result, err) => {
+        if (result === null) {
+          console.log("error occured: ", err);
+        } else {
+          res.redirect(`/realtor/${req.params.ra_regno}`);
+        }
+      });
     }
+  },
 };

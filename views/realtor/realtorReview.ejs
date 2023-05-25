@@ -1,11 +1,17 @@
 <div class="display-review">
-	<div style="float:left;"><%- review.r_username %></div>
-	<div style="float:right;">
-		<label>
-			<%= review.created_time %>
-		</label>
-		<label>작성</label>
-		<% let flag = true; %>
+  <div class="layout-row" style="align-items: center;">
+    <div style="margin-right:10px"><%- review.r_username %></div>
+    <% for( let index = 0; index < 5; index++ ) { %>
+    <% if (index < review.rating) { %>
+    <p>★</p>
+    <% } else { %>
+    <p>☆</p>
+    <% } %>
+    <% } %>
+    <div style="float:right; margin-left:auto">
+      <label><%= review.created_time %></label>
+      <label>작성</label>
+	  <% let flag = true; %>
 		<% opened.forEach(open => { %>
 		<% if(open.review_rv_id === review.rv_id) flag = false; }); %>
 
@@ -20,15 +26,10 @@
 		</form>
 		<% } %>
 		<% } %>
-	</div>
-	<div class="layout-row">
-		<% for( let index=0; index < 5; index++ ) { %>
-			<% if (index < review.rating) { %>
-				<p>★</p>
-			<% } else { %>
-				<p>☆</p>
-			<% } %>
-		<% } %>
-	</div>
-	<p><%- review.content %></p>
+    </div>
+  </div>
+  <% tags.split("").forEach((element, index) => { %>
+  <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData[element] %></span>
+  <% }) %>
+  <p><%- review.content %></p>
 </div>

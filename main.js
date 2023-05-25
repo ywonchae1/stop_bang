@@ -14,18 +14,19 @@ app.use(bodyParser.json());
 app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
 app.use((req, res, next) => {
-    res.locals.auth = req.cookies.authToken;
-    next();
+  res.locals.auth = req.cookies.authToken;
+  res.locals.userType = req.cookies.userType;
+  next();
 });
 
 //Routers
 const indexRouter = require("./routers/index"),
-    residentRouter = require("./routers/residentRouter"),
-    agentRouter = require("./routers/agentRouter.js"),
-    reviewRouter = require("./routers/reviewRouter.js"),
-    authRouter = require("./routers/authRouter.js"),
-    searchRouter = require('./routers/searchRouter'),
-    realtorRouter = require('./routers/realtorRouter');
+  residentRouter = require("./routers/residentRouter"),
+  agentRouter = require("./routers/agentRouter.js"),
+  reviewRouter = require("./routers/reviewRouter.js"),
+  authRouter = require("./routers/authRouter.js"),
+  searchRouter = require("./routers/searchRouter"),
+  realtorRouter = require("./routers/realtorRouter");
 
 //View
 const layouts = require("express-ejs-layouts");
@@ -42,7 +43,7 @@ app.use("/", indexRouter);
 app.use("/resident", residentRouter);
 
 //검색페이지 접근
-app.use('/search',searchRouter);
+app.use("/search", searchRouter);
 
 //공인중개사 페이지 접근
 app.use("/agent", agentRouter);
@@ -57,5 +58,5 @@ app.use("/realtor", realtorRouter);
 app.use("/auth", authRouter);
 
 app.listen(app.get("port"), () => {
-    console.log(app.get("port"), "번 포트에게 대기중");
+  console.log(app.get("port"), "번 포트에게 대기중");
 });

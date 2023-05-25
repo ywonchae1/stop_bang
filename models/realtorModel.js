@@ -1,12 +1,12 @@
 //db정보받기
-const db = require('../config/db.js');
+const db = require("../config/db.js");
 
 module.exports = {
-    getReviewByRaRegno: async (params, r_id, result) => {
-	let rawQuery=`
-	SELECT rv_id, r_id, r_username, A.rating AS rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
+  getReviewByRaRegno: async (params, r_id, result) => {
+    let rawQuery = `
+	SELECT rv_id, r_username, A.rating AS rating, content, tags, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
 	FROM agentList 
-	LEFT JOIN(SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, content, review.created_time AS created_time 
+	JOIN(SELECT rv_id, r_username, agentList_ra_regno, rating, tags, content, review.created_time AS created_time 
 	FROM resident 
 	JOIN review 
 	ON r_id=resident_r_id) A 
@@ -30,7 +30,7 @@ module.exports = {
 	result(reviews[0], opened[0], canOpen);
     },
 
-    getRating: async (params, result) => {
+  getRating: async (params, result) => {
 	let rawQuery = `
 	SELECT TRUNCATE(AVG(rating), 1) AS agentRating
 	FROM review
@@ -53,5 +53,21 @@ module.exports = {
 	await db.query(insertRawQuery, [r_id, rv_id]);
 	await db.query(usePointRawQuery, [r_id]);
 	result();
+	},
+
+  updateBookmark: async (id, body, result) => {
+    let rawQuery = ``;
+    console.log(body);
+    if (body.isBookmark === "true") {
+      rawQuery = `DELETE FROM bookmark WHERE resident_r_id=? AND agentList_ra_regno=?`;
+    } else {
+      rawQuery = `INSERT INTO bookmark (resident_r_id, agentList_ra_regno) values (?, ?)`;
     }
+    try {
+      const res = await db.query(rawQuery, [id, body.raRegno]);
+      result(res);
+    } catch (error) {
+      result(null, res);
+    }
+  },
 };

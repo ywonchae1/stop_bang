@@ -1,4 +1,6 @@
 const sql = require("../config/db");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 let residentModel = {
   getReviewById: async (id, result) => {
@@ -61,8 +63,44 @@ let residentModel = {
   },
   getResidentById: async (id, result) => {
     try {
-      const res = await sql.query("SELECT * FROM resident WHERE r_id = ?", [id]);
+      const res = await sql.query("SELECT * FROM resident WHERE r_id = ?", [
+        id,
+      ]);
       result(res);
+    } catch (error) {
+      result(null, error);
+    }
+  },
+  updateResident: async (id, body, result) => {
+    try {
+      const res = await sql.query(
+        `UPDATE resident SET r_phone=?, r_email=?, r_birth=? 
+      WHERE r_id=?`,
+        [body.phone, body.email, body.birth, id]
+      );
+      result(res);
+    } catch (error) {
+      result(null, error);
+    }
+  },
+  updateResidentPassword: async (id, body, result) => {
+    try {
+      const passwordHash = bcrypt.hash(body.password, saltRounds);
+      const passwordResult = await sql.query(
+        `SELECT r_password FROM resident WHERE r_id=?`,
+        [id]
+      );
+      const password = passwordResult[0][0].r_password;
+
+      if (body.oldpassword !== password) {
+        result(null, "pwerror");
+      } else {
+        const res = await sql.query(
+          `UPDATE resident SET r_password=? WHERE r_id=?`,
+          [passwordHash, id]
+        );
+        result(res);
+      }
     } catch (error) {
       result(null, error);
     }
