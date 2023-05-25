@@ -610,7 +610,7 @@
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
                      if (result.rows[i].agentRating === null)
-                        ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+0;
+                        ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+'0.0';
                      else ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+result.rows[i].agentRating;
                      detailsDiv.appendChild(ratingDiv);
 
