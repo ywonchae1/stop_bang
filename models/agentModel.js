@@ -40,7 +40,7 @@ module.exports = {
 
     getRating: async (ra_regno, result) => {
 	let rawQuery = `
-	SELECT ROUND(AVG(rating), 1) AS agentRating
+	SELECT TRUNCATE(AVG(rating), 1) AS agentRating
 	FROM review
 	WHERE agentList_ra_regno=?`
 	let res = await db.query(rawQuery, [ra_regno]);
