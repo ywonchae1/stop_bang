@@ -1,11 +1,11 @@
-const express = require('express');
+const express = require("express");
 //const multer = require('multer');
 //const fs = require('fs');
 //const path = require('path');
 const router = express.Router();
 
 //Controllers
-const agentController = require('../controllers/agentController.js');
+const agentController = require("../controllers/agentController.js");
 
 /*
 
@@ -30,21 +30,32 @@ router.post('/upload', upload.single(img), (req, res) => {
 })
 
 */
-
+//agent 사용자 정보 확인용
+router.get("/settings", agentController.settings, agentController.settingsView);
+router.post(
+  "/settings/update",
+  agentController.updateSettings,
+  agentController.redirectView
+);
+router.post(
+  "/settings/pwupdate",
+  agentController.updatePassword,
+  agentController.redirectView
+);
 //agent 홈 get
 router.get(
-	"/:id",
-	agentController.agentProfile,
-	agentController.agentProfileView,
-	// agentController.enteredagentInfo,
-	// agentController.enteredagentInfoView,
-	// agentController.agentMainInfo,
-	// agentController.agentMainInfoView,
-	// //agentController.myReview,
-	// agentController.myReviewView
-  );
-  //agent info 수정(영업시간,전화번호)
+  "/:id",
+  agentController.agentProfile,
+  agentController.agentProfileView
+  // agentController.enteredagentInfo,
+  // agentController.enteredagentInfoView,
+  // agentController.agentMainInfo,
+  // agentController.agentMainInfoView,
+  // //agentController.myReview,
+  // agentController.myReviewView
+);
+//agent info 수정(영업시간,전화번호)
 
-router.get('/:id/update', agentController.updateEnteredInfo);
+router.get("/:id/update", agentController.updateEnteredInfo);
 
 module.exports = router;

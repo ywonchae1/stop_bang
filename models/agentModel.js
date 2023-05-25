@@ -1,5 +1,7 @@
 //db정보받기
 const db = require("../config/db.js");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 module.exports = {
   getAgentProfile: async (ra_regno, result) => {
@@ -19,7 +21,7 @@ module.exports = {
 
   /* getMainInfo: async (id, result) => {
 		try {
-			const res = await sql.query(
+			const res = await db.query(
 				`SELECT image1, image2, image3, a_introduction FROM agent
 				WHERE agentList.ra_regno = ?;`,
 				[id]
@@ -126,4 +128,50 @@ module.exports = {
 		result(res);
 	},
 	*/
+  getAgentById: async (id, result) => {
+    try {
+      const res = await db.query("SELECT * FROM agent WHERE a_id = ?", [id]);
+      result(res);
+    } catch (error) {
+      result(null, error);
+    }
+  },
+  updateAgent: async (id, body, result) => {
+    try {
+      const res = await db.query(
+        `UPDATE agent SET a_email=? 
+      WHERE a_id=?`,
+        [body.email, id]
+      );
+      result(res);
+    } catch (error) {
+      result(null, error);
+    }
+  },
+  updateAgentPassword: async (id, body, result) => {
+    try {
+      console.log(body.password);
+      const passwordHash = bcrypt.hash(body.password, saltRounds);
+      // const passwordResult = await db.query(
+      //   `SELECT a_password FROM agent WHERE a_id=?`,
+      //   [id]
+      // );
+      // const password = passwordResult[0][0].a_password;
+
+      // if (body.oldpassword !== password) {
+      //   result(null, "pwerror");
+      // } else {
+      //왜안된담....
+      const res = await db.query(
+        "UPDATE agent SET a_password=aaa WHERE a_id = ?",
+        [passwordHash, id]
+      );
+      console.log(res);
+      result(res);
+      // }
+    } catch (error) {
+      console.error(error);
+      result(null, error);
+    }
+  },
 };

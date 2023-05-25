@@ -1,18 +1,37 @@
-<!DOCTYPE HTML>
-<html>
-    <head>
-	<title><%= realtor.cmp_nm %> 후기 작성하기</title>
-    </head>
-    <body>
-	<h1><%= realtor.cmp_nm %> 후기 작성하기</h1>
-	<form action='/review/<%- realtor.ra_regno %>/create_process' method='post'>
-	    <input type='hidden' name='raRegno' value=<%- realtor.ra_regno %>>
-	    <p><input type='text' name='rate' placeholder='별점0-5'></p>
-	    <p><textarea name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'></textarea></p>
-	    <input type='submit' value='등록'>
-	</form>
-	<form action='/realtor/<%- realtor.ra_regno %>' method='get'>
-	    <input type='submit' value='취소'>
-	</form>
-    </body>
-</html>
+<script>
+  function onStarClick(number) {
+    document.getElementById("review-rate").value = number;
+    for (let i = 1; i <= number; i++) {
+      document.getElementById(`review-star${i}`).classList.add("highlight");
+    }
+    for (let j = number + 1; j <= 5; j++) {
+      document.getElementById(`review-star${j}`).classList.remove("highlight");
+    }
+  }
+</script>
+
+<body>
+  <% let rate = 0; %>
+  <h3><%= realtor.cmp_nm %> 후기 작성하기</h3>
+  <form action='/review/<%- realtor.ra_regno %>/create_process' method='post'>
+    <input type='hidden' name='raRegno' value=<%- realtor.ra_regno %>>
+    <input id="review-rate" type="hidden" name="rate" value=<%= rate %>>
+    <div class="layout-row">
+      <span id="review-star1" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(1)"></span>
+      <span id="review-star2" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(2)"></span>
+      <span id="review-star3" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(3)"></span>
+      <span id="review-star4" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(4)"></span>
+      <span id="review-star5" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(5)"></span>
+    </div>
+    <div id="review-tags" name="reviewtags" class="layout-row checkboxes">
+      <% tagsdata.forEach((element, index) => { %>
+      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %>> <%=element %></label>
+      <% }) %>
+    </div>
+    <p><textarea class="uk-textarea uk-form-width-large" rows="5" name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'></textarea></p>
+    <input class="user-submit-button uk-button uk-button-default" type='submit' value='등록'>
+  </form>
+  <form action='/realtor/<%- realtor.ra_regno %>' method='get'>
+    <input class="user-cancel-button uk-button uk-button-default" type='submit' value='취소'>
+  </form>
+</body>

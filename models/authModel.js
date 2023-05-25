@@ -95,6 +95,6 @@ module.exports = {
     const res2 = bcrypt.compare(params.password, passwordHash);
     if (!res2) return result(null);
 
-    result(isAgent ? res[0][0].a_id : res[0][0].r_id);
+    result(isAgent ? res[0][0].a_id : res[0][0].r_id, isAgent);
   },
 };
