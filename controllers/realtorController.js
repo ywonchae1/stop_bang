@@ -3,6 +3,10 @@ const realtorModel = require('../models/realtorModel.js');
 
 module.exports = {
     mainPage: async (req, res, next) => {
+	//쿠키로부터 로그인 계정 알아오기
+	let r_id = req.cookies.authToken;
+	if(r_id === null) res.send('로그인이 필요합니다.');
+	res.locals.r_id = r_id;
 	await realtorModel.getReviewByRaRegno(req.params, (agentReviews, err) => {
 	    if (agentReviews[0] === null) {
 		console.log("error occured: ", err);
