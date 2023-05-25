@@ -2,8 +2,7 @@
 <span>평균 별점</span>
 <span class="uk-badge"><%= rating.agentRating %></span>
 <% agentReviewData.forEach(review => { %>
-<% console.log(review) %>
-<%- include('./realtorReview.ejs', {createdTime: review.created_time, rate: review.rating, author: review.r_username, description: review.content, tags:review.tags, tagsData:tagsData}) %>
+<%- include('./realtorReview.ejs', {review: review, opened: openedReviewData, canOpen: canOpen, tags:review.tags, tagsData:tagsData}) %>
 <% }); %>
 
 <% let flag = true; %>

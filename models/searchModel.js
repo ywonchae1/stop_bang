@@ -9,7 +9,7 @@ exports.getAgenciesModel = async (sgg_nm, bjdong_nm) => {
 	SELECT *
 	FROM agentList
 	LEFT JOIN (
-	SELECT agentList_ra_regno, ROUND(AVG(rating), 1) AS agentRating
+	SELECT agentList_ra_regno, TRUNCATE(AVG(rating), 1) AS agentRating
 	FROM review
 	GROUP BY agentList_ra_regno
 	) newTable
@@ -35,18 +35,3 @@ exports.getOneAgencyModel = async (sgg_nm, bjdong_nm, cmp_nm) => {
 	console.error(err.stack);
     }
 };
-
-//후기 평균별점
-exports.getRating = async (ra_regno) => {
-    try {
-    let rawQuery = `
-	SELECT ROUND(AVG(rating), 1) AS agentRating
-	FROM review
-	WHERE agentList_ra_regno=?`
-    let res = await db.query(rawQuery, [ra_regno]);
-	console.log(res);
-	return res;
-    } catch (err) {
-	console.error(err.stack);
-    }
-}
