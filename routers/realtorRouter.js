@@ -16,4 +16,10 @@ router.get(
     realtorController.realtorView
 );
 
+//후기를 열람할 때
+router.post(
+    '/:ra_regno/opening/:rv_id',
+    realtorController.opening
+);
+
 module.exports = router;
