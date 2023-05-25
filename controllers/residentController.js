@@ -52,7 +52,6 @@ module.exports = {
     res.render("resident/bookmark", { path: "bookmark" });
   },
   deleteBookmark: (req, res, next) => {
-    console.log("here");
     residentModel.deleteBookMarkById(req.params.id, (result, err) => {
       if (result === null) {
         console.log("error occured: ", err);

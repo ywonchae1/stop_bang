@@ -33,13 +33,18 @@ a:hover {
   gap: 0.5rem;
 }
 
-.user-submit-button {
+.user-submit-button,
+.user-cancel-button {
   color: var(--purple) !important;
   border-radius: 12px !important;
 }
 
 .user-submit-button:hover {
   background-color: var(--purple) !important;
+  color: white !important;
+}
+.user-cancel-button:hover {
+  background-color: var(--deep-gray) !important;
   color: white !important;
 }
 .uk-icon[uk-icon="icon: bookmark; ratio:3; highlight"] svg polygon {
@@ -50,4 +55,10 @@ a:hover {
 .bookmark-button {
   border: none;
   background-color: transparent;
+}
+.uk-icon[uk-icon="icon: star; ratio:1.5"] svg polygon {
+  stroke: var(--black) !important;
+}
+.highlight.uk-icon[uk-icon="icon: star; ratio:1.5"] svg polygon {
+  fill: var(--purple);
 }

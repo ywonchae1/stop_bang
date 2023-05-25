@@ -32,7 +32,7 @@
 
       <% if(auth) { %>
       <div>
-        <a href="<%= userType === 1 ? "/resident/settings" : "/agent/settings"%>"> 마이페이지 </a>
+        <a href=<%= userType === "1" ? "/resident/settings" : "/agent/settings"%>> 마이페이지 </a>
       </div>
       <div>
         <a href="/auth/logout"> 로그아웃 </a>

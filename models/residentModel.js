@@ -85,7 +85,6 @@ let residentModel = {
   },
   updateResidentPassword: async (id, body, result) => {
     try {
-      console.log("here");
       const passwordHash = bcrypt.hash(body.password, saltRounds);
       const passwordResult = await sql.query(
         `SELECT r_password FROM resident WHERE r_id=?`,
