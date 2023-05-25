@@ -1,7 +1,7 @@
 <h1><%= title %></h1>
 <% agentReviewData.forEach(review => { %>
 <% console.log(review) %>
-<%- include('./realtorReview.ejs', {createdTime: review.created_time, rate: review.rating, author: review.r_username, description: review.content}) %>
+<%- include('./realtorReview.ejs', {createdTime: review.created_time, rate: review.rating, author: review.r_username, description: review.content, tags:review.tags, tagsData:tagsData}) %>
 <% }); %>
 <form action="/realtor/<%= raRegno %>/bookmark" method="post">
   <input type="hidden" name="bookmarkData" value="<%= isBookmark %>" />

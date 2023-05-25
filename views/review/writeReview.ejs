@@ -1,10 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-
-<head>
-  <% let rate = 0; %>
-  <title><%= realtor.cmp_nm %> 후기 작성하기</title>
-</head>
 <script>
   function onStarClick(number) {
     document.getElementById("review-rate").value = number;
@@ -18,6 +11,7 @@
 </script>
 
 <body>
+  <% let rate = 0; %>
   <h3><%= realtor.cmp_nm %> 후기 작성하기</h3>
   <form action='/review/<%- realtor.ra_regno %>/create_process' method='post'>
     <input type='hidden' name='raRegno' value=<%- realtor.ra_regno %>>
@@ -29,6 +23,11 @@
       <span id="review-star4" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(4)"></span>
       <span id="review-star5" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(5)"></span>
     </div>
+    <div id="review-tags" name="reviewtags" class="layout-row checkboxes">
+      <% tagsdata.forEach((element, index) => { %>
+      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %>> <%=element %></label>
+      <% }) %>
+    </div>
     <p><textarea class="uk-textarea uk-form-width-large" rows="5" name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'></textarea></p>
     <input class="user-submit-button uk-button uk-button-default" type='submit' value='등록'>
   </form>
@@ -36,6 +35,3 @@
     <input class="user-cancel-button uk-button uk-button-default" type='submit' value='취소'>
   </form>
 </body>
-
-
-</html>

@@ -1,17 +1,20 @@
 <div class="display-review">
-<div style="float:left;"><%- author %></div>
-<div style="float:right;">
-<label><%= createdTime %></label>
-<label>작성</label>
-</div>
-  <div class="layout-row">
+  <div class="layout-row" style="align-items: center;">
+    <div style="margin-right:10px"><%- author %></div>
     <% for( let index = 0; index < 5; index++ ) { %>
-	<% if (index < rate) { %>
-	    <p>★</p>
-	<% } else { %>
-	    <p>☆</p>
-	<% } %>
+    <% if (index < rate) { %>
+    <p>★</p>
+    <% } else { %>
+    <p>☆</p>
     <% } %>
+    <% } %>
+    <div style="float:right; margin-left:auto">
+      <label><%= createdTime %></label>
+      <label>작성</label>
+    </div>
   </div>
-<p><%- description %></p>
+  <% tags.split("").forEach((element, index) => { %>
+  <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData[element] %></span>
+  <% }) %>
+  <p><%- description %></p>
 </div>

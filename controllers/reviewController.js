@@ -1,5 +1,6 @@
 //Models
-const reviewModel = require('../models/reviewModel.js');
+const reviewModel = require("../models/reviewModel.js");
+const tags = require("../public/assets/tag.js");
 
 module.exports = {
     //후기 추가
@@ -7,7 +8,8 @@ module.exports = {
 	reviewModel.getRealtorByRaRegno(req.params, (result) => {
 	    res.render('review/writeReview.ejs', 
 		{
-		    realtor: result
+		    realtor: result,
+        tagsdata: tags.tags,
 		});
 	});
     },
@@ -41,7 +43,8 @@ module.exports = {
 		    rate: rate, 
 		    description: description, 
 		    userName: userName,
-		    updatedTime: updatedTime
+      updatedTime: updatedTime,
+        tagsdata: tags.tags,
 		});
 	});
     },

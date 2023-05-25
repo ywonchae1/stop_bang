@@ -1,67 +1,89 @@
 .hidden {
-    display: none;
+  display: none;
 }
 
 .layout-row {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
 }
 
 .layout-column {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .mypage-container {
-    margin-top: 50px !important;
+  margin-top: 50px !important;
 }
 
 .resident-myreview {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .myreview-info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .myreview-address {
-    text-overflow: ellipsis;
-    word-break: break-all;
-    margin-bottom: 10px;
-    margin-top: 0;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  margin-bottom: 10px;
+  margin-top: 0;
 }
 
 .myreview-content {
-    padding-top: 20px;
-    padding-left: 20px;
+  padding-top: 20px;
+  padding-left: 20px;
 }
 
 .myreview-button {
-    width: 50px;
+  width: 50px;
 }
 .myreview-date {
-    margin: 0;
+  margin: 0;
 }
 
 .mypage-bookmark,
 .resident-myreview {
-    width: 90%;
-    padding: 20px 0;
-    border-bottom: 1px solid black;
+  width: 90%;
+  padding: 20px 0;
+  border-bottom: 1px solid black;
 }
 .mybookmark-button {
-    float: right;
-    padding-right: 20px;
+  float: right;
+  padding-right: 20px;
 }
 
 .display-review {
-    width: 70%;
-    padding: 20px;
-    margin: 5px;
-    line-height: 10px;
+  width: 70%;
+  padding: 20px;
+  margin: 5px;
+  line-height: 10px;
 
-    border: 1px solid #000000;
+  border: 1px solid #000000;
+}
+
+.checkboxes {
+  width: 50vw;
+  flex-wrap: wrap;
+}
+
+.checkboxes label {
+  margin-left: 15px;
+  padding: 10px;
+}
+
+input.uk-checkbox:checked {
+  background-color: var(--purple);
+}
+
+input.uk-checkbox:checked:focus {
+  background-color: var(--purple);
+}
+
+.layout-row #review-star1 {
+  margin-left: 20px;
 }

@@ -1,5 +1,6 @@
 //Models
 const realtorModel = require("../models/realtorModel.js");
+const tags = require("../public/assets/tag.js");
 
 module.exports = {
   mainPage: (req, res) => {
@@ -12,6 +13,7 @@ module.exports = {
         direction: `/review/${raRegno}/create`,
         raRegno: raRegno,
         isBookmark: true,
+        tagsData: tags.tags,
       });
     });
   },
