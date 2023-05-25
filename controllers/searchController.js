@@ -8,12 +8,12 @@ const searchModel = require('../models/searchModel');
 exports.getAgency = async(req,res) => {
     const sgg_nm = req.query.sgg_nm;
     const bjdong_nm = req.query.bjdong_nm;
+    const ra_regno = req.query.ra_regno;
 
     console.log(`get agencies // sgg_nm: ${sgg_nm}, bjdong_nm: ${bjdong_nm}`);
 
     try {
-        const rows = await searchModel.getAgenciesModel(sgg_nm,bjdong_nm);
-    
+        const rows = await searchModel.getAgenciesModel(sgg_nm, bjdong_nm);
         res.json({ rows: rows });
     } catch (err) {
         console.error(err.stack)
