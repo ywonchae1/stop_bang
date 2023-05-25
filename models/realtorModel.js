@@ -6,7 +6,7 @@ module.exports = {
 	let rawQuery=`
 	SELECT rv_id, r_id, r_username, A.rating AS rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
 	FROM agentList 
-	JOIN(SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, content, review.created_time AS created_time 
+	LEFT JOIN(SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, content, review.created_time AS created_time 
 	FROM resident 
 	JOIN review 
 	ON r_id=resident_r_id) A 

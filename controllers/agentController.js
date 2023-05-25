@@ -32,6 +32,7 @@ module.exports = {
       if (result === null) {
         console.log("error occured: ", err);
       } else {
+        console.log(result);
         res.locals.agentMainInfo = result;
       }
    });
