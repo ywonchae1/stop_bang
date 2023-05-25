@@ -2,27 +2,14 @@
 const db = require("../config/db.js");
 
 module.exports = {
-  getReviewByRaRegno: async (params, result) => {
-    let rawQuery = `
-		SELECT rv_id, r_username, agentList.rating AS rating, content, cmp_nm, ra_regno
-		FROM agentList
-		JOIN (SELECT rv_id, r_username, agentList_ra_regno, rating, content
-					FROM resident
-					JOIN review
-					ON r_id=resident_r_id) A
-		ON agentList_ra_regno=ra_regno WHERE cmp_nm=?;`;
-    let res = await db.query(rawQuery, [params.cmp_nm]);
-    result(res[0]);
-  },
-
-  getAgentProfile: async (id, result) => {
+  getAgentProfile: async (ra_regno, result) => {
     try {
       const res = await db.query(
         `SELECT agentList.rdealer_nm, agentList.cmp_nm, agentList.address, agent.a_profile_image
 				FROM agentList
 				INNER JOIN agent ON agentList.ra_regno = agent.agentList_ra_regno
 				WHERE agentList.ra_regno = ?;`,
-        [id]
+        [ra_regno]
       );
       result(res);
     } catch (error) {
@@ -49,6 +36,28 @@ module.exports = {
 				WHERE agentList_ra_regno = ?;`;
     let res = await db.query(rawQuery, [agentId]);
     result(res[0][0]);
+  },
+
+  getRating: async (ra_regno, result) => {
+	let rawQuery = `
+	SELECT ROUND(AVG(rating), 1) AS agentRating
+	FROM review
+	WHERE agentList_ra_regno=?`
+	let res = await db.query(rawQuery, [ra_regno]);
+	result(res[0][0]);
+    },
+
+  getReviewByRaRegno: async (ra_regno, result) => {
+    let rawQuery=`
+    SELECT rv_id, r_username, A.rating AS rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
+    FROM agentList 
+    JOIN(SELECT rv_id, r_username, agentList_ra_regno, rating, content, review.created_time AS created_time 
+    FROM resident 
+    JOIN review 
+    ON r_id=resident_r_id) A 
+    ON agentList_ra_regno=ra_regno WHERE ra_regno=?`;
+    let res = await db.query(rawQuery, [ra_regno]);
+    result(res[0]);
   },
 
   updateMainInfo: async (params, body, result) => {

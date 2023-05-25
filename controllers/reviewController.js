@@ -16,7 +16,7 @@ module.exports = {
     creatingReview: (req, res) => {
 	//쿠키로부터 로그인 계정 알아오기
 	let r_id = req.cookies.authToken;
-	if(r_id == null) res.send('로그인이 필요합니다.');
+	if(r_id === null) res.send('로그인이 필요합니다.');
 	reviewModel.createReviewProcess(r_id, req.params, req.body, () => {
 	    res.redirect(`/realtor/${req.params.ra_regno}`);
 	});

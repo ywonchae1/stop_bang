@@ -21,7 +21,7 @@ module.exports = {
 	let createReviewRawQuery = `
 		INSERT 
 		INTO review(resident_r_id, agentList_ra_regno, rating, content) 
-		VALUES(?, ?, ?, ?)`;
+		VALUES (?, ?, ?, ?)`;
 	let pointRawQuery = `
 	    UPDATE resident
 	    SET r_point = CASE WHEN (SELECT COUNT(*) FROM review WHERE agentList_ra_regno=?)=0 THEN r_point+3 ELSE r_point+1 END
@@ -37,7 +37,7 @@ module.exports = {
 	let rawQuery = `
 		SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, CONCAT(newTable.updated_time, "수정됨") AS check_point
 		FROM resident
-		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, rating, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
+		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, review.rating AS rating, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
 			FROM review
 			JOIN agentList
 			ON agentList_ra_regno=ra_regno) newTable
