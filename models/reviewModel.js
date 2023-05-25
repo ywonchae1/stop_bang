@@ -21,7 +21,7 @@ module.exports = {
 	let createReviewRawQuery = `
 		INSERT 
 		INTO review(resident_r_id, agentList_ra_regno, rating, content) 
-		VALUES(?, ?, ?, ?)`;
+		VALUES (?, ?, ?, ?)`;
 	let pointRawQuery = `
 	    UPDATE resident
 	    SET r_point = CASE WHEN (SELECT COUNT(*) FROM review WHERE agentList_ra_regno=?)=0 THEN r_point+3 ELSE r_point+1 END
