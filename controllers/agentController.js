@@ -21,42 +21,27 @@ module.exports = {
   },
 
   agentProfile: async (req, res, next) => {
-    await agentModel.getAgentProfile(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
+    try {
+      let agent = await agentModel.getAgentProfile(req.params.id);
+      let getMainInfo = await agentModel.getMainInfo(req.params.id);
+      let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
+      let getReviews = agentModel.getReviewByRaRegno(req.params.id);
+      let getRating = await agentModel.getRating(req.params.id);
+      res.locals.agent = agent[0];
+      res.locals.agentMainInfo = getMainInfo;
+      res.locals.agentSubInfo = getEnteredAgent[0][0];
+      res.locals.agentReviewData = getReviews;
+
+      if (getRating === null) {
+        res.locals.agentRating = 0;
+        res.locals.tagsData = null;
       } else {
-        res.locals.agent = result[0][0];
+        res.locals.agentRating = getRating;
+        res.locals.tagsData = tags.tags;
       }
-    });
-    await agentModel.getMainInfo(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        console.log(result);
-        res.locals.agentMainInfo = result;
-      }
-   });
-      await agentModel.getRating(req.params.id, (result, err) => {
-	  if (result === null) {
-	    console.log("error occured: ", err);
-	  } else {
-	    res.locals.agentRating = result;
-	  }
-      });
-    await agentModel.getEnteredAgent(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        res.locals.agentSubInfo = result[0][0];
-      }
-    });
-    await agentModel.getReviewByRaRegno(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        res.locals.agentReviewData = result;
-      }
-    });
+    } catch(err) {
+      console.error(err.stack)
+    }
     next();
   },
 
