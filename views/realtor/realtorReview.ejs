@@ -11,25 +11,28 @@
     <div style="float:right; margin-left:auto">
       <label><%= review.created_time %></label>
       <label>작성</label>
-	  <% let flag = true; %>
-		<% opened.forEach(open => { %>
-		<% if(open.review_rv_id === review.rv_id) flag = false; }); %>
+      <% let flag = true; %>
+      <% if(review.r_id == r_id) flag = false; %>
+      <% opened.forEach(open => { %>
+      <% if(open.review_rv_id === review.rv_id) flag = false; }); %>
 
-		<% if(flag) { %>
-		<% if(canOpen === 'true') { %>
-		<form action=<%= `/realtor/${review.ra_regno}/opening/${review.rv_id}` %> method='post'>
-			<input type='submit' onclick="return window.confirm('후기를 열람하면 2 🧻 휴지를 사용하게 됩니다. 열람하시겠습니까?');" value='열람'>
-		</form>
-		<% } else { %>
-		<form>
-			<input type='submit' onclick="return window.alert('🧻 휴지가 부족하여 열람할 수 없습니다.');" value='열람'>
-		</form>
-		<% } %>
-		<% } %>
+      <% if(flag) { %>
+        <% if(canOpen == 'true') { %>
+          <form action=<%= `/realtor/${review.ra_regno}/opening/${review.rv_id}` %> method='post'>
+            <input type='submit' onclick="return window.confirm('후기를 열람하면 2 🧻 휴지를 사용하게 됩니다. 열람하시겠습니까?');" value='열람'>
+          </form>
+        <% } else { %>
+            <form>
+              <input type='submit' onclick="return window.alert('🧻 휴지가 부족하여 열람할 수 없습니다.');" value='열람'>
+            </form>
+        <% } %>
+      <% } %>
     </div>
   </div>
+  <% if(tags !== null) { %>
   <% tags.split("").forEach((element, index) => { %>
   <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData[element] %></span>
   <% }) %>
+    <% } %>
   <p><%- review.content %></p>
 </div>
