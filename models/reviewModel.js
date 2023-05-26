@@ -25,9 +25,20 @@ module.exports = {
 		INTO review(resident_r_id, agentList_ra_regno, rating, content, tags) 
 		VALUES(?, ?, ?, ?, ?)`;
     let pointRawQuery = `
-	    UPDATE resident
-	    SET r_point = CASE WHEN (SELECT COUNT(*) FROM review WHERE agentList_ra_regno=?)=0 THEN r_point+3 ELSE r_point+1 END
-	    WHERE r_id = ?;
+		UPDATE resident
+		SET r_point =
+		CASE
+		WHEN (
+			SELECT COUNT(*)
+			FROM review
+			RIGHT OUTER JOIN agentList
+			ON agentList_ra_regno=ra_regno
+			WHERE ra_regno=?
+			)=1
+		THEN r_point+5
+		ELSE r_point+3
+		END
+		WHERE r_id=?;
 	    `;
     await db.query(createReviewRawQuery, [
       r_id,
