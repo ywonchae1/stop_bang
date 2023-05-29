@@ -1,4 +1,5 @@
 const residentModel = require("../models/residentModel");
+const tags = require("../public/assets/tag.js");
 
 module.exports = {
   myReview: (req, res, next) => {
@@ -11,6 +12,7 @@ module.exports = {
           console.log("error occured: ", err);
         } else {
           res.locals.reviews = result[0];
+          res.locals.tagsData = tags;
           next();
         }
       });
@@ -29,6 +31,7 @@ module.exports = {
           console.log("error occured: ", err);
         } else {
           res.locals.openReviews = result[0];
+          res.locals.tagsData = tags;
           next();
         }
       });

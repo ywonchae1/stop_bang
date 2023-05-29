@@ -1,7 +1,7 @@
 <div class="resident-myreview">
   <div class="myreview-info">
     <p class="hidden"><%= review.agentList_ra_regno %></p>
-    <div class="layout-row" onclick="location.href='../realtor/<%=review.agentList_ra_regno%>';">
+    <div class="layout-row" onclick="location.href='../realtor/<%=review.agentList_ra_regno%>';" style="min-width:max-content">
       <h3><%= review.cmp_nm %></h3>
       <div class="layout-row">
         <% for( let index = 0; index < 5; index++ ) { %>
@@ -23,11 +23,16 @@
         열람
         <% } %>
       </p>
-
     </div>
-
   </div>
+
+
   <div class="myreview-content">
+    <div class="layout-row" style="flex-wrap:wrap">
+      <% review.tags.split("").forEach((element, index) => { %>
+      <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData.tags[element] %></span>
+      <% }) %>
+    </div>
     <%= review.content %>
   </div>
 </div>
