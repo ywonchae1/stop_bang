@@ -1,20 +1,47 @@
 <!DOCTYPE HTML>
 <html>
-    <head>
-	<title><%- title %></title>
-    </head>
-    <body>
-	<h1><%- title %></h1>
-	<form action='/review/<%- reviewId %>/update_process' method='post'>
-	    <input type='hidden' name='raRegno' value=<%- raRegno %>>
-	    <input type='text' name='updatedTime' value=<%= updatedTime %>>
-	    <p><input type='text' name='rate' placeholder='별점0-5' value=<%= rate %>></p>
-	    <p><textarea name='originDesc' readonly><%- description %></textarea></p>
-	    <p><textarea name='description' placeholder='당신의 후기를 수정하세요(이미 작성된 후기는 수정할 수 없습니다.)'></textarea></p>
-	    <input type='submit' value='등록'>
-	</form>
-	<form action='/resident/myReview' method='get'>
-	    <input type='submit' value='취소'>
-	</form>
-    </body>
+<script>
+  function onStarClick(number) {
+    document.getElementById("review-rate").value = number;
+    for (let i = 1; i <= number; i++) {
+      document.getElementById(`review-star${i}`).classList.add("highlight");
+    }
+    for (let j = number + 1; j <= 5; j++) {
+      document.getElementById(`review-star${j}`).classList.remove("highlight");
+    }
+  }
+</script>
+
+<body>
+  <h3 class="uk-text-lead"><%- title %></h3>
+  <form action='/review/<%- reviewId %>/update_process' method='post'>
+    <div class="uk-text-meta">이미 작성한 후기는 유지되지만 태그와 내용을 추가할 수 있습니다. </div>
+    <input type='hidden' name='raRegno' value=<%- raRegno %>>
+    <input class="uk-input uk-form-blank uk-form-width-medium" type='text' name='updatedTime' value=<%= updatedTime %>>
+    <input id="review-rate" type="hidden" name="rate" value=<%= rate %>>
+    <div class="layout-row">
+      <% for( let index = 1; index <= 5; index++ ) { %>
+      <% if (index <= rate) { %>
+      <span id='review-star<%= index %>' class="highlight" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(<%= index %>)"></span>
+      <% } else { %>
+      <span id='review-star<%= index %>' class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(<%= index %>)"></span>
+      <% } %>
+      <% } %>
+    </div>
+    <% console.log(checkedTags) %>
+    <input type='hidden' name='checkedTags' value=<%- checkedTags %>>
+    <div id="review-tags" name="reviewtags" class="layout-row checkboxes">
+      <% tagsdata.forEach((element, index) => { %>
+      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %> <% if (checkedTags.split("").toString().indexOf(index) !== -1) { %> disabled checked <% } %>> <%=element %></label>
+      <% }) %>
+    </div>
+    <p><textarea name='originDesc' class="uk-textarea uk-form-width-large" readonly><%- description %></textarea></p>
+    <p><textarea name='description' class="uk-textarea uk-form-width-large" rows="3" maxlength='<%= 200-description.length-13 %>' placeholder='당신의 후기를 추가하세요(이미 작성된 후기는 수정할 수 없습니다.)'></textarea></p>
+    <input type='submit' class="user-submit-button uk-button uk-button-default" value='등록'>
+  </form>
+  <form action='/resident/myReview' method='get'>
+    <input type='submit' class="user-cancel-button uk-button uk-button-default" value='취소'>
+  </form>
+</body>
+
 </html>

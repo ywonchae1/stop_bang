@@ -5,7 +5,11 @@
 .layout-row {
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center !important;
+}
+
+.layout-row p {
+  margin-top: 0 !important;
 }
 
 .layout-column {
@@ -15,6 +19,7 @@
 
 .mypage-container {
   margin-top: 50px !important;
+  margin-bottom: 50px;
 }
 
 .resident-myreview {
@@ -35,8 +40,10 @@
 }
 
 .myreview-content {
-  padding-top: 20px;
-  padding-left: 20px;
+  padding-left: 30px;
+  position: relative;
+  top: -20px;
+  white-space: pre-line;
 }
 
 .myreview-button {
