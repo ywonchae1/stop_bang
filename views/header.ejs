@@ -34,6 +34,8 @@
       <div>
         <a href=<%= userType === "1" ? "/resident/settings" : "/agent/settings"%>> 마이페이지 </a>
       </div>
+      <% if(is_admin == 1) { %>
+         <div> <a href="/admin"> 관리자 </a> </div> <% } %>
       <div>
         <a href="/auth/logout"> 로그아웃 </a>
       </div>

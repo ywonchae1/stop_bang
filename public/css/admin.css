@@ -1,0 +1,122 @@
+html{
+    color: black;
+}
+body{
+    margin: 0;
+}
+.box{
+    flex:1;
+    height: 100px;
+    padding:30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    background-color: #865dff;
+    margin: 10px;
+}
+
+.box-title{
+    font-size:25px;
+    font-weight: 700;
+}
+#admin--intro{
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+.upper--box{
+    margin: 2px auto;
+    width: 70%;
+
+}
+
+
+.upper--box--one{
+    display: flex;
+}
+.upper--box--two{
+    display: flex;
+}
+.inner--box{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.box-info{
+    font-size: 23px;
+    margin: 0;
+}
+
+.sidebar{
+   /* background-color: #474747;*/
+    width: 25%;
+    padding: 30px;
+    min-height: calc(100vh - 80px);
+    border: 1px solid grey;
+    border-left-style:none;
+}
+
+/* 링크 스타일 */
+.sidebar--link a {
+
+    display: block; /* 링크를 블록 요소로 표시하여 너비를 100%로 설정 */
+    padding: 8px 16px; /* 링크의 패딩 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: white !important; /* 링크 텍스트 색상 */
+
+}
+
+  .sidebar--link li{
+    line-height: 3rem;
+    list-style: none;
+    font-size: 18px;
+
+}
+.bnc{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.admin--content{
+    width: 100%;
+    background-color: ghostwhite;
+
+}
+
+.admin--content--two{
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    background-color: ghostwhite;
+    width: 70%;
+    height: max-content; 
+    margin-bottom: 30px;
+}
+
+.two--content{
+  
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 70%;
+    margin: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+
+}
+
+.r--report-item{
+    line-height: 1rem;
+
+}
+
+.r--report-item ul{
+    margin: 10px 0px;
+}
+
+li:not(:first-child) {
+    list-style: none;
+}
