@@ -25,6 +25,10 @@ module.exports = {
     let r_id = req.cookies.authToken;
     if(r_id === null) res.send('로그인이 필요합니다.');
     res.locals.r_id = r_id;
+    //쿠키로부터 계정 유형 알아오기
+    let user_type = req.cookies.userType;
+    if(user_type !== 0) res.send('접근이 제한되었습니다. 공인중개사 회원 로그인이 필요합니다.');
+    res.locals.user_type = user_type;
     try {
       let agent = await agentModel.getAgentProfile(req.params.id);
       let getMainInfo = await agentModel.getMainInfo(req.params.id);
