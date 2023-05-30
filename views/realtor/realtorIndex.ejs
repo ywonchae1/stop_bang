@@ -1,19 +1,34 @@
-<h1><%= title %></h1>
-<span>평균 별점</span>
-<span class="uk-badge"><%= rating.agentRating %></span>
-<% agentReviewData.forEach(review => { %>
-<%- include('./realtorReview.ejs', {review: review, opened: openedReviewData, canOpen: canOpen, tags:review.tags, tagsData:tagsData}) %>
-<% }); %>
-
-<% let flag = true; %>
-<% agentReviewData.forEach(review => { %>
-<% if(review.r_id == r_id) %>
-<% flag = false;}); %>
-<% if(flag) { %>
-<form action=<%= direction %> method='post'>
-  <input type='hidden' name='raRegno' value=<%= agentReviewData.ra_regno %>>
-  <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
-</form>
+<%- include('./realtorProfile.ejs', {agent: agent, rating: rating}); %>
+<%- include('./realtorMainInfo.ejs', {agent: agentMainInfo}); %>
+<%- include('./realtorInformation.ejs', {agent: agentSubInfo}); %>
+</br>
+<h1 class="uk-heading-divider"><%= `${agent.cmp_nm}의 후기` %></h1>
+<% if(agentReviewData[0] == null) { %>
+    <h3>첫 후기를 작성해 보세요!</h3>
+    <form action=<%= direction %> method='post'>
+	<input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+	<p><input type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
+    </form>
 <% } else { %>
-<p>이미 후기를 작성하셨습니다.</p>
+    <% agentReviewData.forEach(review => { %>
+	<%- include('./realtorReview.ejs', {r_id: r_id, review: review, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}) %>
+    <% }); %>
+
+    <% if(!r_id) { %>
+        <form action='/auth/login'>
+            <p><input type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
+        </form> 
+    <% } else { %>
+        <% let flag = 1; %>
+        <% agentReviewData.forEach(review => { %>
+        <% if(review.r_id == r_id) flag = 0;}); %>
+        <% if(flag == 1) { %>
+            <form action=<%= direction %> method='post'>
+                <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+                <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
+            </form>
+        <% } else { %>
+            <p>이미 후기를 작성하셨습니다.</p>
+        <% } %>
+    <% } %>
 <% } %>
