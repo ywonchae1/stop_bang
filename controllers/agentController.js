@@ -1,5 +1,6 @@
 //Models
 const agentModel = require("../models/agentModel.js");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   myReview: (req, res) => {
@@ -35,14 +36,14 @@ module.exports = {
         console.log(result);
         res.locals.agentMainInfo = result;
       }
-   });
-      await agentModel.getRating(req.params.id, (result, err) => {
-	  if (result === null) {
-	    console.log("error occured: ", err);
-	  } else {
-	    res.locals.agentRating = result;
-	  }
-      });
+    });
+    await agentModel.getRating(req.params.id, (result, err) => {
+      if (result === null) {
+        console.log("error occured: ", err);
+      } else {
+        res.locals.agentRating = result;
+      }
+    });
     await agentModel.getEnteredAgent(req.params.id, (result, err) => {
       if (result === null) {
         console.log("error occured: ", err);
@@ -215,24 +216,32 @@ module.exports = {
 	*/
   settings: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    let a_id = req.cookies.authToken;
-    if (a_id == null) res.send("로그인이 필요합니다.");
-    else {
-      agentModel.getAgentById(a_id, (result, err) => {
-        if (result === null) {
-          console.log("error occured: ", err);
-        } else {
-          res.locals.agent = result[0][0];
-          next();
-        }
-      });
-    }
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    agentModel.getAgentById(decoded, (result, err) => {
+      if (result === null) {
+        console.log("error occured: ", err);
+      } else {
+        res.locals.agent = result[0][0];
+        next();
+      }
+    });
   },
+
   settingsView: (req, res) => {
     res.render("agent/settings");
   },
+
   updateSettings: (req, res, next) => {
-    let a_id = req.cookies.authToken;
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    let a_id = decoded.userId;
     const body = req.body;
     if (a_id === null) res.send("로그인이 필요합니다.");
     else {
@@ -247,7 +256,12 @@ module.exports = {
     }
   },
   updatePassword: (req, res, next) => {
-    const a_id = req.cookies.authToken;
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    const a_id = decoded.userId;
     if (a_id === null) res.send("로그인이 필요합니다.");
     else {
       agentModel.updateAgentPassword(a_id, req.body, (result, err) => {

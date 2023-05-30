@@ -7,6 +7,7 @@ let residentModel = {
     try {
       const res = await sql.query(
         `SELECT r_username FROM resident WHERE r_username = ?`,
+        `SELECT a_username FROM agent WHERE a_username = ?`,
         [username]
       );
       result(res);

@@ -3,7 +3,22 @@ const db = require("../config/db.js");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+const checkUsernameExists = async (params) => {
+  try {
+    const rawQuery = `
+      SELECT COUNT(*) as count FROM resident WHERE r_username = ?;
+    `;
+    const res = await db.query(rawQuery, [params.username]);
+    return res[0][0].count > 0;
+  } catch (err) {
+    console.error("🚀 ~ err:", err);
+    return false;
+  }
+};
+
 module.exports = {
+  checkUsernameExists,
+
   registerResident: async (params, result) => {
     try {
       // 비밀번호 암호화해서 db에 저장하기
@@ -43,16 +58,17 @@ module.exports = {
 
       // 새로운 공인중개사 생성하기
       let rawQuery = `
-    INSERT INTO agent (agentList_ra_regno, a_username, a_password, a_realname, a_email, a_authimage) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); 
+    INSERT INTO agent (a_username, a_password, a_realname, a_email, a_phone, a_estatename, agentList_ra_regno) 
+    VALUES (?, ?, ?, ?, ?, ?, ?); 
     `;
       await db.query(rawQuery, [
-        params.agentList_ra_regno,
         params.username,
         passwordHash,
         params.realname,
         params.email,
-        params.authimage,
+        params.phone,
+        params.estatename,
+        params.agentList_ra_regno,
       ]);
 
       // 새로 생성된 공인중개사의 id 가져오기
@@ -77,7 +93,6 @@ module.exports = {
     SELECT r_id, r_password FROM resident WHERE r_username = ?;
     `;
     res = await db.query(rawQuery, [params.username]);
-    console.log("🚀 ~ res:", res);
 
     // 사용자가 아니라면 DB에서 해당하는 공인중개사 정보 가져오기
     if (res[0].length === 0) {
