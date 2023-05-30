@@ -40,5 +40,20 @@ router.get('/',async(req,res,next)=>{
     console.log(error);
   }
 
+}),
+router.get('/newagent',async(req,res,next)=>{
+
+  try{
+    const result2 = await adminControl.getNewAgent();
+    const newAgent = result2;
+    //console.log("user count : "+userCount, "new agent : "+newAgent);
+    res.render('adminAgentCheck', {newAgent:newAgent});
+
+
+  }catch(error){
+    console.log(error);
+  }
+
 });
+
 module.exports = router;
