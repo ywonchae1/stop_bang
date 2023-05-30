@@ -1,18 +1,18 @@
 //db정보받기
-const db = require('../config/db.js');
+const db = require("../config/db.js");
 
 module.exports = {
-    //부동산 조회
-    getRealtorByRaRegno: async (params, result) => {
-	let raRegno = params.ra_regno;
-	let rawQuery = `
+  //부동산 조회
+  getRealtorByRaRegno: async (params, result) => {
+    let raRegno = params.ra_regno;
+    let rawQuery = `
 	    SELECT ra_regno, cmp_nm
 	    FROM agentList
 	    WHERE ra_regno=?
-	    `
-	let res = await db.query(rawQuery, [raRegno]);
-	result(res[0][0]);
-    },
+	    `;
+    let res = await db.query(rawQuery, [raRegno]);
+    result(res[0][0]);
+  },
 
   createReviewProcess: async (r_id, params, body, result) => {
     let raRegno = params.ra_regno;
@@ -40,9 +40,9 @@ module.exports = {
     result();
   },
 
-    getReviewByRvId: async (params, result) => {
-	let reviewId = params.rv_id;
-	let rawQuery = `
+  getReviewByRvId: async (params, result) => {
+    let reviewId = params.rv_id;
+    let rawQuery = `
 		SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, CONCAT(newTable.updated_time, "수정됨") AS check_point
 		FROM resident
 		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, rating, tags, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
@@ -55,12 +55,13 @@ module.exports = {
     result(res[0][0]);
   },
 
-    updateReviewProcess: async (params, body, result) => {
-	let desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
-	let rawQuery = `
+  updateReviewProcess: async (params, body, result) => {
+    let desc =
+      body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
+    let rawQuery = `
 		UPDATE review
 		SET rating=?, content=? WHERE rv_id=?`;
-	let res = await db.query(rawQuery, [body.rate, desc, params.rv_id]);
-	result(res);
-    }
+    let res = await db.query(rawQuery, [body.rate, desc, params.rv_id]);
+    result(res);
+  },
 };
