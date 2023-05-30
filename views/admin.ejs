@@ -36,9 +36,8 @@
                                     <div class="inner--box" style="color:white;">
                                         <p class="box-title" ><span uk-icon="warning"style="padding-right: 8px;"></span>
                                             리뷰 신고 건수</p>
-                                            <% const newAgentCount = newAgent.length%>                                                
 
-                                        <p class="box-info" ><%= newAgentCount %></p>
+                                        <p class="box-info" > 건</p>
                                     </div>
                                 </section>
                             </div>
@@ -46,7 +45,9 @@
                                 <section class="box" style ="background-color:#474747;"  >
                                     <div class="inner--box" >
                                       <p class="box-title" ><span uk-icon="bell" style="padding-right: 8px;"></span>부동산 인증 처리요청</p>
-                                     <p class="box-info" >20 건</p>
+                                      <% const newAgentCount = Object.keys(newAgent).length%>                                                
+
+                                      <p class="box-info" ><%= newAgentCount %> 건</p>
                                     </div>
                                 </section>
                             </div>
@@ -87,14 +88,15 @@
                                     <div class="r-report">
 
                                         <div class="r--report--item">
+                                            <% for (let i=0; i < newAgent.length; i++) { %>
+
                                             <ul class="signedup_agent">
-                                                <li class="s_cmp_nm">중개업소명: 수정필요</li>
-                                                <li class="s_user_name">신청자 : <%=newAgent.a_realname%></li>
-                                                <li class="s_user_id">아이디 : <%=newAgent.a_username%></li>
-                                                <% const formattedDate = new Date(newAgent.created_time).toISOString().slice(0, 10); %>                                                
-                                                <li class="s_signup_date">신청일 : <%=formattedDate%></li>
-                                            </ul>
-                                           
+                                                <li class="s_user_name">신청자 : <%= newAgent[i].a_realname %></li>
+                                                <li class="s_user_id">아이디 : <%= newAgent[i].a_username %></li>
+                                                <% const formattedDate = new Date(newAgent[i].created_time).toISOString().slice(0, 10); %>
+                                                <li class="s_signup_date">신청일 : <%= formattedDate %></li>                                            </ul>
+                                            <% } %>
+
                                             <div style="margin-left:28px; color: grey;">더보기</div>
 
                                         </div>

@@ -1,17 +1,73 @@
 //db정보받기
-const db = require('../config/db.js');
+const db = require("../config/db.js");
 
 module.exports = {
-    getReviewByRaRegno: async (params, result) => {
-	let rawQuery=`
-	SELECT rv_id, r_username, A.rating AS rating, content, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
+  getReviewByRaRegno: async (params, r_id, result) => {
+    let rawQuery = `
+	SELECT rv_id, r_username, A.rating AS rating, content, tags, cmp_nm, ra_regno, DATE_FORMAT(A.created_time,'%Y-%m-%d') AS created_time 
 	FROM agentList 
-	JOIN(SELECT rv_id, r_username, agentList_ra_regno, rating, content, review.created_time AS created_time 
+	JOIN(SELECT rv_id, r_username, agentList_ra_regno, rating, tags, content, review.created_time AS created_time 
 	FROM resident 
 	JOIN review 
 	ON r_id=resident_r_id) A 
 	ON agentList_ra_regno=ra_regno WHERE ra_regno=?`;
+
+	let checkOpenedRawQuery = `
+	SELECT review_rv_id
+	FROM opened_review
+	WHERE resident_r_id=?`;
+	
+	let checkRPointRawQuery = `
+	SELECT r_point
+	FROM resident
+	WHERE r_id=?`;
+
+	let reviews = await db.query(rawQuery, [params.ra_regno]);
+	let opened = await db.query(checkOpenedRawQuery, [r_id]);
+	let rPoint = await db.query(checkRPointRawQuery, [r_id]);
+	let canOpen = true;
+	if(rPoint[0][0].r_point < 2) canOpen = false;
+	result(reviews[0], opened[0], canOpen);
+    },
+
+  getRating: async (params, result) => {
+	let rawQuery = `
+	SELECT TRUNCATE(AVG(rating), 1) AS agentRating
+	FROM review
+	WHERE agentList_ra_regno=?`
 	let res = await db.query(rawQuery, [params.ra_regno]);
-	result(res[0]);
+	result(res[0][0]);
+    },
+
+    insertOpenedReview: async (r_id, rv_id, result) => {
+	let insertRawQuery = `
+	INSERT
+	INTO opened_review(resident_r_id, review_rv_id)
+	VALUE(?, ?);
+	`
+	let usePointRawQuery = `
+	UPDATE resident
+	SET r_point=r_point - 2
+	WHERE r_id=?;
+	`
+	await db.query(insertRawQuery, [r_id, rv_id]);
+	await db.query(usePointRawQuery, [r_id]);
+	result();
+	},
+
+  updateBookmark: async (id, body, result) => {
+    let rawQuery = ``;
+    console.log(body);
+    if (body.isBookmark === "true") {
+      rawQuery = `DELETE FROM bookmark WHERE resident_r_id=? AND agentList_ra_regno=?`;
+    } else {
+      rawQuery = `INSERT INTO bookmark (resident_r_id, agentList_ra_regno) values (?, ?)`;
     }
+    try {
+      const res = await db.query(rawQuery, [id, body.raRegno]);
+      result(res);
+    } catch (error) {
+      result(null, res);
+    }
+  },
 };

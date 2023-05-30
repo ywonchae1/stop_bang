@@ -30,7 +30,7 @@ router.get('/',async(req,res,next)=>{
     //const result3 = await adminControl.getInactiveUsersCount();
 
     const userCount =  result1[0].userCount; 
-    const newAgent = result2[0];
+    const newAgent = result2;
     console.log("user count : "+userCount, "new agent : "+newAgent);
     res.render('admin', { userCount : userCount,newAgent:newAgent});
 
