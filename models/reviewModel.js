@@ -18,7 +18,7 @@ module.exports = {
     let raRegno = params.ra_regno;
     let rate = body.rate;
     let description = body.description;
-    let tags = body.tag.join("");
+    let tags = Array.isArray(body.tag) ? body.tag.join("") : body.tag;
 
     let createReviewRawQuery = `
 		INSERT 
