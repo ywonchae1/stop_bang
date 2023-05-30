@@ -87,3 +87,54 @@ input.uk-checkbox:checked:focus {
 .layout-row #review-star1 {
   margin-left: 20px;
 }
+
+/* 신고 관련 */
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.report-radio-container {
+  margin: 20px 0 45px 0;
+  border: none;
+}
+
+.report-button-container {
+  margin: 0 auto;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: --deep-gray;
+  color: black;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 40%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: --deep-gray;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  background-color: var(--purple) !important;
+  color: white !important;
+}

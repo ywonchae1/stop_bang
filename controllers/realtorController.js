@@ -9,30 +9,30 @@ module.exports = {
 	if(r_id === null) res.send('로그인이 필요합니다.');
 	res.locals.r_id = r_id;
 	try {
-		let agent = await realtorModel.getRealtorProfile(req.params.ra_regno);
-		let agentMainInfo = await realtorModel.getMainInfo(req.params.ra_regno);
-		let agentSubInfo = await realtorModel.getEnteredAgent(req.params.ra_regno);
-		let getReviews = await realtorModel.getReviewByRaRegno(req.params.ra_regno, r_id);
-		let getRating = await realtorModel.getRating(req.params);
-		res.locals.agent = agent[0];
-		res.locals.agentMainInfo = agentMainInfo;
-		res.locals.agentSubInfo = agentSubInfo[0][0];
-		res.locals.agentReviewData = getReviews.reviews;
-		res.locals.openedReviewData = getReviews.opened;
-		res.locals.canOpen = getReviews.canOpen;
-		res.locals.title = `${res.locals.agent.cmp_nm}의 후기`;
-		res.locals.direction = `/review/${req.params.ra_regno}/create`;
-		res.locals.cmpName = res.locals.agent.cmp_nm;
-		if (getRating === null) {
-			res.locals.rating = 0;
-			res.locals.tagsData = null;
-		} else {
-			res.locals.rating = getRating;
-			res.locals.tagsData = tags.tags;
-		}
+	    let agent = await realtorModel.getRealtorProfile(req.params.ra_regno);
+	    let agentMainInfo = await realtorModel.getMainInfo(req.params.ra_regno);
+	    let agentSubInfo = await realtorModel.getEnteredAgent(req.params.ra_regno);
+	    let getReviews = await realtorModel.getReviewByRaRegno(req.params.ra_regno, r_id);
+	    let getRating = await realtorModel.getRating(req.params);
+	    res.locals.agent = agent[0];
+	    res.locals.agentMainInfo = agentMainInfo;
+	    res.locals.agentSubInfo = agentSubInfo[0][0];
+	    res.locals.agentReviewData = getReviews.reviews;
+	    res.locals.openedReviewData = getReviews.opened;
+	    res.locals.canOpen = getReviews.canOpen;
+	    res.locals.title = `${res.locals.agent.cmp_nm}의 후기`;
+	    res.locals.direction = `/review/${req.params.ra_regno}/create`;
+	    res.locals.cmpName = res.locals.agent.cmp_nm;
+	    if (getRating === null) {
+		res.locals.rating = 0;
+		res.locals.tagsData = null;
+	    } else {
+		res.locals.rating = getRating;
+		res.locals.tagsData = tags.tags;
+	    }
 	} catch (err) {
-        console.error(err.stack)
-    }
+	    console.error(err.stack)
+	}
 	next();
     },
     realtorView: (req, res) => {

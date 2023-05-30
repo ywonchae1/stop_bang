@@ -73,8 +73,8 @@ module.exports = {
 			let reviews = await db.query(rawQuery, [ra_regno]);
 			let opened = await db.query(checkOpenedRawQuery, [r_id]);
 			let rPoint = await db.query(checkRPointRawQuery, [r_id]);
-			let canOpen = true;
-			if(rPoint[0].r_point < 2) canOpen = false;
+			let canOpen = 1;
+			if(rPoint[0][0].r_point < 2) canOpen = 0;
 			return ({reviews: reviews[0], opened: opened[0], canOpen: canOpen});
 		} catch(err) {
 			return err

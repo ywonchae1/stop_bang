@@ -14,22 +14,21 @@
 	<%- include('./realtorReview.ejs', {r_id: r_id, review: review, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}) %>
     <% }); %>
 
-    <% let flag = "true"; %>
-    <% agentReviewData.forEach(review => { %>
-	<% if(review.r_id == r_id) %>
-	<% flag = "false";}); %>
     <% if(!r_id) { %>
         <form action='/auth/login'>
             <p><input type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
         </form> 
     <% } else { %>
-        <% if(flag == "true") { %>
-                <form action=<%= direction %> method='post'>
-                    <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
-                    <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
-                </form>
+        <% let flag = 1; %>
+        <% agentReviewData.forEach(review => { %>
+        <% if(review.r_id == r_id) flag = 0;}); %>
+        <% if(flag == 1) { %>
+            <form action=<%= direction %> method='post'>
+                <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+                <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
+            </form>
         <% } else { %>
-        <p>이미 후기를 작성하셨습니다.</p>
+            <p>이미 후기를 작성하셨습니다.</p>
         <% } %>
     <% } %>
 <% } %>
