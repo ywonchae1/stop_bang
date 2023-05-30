@@ -11,8 +11,16 @@
     </form>
 <% } else { %>
     <% agentReviewData.forEach(review => { %>
-	<%- include('./realtorReview.ejs', {r_id: r_id, review: review, report: report, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}) %>
+        <% let flag = true; %>
+        <% report.forEach(repo => { %>
+            <% if(repo.check_repo === 0 && repo.repo_rv_id === review.rv_id) flag = false;}); %>
+        <% if(flag) { %>
+	        <%- include('./realtorReview.ejs', {r_id: r_id, review: review, report: report, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}); %>
+        <% } else { %>
+            <%- include('./realtorRepoReview.ejs', {review: review}) %>
+        <% } %>
     <% }); %>
+        
 
     <% if(!r_id) { %>
         <form action='/auth/login'>
