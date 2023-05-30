@@ -13,7 +13,8 @@ module.exports = {
 	    let agentMainInfo = await realtorModel.getMainInfo(req.params.ra_regno);
 	    let agentSubInfo = await realtorModel.getEnteredAgent(req.params.ra_regno);
 	    let getReviews = await realtorModel.getReviewByRaRegno(req.params.ra_regno, r_id);
-	    let getRating = await realtorModel.getRating(req.params);
+		let getRating = await realtorModel.getRating(req.params);
+		let getBookmark = await realtorModel.getBookmarkByIdnRegno(req.params.ra_regno, r_id);;
 	    res.locals.agent = agent[0];
 	    res.locals.agentMainInfo = agentMainInfo;
 	    res.locals.agentSubInfo = agentSubInfo[0][0];
@@ -22,7 +23,8 @@ module.exports = {
 	    res.locals.canOpen = getReviews.canOpen;
 	    res.locals.title = `${res.locals.agent.cmp_nm}의 후기`;
 	    res.locals.direction = `/review/${req.params.ra_regno}/create`;
-	    res.locals.cmpName = res.locals.agent.cmp_nm;
+		res.locals.cmpName = res.locals.agent.cmp_nm;
+		res.locals.bookmark = getBookmark[0][0] ? getBookmark[0][0] : 0;
 	    if (getRating === null) {
 		res.locals.rating = 0;
 		res.locals.tagsData = null;
@@ -53,9 +55,10 @@ module.exports = {
 	const r_id = req.cookies.authToken;
 	if (r_id === null) res.send("로그인이 필요합니다.");
 	else {
-	    let body = {
-		raRegno: req.params.ra_regno,
-		isBookmark: req.body.bookmarkData,
+		let body = {
+			id: r_id,
+			raRegno: req.params.ra_regno,
+			bookmark: req.body.bookmarkData,
 	    };
 	    realtorModel.updateBookmark(r_id, body, (result, err) => {
 		if (result === null) {

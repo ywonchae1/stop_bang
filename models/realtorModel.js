@@ -44,7 +44,16 @@ module.exports = {
 		} catch (error) {
 			return error
 		}
-    },
+	},
+	
+	getBookmarkByIdnRegno: async (ra_regno, r_id) => {
+		try {
+			const res = await db.query(`SELECT * FROM bookmark WHERE agentList_ra_regno=? AND resident_r_id=?`, [ra_regno, r_id]);
+			return res;
+		} catch (error) {
+			return error
+		}
+	},
 
     getReviewByRaRegno: async (ra_regno, r_id) => {
 		try {
@@ -110,14 +119,17 @@ module.exports = {
 
     updateBookmark: async (id, body, result) => {
 		let rawQuery = ``;
-		console.log(body);
-		if (body.isBookmark === "true") {
-			rawQuery = `DELETE FROM bookmark WHERE resident_r_id=? AND agentList_ra_regno=?`;
-		} else {
-			rawQuery = `INSERT INTO bookmark (resident_r_id, agentList_ra_regno) values (?, ?)`;
-		}
+		let res;
+		
 		try {
-			const res = await db.query(rawQuery, [id, body.raRegno]);
+			if (body.bookmark !== '0') {
+				console.log("here")
+				rawQuery = `DELETE FROM bookmark WHERE bm_id=?`;
+				res = await db.query(rawQuery, [body.bookmark]);
+			} else {
+				rawQuery = `INSERT INTO bookmark (resident_r_id, agentList_ra_regno) values (?, ?)`;
+				 res = await db.query(rawQuery, [body.id, body.raRegno]);
+			}
 			result(res);
 		} catch (error) {
 			result(null, error);
