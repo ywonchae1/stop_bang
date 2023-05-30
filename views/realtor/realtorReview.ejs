@@ -78,5 +78,10 @@
   <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData[element] %></span>
   <% }) %>
     <% } %>
-  <p><%- review.content %></p>
+
+  <% if(!isOpened && !isMyReview) { %>
+    <p>후기를 열람해 보세요!</p>
+  <% } else { %>
+    <p><%- review.content %></p>
+  <% } %>
 </div>
