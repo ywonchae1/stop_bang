@@ -24,30 +24,31 @@ module.exports = {
 	});
     },
 
-    //후기 수정
-    updateReview: (req, res) => {
-	reviewModel.getReviewByRvId(req.params, (residentReview) => {
-	    let cmpName = residentReview.cmp_nm;
-	    let userName = residentReview.r_username;
-	    let raRegno = residentReview.ra_regno;
-	    let rate = residentReview.rating;
-	    let description = residentReview.content;
-	    let updatedTime = residentReview.check_point;
+  //후기 수정
+  updateReview: (req, res) => {
+    reviewModel.getReviewByRvId(req.params, (residentReview) => {
+      let cmpName = residentReview.cmp_nm;
+      let userName = residentReview.r_username;
+      let raRegno = residentReview.ra_regno;
+      let rate = residentReview.rating;
+      let description = residentReview.content;
+      let updatedTime = residentReview.check_point;
+      let checkedTags = residentReview.tags;
 
-	    let title = `${cmpName} - ${userName}님의 후기 수정하기`
-	    res.render('review/updateReview.ejs', 
-		{
-		    title: title, 
-		    reviewId: req.params.rv_id, 
-		    raRegno: raRegno, 
-		    rate: rate, 
-		    description: description, 
-		    userName: userName,
-      updatedTime: updatedTime,
+      let title = `${cmpName} - ${userName}님의 후기 수정하기`;
+      res.render("review/updateReview.ejs", {
+        title: title,
+        reviewId: req.params.rv_id,
+        raRegno: raRegno,
+        rate: rate,
+        description: description,
+        userName: userName,
+        updatedTime: updatedTime,
+        checkedTags: checkedTags,
         tagsdata: tags.tags,
-		});
-	});
-    },
+      });
+    });
+  },
 
     //후기 수정 DB 반영
     updatingReview: (req, res) => {

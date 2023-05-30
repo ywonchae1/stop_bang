@@ -18,7 +18,7 @@ module.exports = {
     let raRegno = params.ra_regno;
     let rate = body.rate;
     let description = body.description;
-    let tags = body.tag.join("");
+    let tags = Array.isArray(body.tag) ? body.tag.join("") : body.tag;
 
     let createReviewRawQuery = `
 		INSERT 
@@ -40,10 +40,10 @@ module.exports = {
     result();
   },
 
-    getReviewByRvId: async (params, result) => {
-	let reviewId = params.rv_id;
-	let rawQuery = `
-		SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, CONCAT(newTable.updated_time, "수정됨") AS check_point
+  getReviewByRvId: async (params, result) => {
+    let reviewId = params.rv_id;
+    let rawQuery = `
+		SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, tags, CONCAT(newTable.updated_time, "수정됨") AS check_point
 		FROM resident
 		JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, rating, tags, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
 			FROM review
@@ -55,12 +55,16 @@ module.exports = {
     result(res[0][0]);
   },
 
-    updateReviewProcess: async (params, body, result) => {
-	let desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
-	let rawQuery = `
+  updateReviewProcess: async (params, body, result) => {
+    let desc =
+      body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
+    let tags = Array.isArray(body.tag)
+      ? body.tag.join("") + body.checkedTags
+      : body.tag + body.checkedTags;
+    let rawQuery = `
 		UPDATE review
-		SET rating=?, content=? WHERE rv_id=?`;
-	let res = await db.query(rawQuery, [body.rate, desc, params.rv_id]);
-	result(res);
-    }
+		SET rating=?, content=?, tags=? WHERE rv_id=?`;
+    let res = await db.query(rawQuery, [body.rate, desc, tags, params.rv_id]);
+    result(res);
+  },
 };
