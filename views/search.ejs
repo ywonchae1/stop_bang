@@ -168,14 +168,14 @@
                      // 별 3점 div
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+'<span class="star--rating">'+3+'</span>';
+                     ratingDiv.innerHTML = `<i class="fa-solid fa-star starr"></i> ${result.rows[i].avg_rating}`;
                      detailsDiv.appendChild(ratingDiv);
 
                      // 후기 20개 div
                      const reviewDiv = document.createElement('div');
                      reviewDiv.style.paddingLeft = '7px';
                      reviewDiv.style.paddingRight = '7px';
-                     reviewDiv.innerText = '후기 20개 | ';
+                     reviewDiv.innerText = ` / 후기 ${result.rows[i].countReview}개 /`;
                      detailsDiv.appendChild(reviewDiv);
 
                      // 친절하고 따뜻한 div
@@ -563,8 +563,6 @@
                
                      }
 
-
-      
    
       function onChangeDong() {
             const selectedGu = $('#gu').val();
@@ -605,17 +603,17 @@
                      const detailsDiv = document.createElement('div');
                      detailsDiv.classList.add('agency-details');
 
-                     // 별 3점 div
+                     // 별점
                      const ratingDiv = document.createElement('div');
                      ratingDiv.style.paddingLeft = '7px';
-                     ratingDiv.innerHTML = '<i class="fa-solid fa-star starr"></i>'+3;
+                     ratingDiv.innerHTML = `<i class="fa-solid fa-star starr"></i> ${result.rows[i].avg_rating}`;
                      detailsDiv.appendChild(ratingDiv);
 
                      // 후기 20개 div
                      const reviewDiv = document.createElement('div');
                      reviewDiv.style.paddingLeft = '7px';
                      reviewDiv.style.paddingRight = '7px';
-                     reviewDiv.innerText = '후기 20개 | ';
+                     reviewDiv.innerText = ` / 후기 ${result.rows[i].countReview}개 /`;
                      detailsDiv.appendChild(reviewDiv);
 
                      // 친절하고 따뜻한 div
