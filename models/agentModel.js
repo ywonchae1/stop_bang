@@ -68,16 +68,32 @@ module.exports = {
 		}
     },
 
-	getRating: async (params) => {
+	getRating: async (ra_regno) => {
 		let rawQuery = `
 		SELECT TRUNCATE(AVG(rating), 1) AS agentRating
 		FROM review
 		RIGHT OUTER JOIN agentList
 		ON agentList_ra_regno=ra_regno
 		WHERE ra_regno=?;`;
-		let res = await db.query(rawQuery, [params.ra_regno]);
+		let res = await db.query(rawQuery, [ra_regno]);
 		return res[0][0].agentRating;
     },
+
+	getReport: async (ra_regno, r_id) => {
+		let rawQuery = `
+		SELECT repo_rv_id
+		FROM review
+		JOIN (
+		SELECT *
+		FROM report
+		JOIN resident
+		ON reporter=r_username
+		) newTable
+		ON rv_id=repo_rv_id
+		WHERE agentList_ra_regno=? AND r_id=?;`
+		let res = await db.query(rawQuery, [ra_regno, r_id]);
+		return res[0];
+	},
 
     updateMainInfo: async (params, body, result) => {
 	let rawQuery = `

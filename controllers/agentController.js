@@ -21,23 +21,27 @@ module.exports = {
   },
 
   agentProfile: async (req, res, next) => {
+    //쿠키로부터 로그인 계정 알아오기
+    let r_id = req.cookies.authToken;
+    if(r_id === null) res.send('로그인이 필요합니다.');
+    res.locals.r_id = r_id;
     try {
       let agent = await agentModel.getAgentProfile(req.params.id);
       let getMainInfo = await agentModel.getMainInfo(req.params.id);
       let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
-      let getReviews = agentModel.getReviewByRaRegno(req.params.id);
+      let getReviews = await agentModel.getReviewByRaRegno(req.params.id);
       let getRating = await agentModel.getRating(req.params.id);
+      let getReport = await agentModel.getReport(req.params.id, r_id);
       res.locals.agent = agent[0];
       res.locals.agentMainInfo = getMainInfo;
       res.locals.agentSubInfo = getEnteredAgent[0][0];
       res.locals.agentReviewData = getReviews;
+      res.locals.report = getReport;
 
       if (getRating === null) {
         res.locals.agentRating = 0;
-        res.locals.tagsData = null;
       } else {
         res.locals.agentRating = getRating;
-        res.locals.tagsData = tags.tags;
       }
     } catch(err) {
       console.error(err.stack)
