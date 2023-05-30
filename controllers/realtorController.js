@@ -14,6 +14,7 @@ module.exports = {
 	    let agentSubInfo = await realtorModel.getEnteredAgent(req.params.ra_regno);
 	    let getReviews = await realtorModel.getReviewByRaRegno(req.params.ra_regno, r_id);
 	    let getRating = await realtorModel.getRating(req.params);
+		let getReport = await realtorModel.getReport(req.params, r_id);
 	    res.locals.agent = agent[0];
 	    res.locals.agentMainInfo = agentMainInfo;
 	    res.locals.agentSubInfo = agentSubInfo[0][0];
@@ -23,6 +24,7 @@ module.exports = {
 	    res.locals.title = `${res.locals.agent.cmp_nm}의 후기`;
 	    res.locals.direction = `/review/${req.params.ra_regno}/create`;
 	    res.locals.cmpName = res.locals.agent.cmp_nm;
+		res.locals.report = getReport;
 	    if (getRating === null) {
 		res.locals.rating = 0;
 		res.locals.tagsData = null;

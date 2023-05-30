@@ -11,7 +11,7 @@
     </form>
 <% } else { %>
     <% agentReviewData.forEach(review => { %>
-	<%- include('./realtorReview.ejs', {r_id: r_id, review: review, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}) %>
+	<%- include('./realtorReview.ejs', {r_id: r_id, review: review, report: report, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}) %>
     <% }); %>
 
     <% if(!r_id) { %>

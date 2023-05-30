@@ -92,6 +92,22 @@ module.exports = {
 		return res[0][0].agentRating;
     },
 
+	getReport: async (params, r_id) => {
+		let rawQuery = `
+		SELECT repo_rv_id
+		FROM review
+		JOIN (
+		SELECT *
+		FROM report
+		JOIN resident
+		ON reporter=r_username
+		) newTable
+		ON rv_id=repo_rv_id
+		WHERE agentList_ra_regno=? AND r_id=?;`
+		let res = await db.query(rawQuery, [params.ra_regno, r_id]);
+		return res[0];
+	},
+
     insertOpenedReview: async (r_id, rv_id, result) => {
 		let insertRawQuery = `
 		INSERT

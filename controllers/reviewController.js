@@ -55,5 +55,15 @@ module.exports = {
 	    res.redirect(`/resident/myReview`);
 	    //res.redirect(`/resident/${req.body.userName}/myReviews`);
 	});
-    }
+    },
+
+	//후기 신고
+	reporting: async (req, res) => {
+		//쿠키로부터 로그인 계정 알아오기
+		let r_id = req.cookies.authToken;
+		if(r_id === null) res.send('로그인이 필요합니다.');
+		ra_regno = await reviewModel.reportProcess(req, r_id);
+		console.log("신고완료");
+		res.redirect(`/realtor/${ra_regno[0][0].agentList_ra_regno}`);
+	}
 };
