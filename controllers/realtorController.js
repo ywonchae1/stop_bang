@@ -17,13 +17,9 @@ module.exports = {
     try {
       let agent = await realtorModel.getRealtorProfile(req.params.ra_regno);
       let agentMainInfo = await realtorModel.getMainInfo(req.params.ra_regno);
-      let agentSubInfo = await realtorModel.getEnteredAgent(
-        req.params.ra_regno
-      );
-      let getReviews = await realtorModel.getReviewByRaRegno(
-        req.params.ra_regno,
-        r_id
-      );
+      let agentSubInfo = await realtorModel.getEnteredAgent(req.params.ra_regno);
+      let getReviews = await realtorModel.getReviewByRaRegno(req.params.ra_regno, r_id);
+      let getReport = await realtorModel.getReport(req.params, r_id);
       let getRating = await realtorModel.getRating(req.params);
       res.locals.agent = agent[0];
       res.locals.agentMainInfo = agentMainInfo;
@@ -34,20 +30,21 @@ module.exports = {
       res.locals.title = `${res.locals.agent.cmp_nm}의 후기`;
       res.locals.direction = `/review/${req.params.ra_regno}/create`;
       res.locals.cmpName = res.locals.agent.cmp_nm;
-      if (getRating === null) {
-        res.locals.rating = 0;
-        res.locals.tagsData = null;
-      } else {
-        res.locals.rating = getRating;
-        res.locals.tagsData = tags.tags;
-      }
+      res.locals.report = getReport;
+        if (getRating === null) {
+      res.locals.rating = 0;
+      res.locals.tagsData = null;
+        } else {
+      res.locals.rating = getRating;
+      res.locals.tagsData = tags.tags;
+        }
     } catch (err) {
-      console.error(err.stack);
+        console.error(err.stack)
     }
     next();
   },
   realtorView: (req, res) => {
-    res.render("realtor/realtorIndex.ejs");
+	  res.render('realtor/realtorIndex.ejs');
   },
 
   opening: async (req, res) => {
@@ -61,7 +58,7 @@ module.exports = {
     if (r_id === null) res.send("로그인이 필요합니다.");
     let rv_id = req.params.rv_id;
     await realtorModel.insertOpenedReview(r_id, rv_id, () => {
-      res.redirect(`/realtor/${req.params.ra_regno}`);
+        res.redirect(`/realtor/${req.params.ra_regno}`);
     });
   },
 
@@ -86,5 +83,5 @@ module.exports = {
         }
       });
     }
-  },
+  }
 };

@@ -93,7 +93,6 @@ module.exports = {
       !body.realname ||
       !body.email ||
       !body.phone ||
-      !body.estatename ||
       !body.agentList_ra_regno
     ) {
       return res.status(400).send("필수 항목 빠짐");

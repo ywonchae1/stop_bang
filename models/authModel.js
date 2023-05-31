@@ -61,8 +61,8 @@ module.exports = {
 
       // 새로운 공인중개사 생성하기
       let rawQuery = `
-    INSERT INTO agent (a_username, a_password, a_realname, a_email, a_phone, a_estatename, agentList_ra_regno) 
-    VALUES (?, ?, ?, ?, ?, ?, ?); 
+    INSERT INTO agent (a_username, a_password, a_realname, a_email, a_phone, agentList_ra_regno) 
+    VALUES (?, ?, ?, ?, ?, ?); 
     `;
       await db.query(rawQuery, [
         params.username,
@@ -70,7 +70,6 @@ module.exports = {
         params.realname,
         params.email,
         params.phone,
-        params.estatename,
         params.agentList_ra_regno,
       ]);
 

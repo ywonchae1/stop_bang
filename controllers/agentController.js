@@ -22,42 +22,35 @@ module.exports = {
   },
 
   agentProfile: async (req, res, next) => {
-    await agentModel.getAgentProfile(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
+    //쿠키로부터 로그인 계정 알아오기
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    try {
+      let agent = await agentModel.getAgentProfile(req.params.id);
+      let getMainInfo = await agentModel.getMainInfo(req.params.id);
+      //다른 공인중개사 페이지 접근 제한(수정제한으로 수정 필요할지도)
+      if(getMainInfo.a_id !== decoded.userId) return res.send("접근이 제한되었습니다. 공인중개사 계정으로 로그인하세요");
+      let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
+      let getReviews = await agentModel.getReviewByRaRegno(req.params.id);
+      let getRating = await agentModel.getRating(req.params.id);
+      let getReport = await agentModel.getReport(req.params.id, decoded.userId);
+      res.locals.agent = agent[0];
+      res.locals.agentMainInfo = getMainInfo;
+      res.locals.agentSubInfo = getEnteredAgent[0][0];
+      res.locals.agentReviewData = getReviews;
+      res.locals.report = getReport;
+
+      if (getRating === null) {
+        res.locals.agentRating = 0;
       } else {
-        res.locals.agent = result[0][0];
+        res.locals.agentRating = getRating;
       }
-    });
-    await agentModel.getMainInfo(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        console.log(result);
-        res.locals.agentMainInfo = result;
-      }
-    });
-    await agentModel.getRating(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        res.locals.agentRating = result;
-      }
-    });
-    await agentModel.getEnteredAgent(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        res.locals.agentSubInfo = result[0][0];
-      }
-    });
-    await agentModel.getReviewByRaRegno(req.params.id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        res.locals.agentReviewData = result;
-      }
-    });
+    } catch(err) {
+      console.error(err.stack)
+    }
     next();
   },
 

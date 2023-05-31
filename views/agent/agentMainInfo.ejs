@@ -1,12 +1,24 @@
 <table class = "table">
     <tr>
-        <td><%= agent.a_image1 %></td>
+        <% if(agent.a_image1 == null) { %>
+            <td>null</td>
+        <% } else { %>
+            <td><%= agent.a_image1 %></td>
+        <% } %>
     </tr>
     <tr>
-        <td><%= agent.a_image2 %></td>
+        <% if(agent.a_image2 == null) { %>
+            <td>null</td>
+        <% } else { %>
+            <td><%= agent.a_image2 %></td>
+        <% } %>
     </tr>
     <tr>
-        <td><%= agent.a_image3 %></td>
+        <% if(agent.a_image3 == null) { %>
+            <td>null</td>
+        <% } else { %>
+            <td><%= agent.a_image3 %></td>
+        <% } %>
     </tr>
     <tr>
         <td><%= agent.a_introduction %></td>

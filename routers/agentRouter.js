@@ -6,7 +6,7 @@ const router = express.Router();
 
 //Controllers
 const agentController = require("../controllers/agentController.js");
-
+const reviewController = require("../controllers/reviewController.js");
 /*
 
 const upload = multer({
@@ -57,5 +57,8 @@ router.get(
 //agent info 수정(영업시간,전화번호)
 
 router.get("/:id/update", agentController.updateEnteredInfo);
+
+//후기 신고
+router.get('/report/:rv_id', reviewController.reporting);
 
 module.exports = router;
