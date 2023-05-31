@@ -68,16 +68,27 @@ module.exports = {
 		}
   },
 
-	getRating: async (ra_regno) => {
+	//신고된 후기는 별점 반영X
+	getRating: async (params) => {
 		let rawQuery = `
 		SELECT TRUNCATE(AVG(rating), 1) AS agentRating
 		FROM review
 		RIGHT OUTER JOIN agentList
 		ON agentList_ra_regno=ra_regno
-		WHERE ra_regno=?;`;
-		let res = await db.query(rawQuery, [ra_regno]);
+		WHERE ra_regno=? AND rv_id NOT IN (
+			SELECT rv_id
+			FROM (
+			SELECT rv_id, COUNT(rv_id) AS cnt, agentList_ra_regno
+			FROM report
+			JOIN review
+			ON repo_rv_id=rv_id
+			WHERE agentList_ra_regno=?
+			GROUP BY rv_id
+			HAVING cnt >= 7) newTable
+		);`;
+		let res = await db.query(rawQuery, [params.ra_regno, params.ra_regno]);
 		return res[0][0].agentRating;
-  },
+    },
 
 	getReport: async (ra_regno, r_id) => {
 		let rawQuery = `
