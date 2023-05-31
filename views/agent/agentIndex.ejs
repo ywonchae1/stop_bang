@@ -1,6 +1,6 @@
 <%- include('./agentProfile.ejs', {agent: agent, rating: agentRating}); %>
-<%- include('./agentMainInfo.ejs', {agent: agentMainInfo}); %>
 <%- include('./agentInformation.ejs', {agent: agentSubInfo}); %>
+<%- include('./agentMainInfo.ejs', {agent: agentMainInfo}); %>
 </br>
 <h1 class="uk-heading-divider"><%= `${agent.cmp_nm}의 후기` %></h1>
 <% if(agentReviewData[0] == null) { %>

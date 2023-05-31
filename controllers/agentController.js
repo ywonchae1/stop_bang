@@ -89,28 +89,30 @@ module.exports = {
     res.render("agent/agentIndex");
   },
 
-  updateMainInfo: (req, res) => {
-    agentModel.getMainInfo(req.params, (agentMainInfo) => {
-      let image1 = agentMainInfo.a_image1;
-      let image2 = agentMainInfo.a_image2;
-      let image3 = agentMainInfo.a_image3;
-      let introduction = agentMainInfo.a_introduction;
+  updateMainInfo: async (req, res) => {
+    let getMainInfo = await agentModel.getMainInfo(req.params.id);
+
+    let image1 = getMainInfo[0][0].a_image1;
+    let image2 = getMainInfo[0][0].a_image2;
+    let image3 = getMainInfo[0][0].a_image3;
+    let introduction = getMainInfo[0][0].a_introduction;
 
       let title = `소개글 수정하기`;
       res.render("agent/updateMainInfo.ejs", {
         title: title,
-        agentId: req.params.a_id,
+        agentId: req.params.id,
         image1: image1,
         image2: image2,
         image3: image3,
         introduction: introduction,
       });
-    });
   },
 
-  updatingMainInfo: (req, res) => {
-    agentModel.updateMainInfo(req.params, req.body, () => {
-      res.redirect(`agent/agentIndex`);
+  updatingMainInfo: (req, res, next) => {
+    agentModel.updateMainInfo(req.params.id, req.files, req.body, () => {
+      console.log(req.params.id);
+      res.locals.redirect = `/agent/${req.params.id}`;
+      next();
     });
   },
 

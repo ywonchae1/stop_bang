@@ -20,15 +20,30 @@ module.exports = {
     }
   },
 
+  // getMainInfo: async (ra_regno) => {
+  //   let rawQuery = `
+	// 	SELECT a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
+	// 	FROM agent
+	// 	RIGHT OUTER JOIN agentList
+	// 	ON agentList_ra_regno=ra_regno
+	// 	WHERE ra_regno = ?;`;
+  //   let res = await db.query(rawQuery, [ra_regno]);
+  //   return res[0][0];
+  // },
+
   getMainInfo: async (ra_regno) => {
-    let rawQuery = `
-		SELECT a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
-		FROM agent
-		RIGHT OUTER JOIN agentList
-		ON agentList_ra_regno=ra_regno
-		WHERE ra_regno = ?;`;
-    let res = await db.query(rawQuery, [ra_regno]);
-    return res[0][0];
+    try {
+      const res = await db.query(
+        `SELECT agentList_ra_regno, a_image1, a_image2, a_image3, a_introduction
+        FROM agent
+        WHERE agentList_ra_regno = ?;`,
+        [ra_regno]
+      );
+      return res;
+    } catch (error) {
+      console.error(error);
+      //   result(null, error);
+    }
   },
 
   getReviewByRaRegno: async (ra_regno, r_id) => {
@@ -89,32 +104,31 @@ module.exports = {
     return res[0];
   },
 
-  updateMainInfo: async (params, body, result) => {
-    let rawQuery = `
-      UPDATE agent
-      SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
-    let res = await db.query(rawQuery, [
-      body.image1,
-      body.image2,
-      body.image3,
-      body.a_introduction,
-      params.agentList_ra_regno,
-    ]);
-    result(res);
-  },
+  // updateMainInfo: async (ra_regno, body, result) => {
+  //   let rawQuery = `
+	// 	UPDATE agent
+	// 	SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
+  //   let res = await db.query(rawQuery, [
+  //     body.image1,
+  //     body.image2,
+  //     body.image3,
+  //     body.a_introduction,
+  //     ra_regno.agentList_ra_regno,
+  //   ]);
+  //   result(res);
+  // },
 
-  updateMainInfo: async (ra_regno, body, result) => {
-    let rawQuery = `
-		UPDATE agent
-		SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
-    let res = await db.query(rawQuery, [
-      body.image1,
-      body.image2,
-      body.image3,
-      body.a_introduction,
-      ra_regno.agentList_ra_regno,
-    ]);
-    result(res);
+  updateMainInfo: async (ra_regno, file, body, result) => {
+    try {
+      const res = await db.query(
+        `UPDATE agent SET a_image1=?, a_image2=?, a_image3=?, a_introduction=?
+			WHERE agentList_ra_regno=?`,
+        [file.filename ? file.filename : null, body.introduction, ra_regno]
+      );
+      result(res);
+    } catch (error) {
+      result(null, error);
+    }
   },
 
   getEnteredAgent: async (ra_regno) => {

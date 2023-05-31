@@ -64,6 +64,15 @@ router.post(
   agentController.updatingEnteredInfo,
   agentController.redirectView
 );
+
+router.get("/:id/info_edit", agentController.updateMainInfo);
+router.post(
+  "/:id/edit_process",
+  agentController.upload.fields([{name: 'myImage1'}, {name: 'myImage2'}, {name: 'myImage3'}]),
+  agentController.updatingMainInfo,
+  agentController.redirectView
+);
+
 //후기 신고
 router.get("/report/:rv_id", reviewController.reporting);
 

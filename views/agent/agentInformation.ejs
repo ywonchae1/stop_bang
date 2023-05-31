@@ -1,11 +1,11 @@
 <table width="50%">
     <tr>
-        <td>영업시간</td>
+        <th>영업시간</th>
         <td>
             <% if(agent.a_id === null) { %>
             <p>정보없음</p>
             <% } else { %>
-                <%= agent.a_office_hour %>
+                <%= agent.a_office_hours %>
             <% } %>
         </td>
     </tr>

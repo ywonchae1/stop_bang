@@ -3,21 +3,21 @@
         <% if(agent.a_image1 == null) { %>
             <td>null</td>
         <% } else { %>
-            <td><%= agent.a_image1 %></td>
+            <td><img src="/uploads/<%= agent.a_image1 %>" style="width: 100px" /></td>
         <% } %>
     </tr>
     <tr>
         <% if(agent.a_image2 == null) { %>
             <td>null</td>
         <% } else { %>
-            <td><%= agent.a_image2 %></td>
+            <td><img src="/uploads/<%= agent.a_image2 %>" style="width: 100px" /></td>
         <% } %>
     </tr>
     <tr>
         <% if(agent.a_image3 == null) { %>
             <td>null</td>
         <% } else { %>
-            <td><%= agent.a_image3 %></td>
+            <td><img src="/uploads/<%= agent.a_image3 %>" style="width: 100px" /></td>
         <% } %>
     </tr>
     <tr>
@@ -25,4 +25,4 @@
     </tr>
 </table>
 
-<!-- <a href="/agent/<%= agent.a_id %>/update %>">수정</a> -->
+<a href="/agent/<%= agent.a_id %>/info_edit %>">수정</a>
