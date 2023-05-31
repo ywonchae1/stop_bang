@@ -41,23 +41,6 @@ function checkFileType(file, cb) {
 }
 
 module.exports = {
-  // upload: async(req, res, err) => {
-  //   if(err){
-  //     res.render('agent/updateAgentInfo', {
-  //       msg: err
-  //     });
-  //   } else {
-  //     if(req.file == undefined){
-  //       res.render('agent/updateAgentInfo', {
-  //         msg: 'Error: No File Selected!'
-  //       });
-  //     } else {
-  //       res.render('agent/updateAgentInfo', {
-  //         file: `uploads/${req.file.filename}`
-  //       });
-  //     }
-  //   }
-  // },
   upload: multer({
     storage: storage,
     limits: { fileSize: 1000000 },
@@ -65,23 +48,6 @@ module.exports = {
       checkFileType(file, cb);
     },
   }),
-  // myReview: (req, res) => {
-  //   agentModel.getReviewByRaRegno(req.params, (agentReviews) => {
-  //     console.log(agentReviews);
-  //     cmpName = agentReviews[0].cmp_nm;
-  //     raRegno = agentReviews[0].ra_regno;
-  //     res.render("agent/agentIndex.ejs", {
-  //       title: `${cmpName}의 후기`,
-  //       agentReviewData: agentReviews,
-  //       direction: `/review/${cmpName}/create`,
-  //       raRegno: raRegno,
-  //     });
-  //   });
-  // },
-
-  // myReviewView: (req, res) => {
-  //   res.render("agent/agentIndex");
-  // },
 
   agentProfile: async (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
@@ -121,25 +87,7 @@ module.exports = {
 
   agentProfileView: (req, res) => {
     res.render("agent/agentIndex");
-    // next();
   },
-
-  // agentMainInfo: (req, res, next) => {
-  // 	agentModel.getMainInfo(id, (result, err) => {
-  // 	  if (result === null) {
-  // 		console.log(result);
-  // 		console.log("error occured: ", err);
-  // 	  } else {
-  // 		res.locals.agent = result[0];
-  // 		next();
-  // 	  }
-  // 	});
-  // },
-
-  // agentMainInfoView: (req, res,next) => {
-  // 	res.render("agent/agentMainInfo");
-  // 	next();
-  // },
 
   updateMainInfo: (req, res) => {
     agentModel.getMainInfo(req.params, (agentMainInfo) => {
@@ -163,114 +111,32 @@ module.exports = {
   updatingMainInfo: (req, res) => {
     agentModel.updateMainInfo(req.params, req.body, () => {
       res.redirect(`agent/agentIndex`);
-      //res.redirect(`/resident/${req.body.userName}/myReviews`);
     });
   },
 
-  /*
-	editMainInfo: (req, res, next) => {
-		next();
-	},
-	updateMainInfo: (req, res, next) => {
-		res.locals.redirect = "/agent/agentIndex";
-		next();
-	},
-	*/
+  updateEnteredInfo: async (req, res) => {
+    let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
 
-  // enteredagentInfo: (req, res, next) => {
-  // 	agentModel.getEnteredAgent(id, (result, err) => {
-  // 		if (result === null) {
-  // 			console.log(result);
-  // 			console.log("error occured: ", err);
-  // 		} else {
-  // 			res.locals.agent = result[0][0];
-  // 			next();
-  // 		}
-  // 	});
-  // },
+    let profileImage = getEnteredAgent[0][0].a_profile_image;
+    let officeHour = getEnteredAgent[0][0].a_office_hours;
 
-  // enteredagentInfoView: (req, res) => {
-  // 	res.render("agent/agentInformation");
-  // },
-
-  // unEnteredagentInfo: (req, res, next) => {
-  // 	agentModel.getUnEnteredAgent(id, (result, err) => {
-  // 		if (result === null) {
-  // 			console.log(result);
-  // 			console.log("error occured: ", err);
-  // 		} else {
-  // 			res.local.agent = result[0];
-  // 			next();
-  // 		}
-  // 	});
-
-  // },
-
-  // unEnteredagentInfoView: (req, res) => {
-  // 	res.render("agent/agentInformation");
-  // },
-
-  updateEnteredInfo: (req, res) => {
-    agentModel.getEnteredAgent(req.params.id, (agentInfo) => {
-      let profileImage = agentInfo.a_profile_image;
-      let officeHour = agentInfo.a_office_hours;
-
-      let title = `부동산 정보 수정하기`;
-      res.render("agent/updateAgentInfo.ejs", {
-        title: title,
-        agentId: req.params.id,
-        profileImage: profileImage,
-        officeHour: officeHour,
-      });
+    let title = `부동산 정보 수정하기`;
+    res.render("agent/updateAgentInfo.ejs", {
+      title: title,
+      agentId: req.params.id,
+      profileImage: profileImage,
+      officeHour: officeHour,
     });
   },
 
   updatingEnteredInfo: (req, res, next) => {
     agentModel.updateEnterdAgentInfo(req.params.id, req.body, () => {
-      // res.redirect(`/agent/agentIndex`);
       console.log(req.params.id);
       res.locals.redirect = `/agent/${req.params.id}`;
       next();
-      //res.redirect(`/resident/${req.body.userName}/myReviews`);
     });
   },
 
-  /*
-	updateUnEnteredInfo: (req, res) => {
-		agentModel.getUnEnteredAgent(req.params, (agentInfo) => {
-			let telno = agentInfo.telno;
-
-			let title = `부동산 정보 수정하기`
-			res.render('agent/updateAgentInfo.ejs', 
-			{
-				title: title, 
-				agentId: req.params.agentList_ra_regno, 
-				telno: telno
-			});
-		});
-	},
-
-	updatingUnEnteredInfo: (req, res) => {
-		agentModel.updateUnEnterdAgentInfo(req.params, req.body, () => {
-			res.redirect(`/agent/agentInformation`);
-			//res.redirect(`/resident/${req.body.userName}/myReviews`);
-		});
-	},
-
-	editInfo: (req, res, next) => {
-		next();
-	},
-	updateInfo: (req, res, next) => {
-		res.locals.redirect = "/agent/agentIndex";
-		next();
-	},
-
-	redirectView: (req, res, next) => {
-		let redirectPath = res.locals.redirect;
-		if (redirectPath !== undefined) res.redirect(redirectPath);
-		else next();
-	},
-	*/
   settings: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
     if (!req.cookies.authToken) return res.send("로그인 필요합니다");
