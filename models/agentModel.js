@@ -118,12 +118,15 @@ module.exports = {
   //   result(res);
   // },
 
-  updateMainInfo: async (ra_regno, file, body, result) => {
+  updateMainInfo: async (ra_regno, files, body, result) => {
     try {
       const res = await db.query(
         `UPDATE agent SET a_image1=?, a_image2=?, a_image3=?, a_introduction=?
 			WHERE agentList_ra_regno=?`,
-        [file.filename ? file.filename : null, body.introduction, ra_regno]
+        [files.myImage1.filename ? files.myImage1.filename : null,
+         files.myImage2.filename ? files.myImage2.filename : null,
+         files.myImage3.filename ? files.myImage3.filename : null,
+         body.introduction, ra_regno]
       );
       result(res);
     } catch (error) {

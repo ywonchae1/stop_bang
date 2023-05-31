@@ -12,9 +12,8 @@
   <div class="container">
     <form action="/agent/<%= agentId %>/edit_process" method="POST" enctype="multipart/form-data">
       <input type='hidden' name='agentId' value=<%- agentId %>>
-	  
+
         <div class="file-field input-field">
-          <input name="test" value="something">
           <div class="btn grey">
             <span>File</span>
             <input name="myImage1" type="file" value= <%= image1 %>>
@@ -22,7 +21,9 @@
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
           </div>
+		</div>
 
+		<div class="file-field input-field">
 		  <div class="btn grey">
             <span>File</span>
             <input name="myImage2" type="file" value= <%= image2 %>>
@@ -30,7 +31,9 @@
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
           </div>
+		</div> 
 
+		<div class="file-field input-field">
 		  <div class="btn grey">
             <span>File</span>
             <input name="myImage3" type="file" value= <%= image3 %>>
@@ -38,8 +41,9 @@
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
           </div>
+		</div>
+
           <br />
-        </div>
       <p>소개글</p>
       <p><textarea class="uk-textarea uk-form-width-large" rows="5" name='introduction' placeholder='부동산 소개를 적어주세요' value=<%= introduction %>></textarea></p>
       <button type="submit" class="btn">Submit</button>
