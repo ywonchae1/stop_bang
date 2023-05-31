@@ -73,7 +73,7 @@ module.exports = {
     );
     let r_id = decoded.userId;
 		if(r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-		ra_regno = await reviewModel.reportProcess(req, r_id);
+		ra_regno = await realtorModel.reportProcess(req, r_id);
 		console.log("신고완료");
 	  res.redirect(`${req.baseUrl}/${ra_regno[0][0].agentList_ra_regno}`);
 	},
