@@ -1,24 +1,76 @@
 //Models
 const agentModel = require("../models/agentModel.js");
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+// Init Upload
+const storage = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: function(req, file, cb){
+    cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+// Init Upload
+const upload = multer({
+  storage: storage,
+  limits:{fileSize: 1000000},
+  fileFilter: function(req, file, cb){
+    checkFileType(file, cb);
+  }
+})
+
+// Check File Type
+function checkFileType(file, cb){
+  // Allowed ext
+  const filetypes = /jpeg|jpg|png/;
+  // Check ext
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype);
+
+  if(mimetype && extname){
+    return cb(null,true);
+  } else {
+    cb('Error: Images Only!');
+  }
+}
 
 module.exports = {
-  myReview: (req, res) => {
-    agentModel.getReviewByRaRegno(req.params, (agentReviews) => {
-      console.log(agentReviews);
-      cmpName = agentReviews[0].cmp_nm;
-      raRegno = agentReviews[0].ra_regno;
-      res.render("agent/agentIndex.ejs", {
-        title: `${cmpName}의 후기`,
-        agentReviewData: agentReviews,
-        direction: `/review/${cmpName}/create`,
-        raRegno: raRegno,
+  upload: async(req, res, err) => {
+    if(err){
+      res.render('agent/updateAgentInfo', {
+        msg: err
       });
-    });
+    } else {
+      if(req.file == undefined){
+        res.render('agent/updateAgentInfo', {
+          msg: 'Error: No File Selected!'
+        });
+      } else {
+        res.render('agent/updateAgentInfo', {
+          file: `uploads/${req.file.filename}`
+        });
+      }
+    }
   },
+  // myReview: (req, res) => {
+  //   agentModel.getReviewByRaRegno(req.params, (agentReviews) => {
+  //     console.log(agentReviews);
+  //     cmpName = agentReviews[0].cmp_nm;
+  //     raRegno = agentReviews[0].ra_regno;
+  //     res.render("agent/agentIndex.ejs", {
+  //       title: `${cmpName}의 후기`,
+  //       agentReviewData: agentReviews,
+  //       direction: `/review/${cmpName}/create`,
+  //       raRegno: raRegno,
+  //     });
+  //   });
+  // },
 
-  myReviewView: (req, res) => {
-    res.render("agent/agentIndex");
-  },
+  // myReviewView: (req, res) => {
+  //   res.render("agent/agentIndex");
+  // },
 
   agentProfile: async (req, res, next) => {
     await agentModel.getAgentProfile(req.params.id, (result, err) => {
@@ -103,7 +155,7 @@ module.exports = {
 
   updatingMainInfo: (req, res) => {
     agentModel.updateMainInfo(req.params, req.body, () => {
-      res.redirect(`agent/agenMainInfo`);
+      res.redirect(`agent/agentIndex`);
       //res.redirect(`/resident/${req.body.userName}/myReviews`);
     });
   },
@@ -152,11 +204,9 @@ module.exports = {
   // },
 
   updateEnteredInfo: (req, res) => {
-    agentModel.getEnteredAgent(req.params, (agentInfo) => {
+    agentModel.getEnteredAgent(req.params.id, (agentInfo) => {
       let profileImage = agentInfo.a_profile_image;
       let officeHour = agentInfo.a_office_hours;
-      let contactNumber = agentInfo.contact_number;
-      let telno = agentInfo.telno;
 
       let title = `부동산 정보 수정하기`;
       res.render("agent/updateAgentInfo.ejs", {
@@ -164,15 +214,13 @@ module.exports = {
         agentId: req.params.agentList_ra_regno,
         profileImage: profileImage,
         officeHour: officeHour,
-        contactNumber: contactNumber,
-        telno: telno,
       });
     });
   },
 
   updatingEnteredInfo: (req, res) => {
-    agentModel.updateEnterdAgentInfo(req.params, req.body, () => {
-      res.redirect(`agent/agentInformation`);
+    agentModel.updateEnterdAgentInfo(req.params.id, req.body, () => {
+      res.redirect(`agent/agentIndex`);
       //res.redirect(`/resident/${req.body.userName}/myReviews`);
     });
   },

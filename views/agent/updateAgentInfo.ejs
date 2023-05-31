@@ -1,20 +1,39 @@
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title><%- title %></title>
-	</head>
-	<body>
-		<h1><%- title %></h1>
-		<form action='/agent/<%- agentId %>/profile_update' method='post'>
-			<input type='hidden' name='raRegno' value=<%- raRegno %>>
-            <p>영업시간</p>
-			<p><input type='text' name='office_hour' placeholder='**:** ~ **:**' value=<%= contactNumber %>></p>
-            <p>부동산 연락처 <input type='text' name='contact' placeholder='부동산 연락처를 적어주세요' value=<%= contactNumber %>></p> for문
-            <p>공인중개사 연락처 <input type='text' name='telno' placeholder='공인중개사 연락처를 적어주세요' value=<%= telno %>></p>
-			<input type='submit' value='등록'>
-		</form>
-		<form action='/agent/<%- agentId %>' method='get'>
-			<input type='submit' value='취소'>
-		</form>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+</head>
+<body>
+  <h1>부동산 프로필 수정하기</h1>
+  <div class="container">
+    <%= typeof msg != 'undefined' ? msg : '' %>
+    <form action="/agent/<%= agentId %>/update" method="POST" enctype="multipart/form-data">
+	  <input type='hidden' name='agentId' value=<%- agentId %>>
+      <div class="file-field input-field">
+        <div class="btn grey">
+          <span>File</span>
+          <input name="myImage" type="file" value= <%= profileImage %>>
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+		<br>
+		<img src="<%= typeof file != 'undefined' ? file : '' %>" width="100px" height="100px" class="responsive-img">
+      </div>
+	  <p>영업시간</p>
+	  <p><input type='text' name='office_hour' placeholder='**:** ~ **:**' value=<%= officeHour %>></p>
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>  
+</body>
 </html>

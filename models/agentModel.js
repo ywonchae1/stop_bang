@@ -32,11 +32,10 @@ module.exports = {
 		}
 	}, */
 
-    getMainInfo: async (params, result) => {
-	let agentId = params;
+    getMainInfo: async (ra_regno, result) => {
 	let rawQuery = `SELECT a_image1, a_image2, a_image3, a_introduction FROM agent
 				WHERE agentList_ra_regno = ?;`;
-	let res = await db.query(rawQuery, [agentId]);
+	let res = await db.query(rawQuery, [ra_regno]);
 	result(res[0][0]);
     },
 
@@ -62,7 +61,7 @@ module.exports = {
 	result(res[0]);
     },
 
-    updateMainInfo: async (params, body, result) => {
+    updateMainInfo: async (ra_regno, body, result) => {
 	let rawQuery = `
 		UPDATE agent
 		SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
@@ -71,12 +70,12 @@ module.exports = {
 	    body.image2,
 	    body.image3,
 	    body.a_introduction,
-	    params.agentList_ra_regno,
+	    ra_regno.agentList_ra_regno,
 	]);
 	result(res);
     },
 
-    getEnteredAgent: async (id, result) => {
+    getEnteredAgent: async (ra_regno, result) => {
 	try {
 	    const res = await db.query(
 		`SELECT a_office_hours, contact_number, telno, agentList_ra_regno
@@ -86,7 +85,7 @@ module.exports = {
 				JOIN agent
 				ON agentList.ra_regno = agent.agentList_ra_regno
 				WHERE agentList_ra_regno = ?`,
-		[id]
+		[ra_regno]
 	    );
 
 	    result(res);
@@ -95,28 +94,28 @@ module.exports = {
 	}
     },
 
-    getUnEnteredAgent: async (id, result) => {
+    getUnEnteredAgent: async (ra_regno, result) => {
 	try {
 	    const res = await db.query("SELECT * FROM agentList WHERE ra_regno = ?", [
-		id,
+		ra_regno,
 	    ]);
 	    result(res);
 	} catch (error) {
 	    result(null, error);
-	}
+		}
     },
 
-    updateEnterdAgentInfo: async (params, body, result) => {
-	let rawQuery = `
-		UPDATE agent_contact As contact, agentList As List, agent
-		SET agent.a_profile_image=?, contact.contact_number=?, List.telno=? WHERE agentList_ra_regno=?`;
-	let res = await db.query(rawQuery, [
-	    body.a_profile_image,
-	    body.contact_number,
-	    body.telno,
-	    params.agentList_ra_regno,
-	]);
-	result(res);
+    updateEnterdAgentInfo: async (ra_regno, body, result) => {
+		try {
+			const res = await db.query(
+			  `UPDATE agent SET a_profile_image=?, a_office_hours=? 
+			WHERE agentList_ra_regno=?`,
+			  [body.profileImage, body.officeHour, ra_regno]
+			);
+			result(res);
+		  } catch (error) {
+			result(null, error);
+		  }
     },
 
     /*
@@ -175,3 +174,14 @@ module.exports = {
     }
   },
 };
+
+
+	// let rawQuery = `
+	// 	UPDATE agent
+	// 	SET agent.a_profile_image=?, agent.a_office_hours=? WHERE agentList_ra_regno=?`;
+	// let res = await db.query(rawQuery, [ra_regno,
+	//     body.a_profile_image,
+	// 	body.a_office_hours,
+	//     //ra_regno.agentList_ra_regno,
+	// ]);
+	// result(res);
