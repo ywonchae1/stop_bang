@@ -37,5 +37,6 @@
 #checkpw,
 #checkPhoneMessage,
 .abouttissue {
-  padding-left: 10px;
+  margin-left: 10px;
+  white-space: pre-wrap;
 }
