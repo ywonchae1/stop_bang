@@ -21,7 +21,7 @@ let residentModel = {
   getOpenedReviewById: async (id, result) => {
     try {
       const res = await sql.query(
-        `SELECT review_rv_id as rv_id, cmp_nm, address, agentList_ra_regno, rating, content, opened_review.created_time AS created_time 
+        `SELECT review_rv_id as rv_id, cmp_nm, address, agentList_ra_regno, rating, content, tags, opened_review.created_time AS created_time 
         FROM opened_review 
           INNER JOIN review 
           ON opened_review.review_rv_id = review.rv_id 
