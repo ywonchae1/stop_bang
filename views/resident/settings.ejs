@@ -78,13 +78,53 @@
     "numeric", month: "2-digit", day: "2-digit"}).format(resident.r_birth) %>"
     />
     <br />
-    <div>
+    <div class="layout-row">
       <label class="user-label">🧻 나의 휴지</label>
-      <span class="uk-badge"><%= resident.r_point%></span>
-      <span class="abouttissue">
-        ※휴지란? 후기를 열람하기 위해 사용하는 포인트입니다. 후기를 작성하여
-        획득할 수 있습니다.</span
-      >
+      <span class="uk-badge" style="margin-right: 30px;"><%= resident.r_point%></span>
+      <span class="abouttissue" style="margin-right: 10px">※휴지란?</span>
+      <a href="#modal-center" uk-toggle><i class="ri-question-line"></i></a>
+
+      <div id="modal-center" class="uk-flex-top" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+          <button class="uk-modal-close-default" type="button" uk-close></button>
+
+          <p>
+            <div style="text-align: center;">
+              <h3>휴지로 후기를 열람하세요!</h3>
+              <p>2️⃣🧻를 사용하여 후기를 열람할 수 있습니다.</p>
+            </div>
+            <h4>🧻 모으기</h4>
+            <table class="uk-table uk-table-striped">
+              <tr>
+                <td>회원가입</td>
+                <td>+2️⃣🧻</td>
+              </tr>
+              <tr>
+                <td>첫 후기 작성</td>
+                <td>+5️⃣🧻</td>
+              </tr>
+              <tr>
+                <td>후기 작성</td>
+                <td>+3️⃣🧻</td>
+              </tr>
+              <tr>
+                <td>생일 입력</td>
+                <td>+1️⃣🧻</td>
+              </tr>
+              <tr>
+                <td>생일 축하</td>
+                <td>+1️⃣🧻</td>
+              </tr>
+              <tr>
+                <td>전화번호 인증</td>
+                <td>+3️⃣🧻</td>
+              </tr>
+            </table>
+          </p>
+
+        </div>
+      </div>
     </div>
     <button
       class="user-submit-button uk-button uk-button-default"
