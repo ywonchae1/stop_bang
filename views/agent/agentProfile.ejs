@@ -3,7 +3,7 @@
         <% if(agent.a_profile_image == null) { %>
             <td>프로필 이미지 미등록</td>
         <% } else { %>
-            <td><%= agent.a_profile_image %></td>
+            <img src="/uploads/<%= agent.a_profile_image %>" style="width: 100px" />
         <% } %>
     </tr>
     <tr>

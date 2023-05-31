@@ -12,19 +12,20 @@
   <div class="container">
     <%= typeof msg != 'undefined' ? msg : '' %>
     <form action="/agent/<%= agentId %>/update_process" method="POST" enctype="multipart/form-data">
-	  <input type='hidden' name='agentId' value=<%- agentId %>>
-      <div class="file-field input-field">
-        <div class="btn grey">
-          <span>File</span>
-          <input name="myImage" type="file" value= <%= profileImage %>>
+      <input type='hidden' name='agentId' value=<%- agentId %>>
+        <div class="file-field input-field">
+          <input name="test" value="something" >
+          <div class="btn grey">
+            <span>File</span>
+            <input name="myImage" type="file" value= <%= profileImage %>>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+          <br />
         </div>
-        <div class="file-path-wrapper">
-          <input class="file-path validate" type="text">
-        </div>
-		<br>
-      </div>
-	  <p>영업시간</p>
-	  <p><input type='text' name='office_hour' placeholder='**:** ~ **:**' value=<%= officeHour %>></p>
+      <p>영업시간</p>
+      <p><input type='text' name='office_hour' placeholder='**:** ~ **:**' value=<%= officeHour %>></p>
       <button type="submit" class="btn">Submit</button>
     </form>
   </div>

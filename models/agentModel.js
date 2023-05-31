@@ -147,13 +147,12 @@ module.exports = {
     }
   },
 
-  updateEnterdAgentInfo: async (ra_regno, body, result) => {
+  updateEnterdAgentInfo: async (ra_regno, file, body, result) => {
     try {
-      console.log(body);
       const res = await db.query(
         `UPDATE agent SET a_profile_image=?, a_office_hours=? 
 			WHERE agentList_ra_regno=?`,
-        [body.profileImage, body.officeHour, ra_regno]
+        [file.filename ? file.filename : null, body.office_hour, ra_regno]
       );
       result(res);
     } catch (error) {

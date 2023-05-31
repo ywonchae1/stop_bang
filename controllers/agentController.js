@@ -130,7 +130,7 @@ module.exports = {
   },
 
   updatingEnteredInfo: (req, res, next) => {
-    agentModel.updateEnterdAgentInfo(req.params.id, req.body, () => {
+    agentModel.updateEnterdAgentInfo(req.params.id, req.file, req.body, () => {
       console.log(req.params.id);
       res.locals.redirect = `/agent/${req.params.id}`;
       next();
