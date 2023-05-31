@@ -39,8 +39,19 @@
 
     <div class="grid gap-2">
       <label for="agentList_ra_regno">raregno</label>
-      <input name="agentList_ra_regno" placeholder="111-33-4444" value=" " />
+      <input
+        id="agentList_ra_regno"
+        name="agentList_ra_regno"
+        placeholder="111-33-4444"
+        value="00599"
+      />
     </div>
+
+    <button onclick="getAgentPhoneNumber()" type="button">
+      핸드폰 번호 불러오기
+    </button>
+
+    <p id="agent_phone_number"></p>
 
     <div class="grid gap-2">
       <label for="email">본인 확인 이메일 (필수)</label>
@@ -96,5 +107,22 @@
     } else {
       passwordMessage.innerText = "";
     }
+  }
+
+  async function getAgentPhoneNumber() {
+    const raRegnoElement = document.getElementById("agentList_ra_regno");
+
+    const response = await fetch(
+      `/agent/phoneNumber?raRegno=${raRegnoElement.value}`
+    );
+    const result = await response.json();
+
+    if (!result.phoneNumber)
+      return alert("Failed to get a phone number of agent");
+
+    const agentPhoneNumberElement =
+      document.getElementById("agent_phone_number");
+
+    agentPhoneNumberElement.innerText = result.phoneNumber;
   }
 </script>

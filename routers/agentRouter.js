@@ -30,6 +30,8 @@ router.post('/upload', upload.single(img), (req, res) => {
 })
 
 */
+router.get("/phoneNumber", agentController.getAgentPhoneNumber);
+
 //agent 사용자 정보 확인용
 router.get("/settings", agentController.settings, agentController.settingsView);
 router.post(
@@ -59,6 +61,6 @@ router.get(
 router.get("/:id/update", agentController.updateEnteredInfo);
 
 //후기 신고
-router.get('/report/:rv_id', reviewController.reporting);
+router.get("/report/:rv_id", reviewController.reporting);
 
 module.exports = router;
