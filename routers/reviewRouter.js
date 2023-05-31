@@ -22,6 +22,9 @@ router.get('/:rv_id/update', reviewController.updateReview);
 //후기 수정 DB 반영
 router.post('/:rv_id/update_process', reviewController.updatingReview);
 
+//후기 신고
+router.get('/report/:rv_id', reviewController.reporting);
+
 module.exports = router;
 
 /*삭제 보류

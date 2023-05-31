@@ -58,36 +58,27 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `mydb`.`agent`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`agent` (
-  `a_id` INT NOT NULL AUTO_INCREMENT,
-  `agentList_ra_regno` VARCHAR(30),
-  `a_username` VARCHAR(45) NOT NULL,
-  `a_password` VARCHAR(200) NOT NULL,
-  `a_realname` VARCHAR(45) NOT NULL,
-  `a_email` VARCHAR(45) NOT NULL,
-	`a_phone` VARCHAR(45) NOT NULL,
-  `a_estatename` VARCHAR(200) NOT NULL,
-  `a_auth` TINYINT NOT NULL DEFAULT 0,
-  `a_auth_image` LONGBLOB,
-  `a_introduction` VARCHAR(45),
-  `a_office_hours` VARCHAR(45),
-  `a_profile_image` LONGBLOB,
-  `a_image1` LONGBLOB,
-  `a_image2` LONGBLOB,
-  `a_image3` LONGBLOB,
-  `created_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`a_id`, `agentList_ra_regno`),
-  UNIQUE INDEX `idrealtor_UNIQUE` (`a_id` ASC),
-  UNIQUE INDEX `a_email_UNIQUE` (`a_email` ASC),
-  INDEX `fk_agent_agentList1_idx` (`agentList_ra_regno` ASC),
-  CONSTRAINT `fk_agent_agentList1`
-    FOREIGN KEY (`agentList_ra_regno`)
-    REFERENCES `mydb`.`agentList` (`ra_regno`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+CREATE TABLE IF NOT EXISTS `mydb`.`agent`(
+`a_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+`agentList_ra_regno` VARCHAR(30) NOT NULL UNIQUE,
+`a_username` VARCHAR(45) NOT NULL,
+`a_password` VARCHAR(200) NOT NULL,
+`a_realname` VARCHAR(45) NOT NULL,
+`a_email` VARCHAR(45) NOT NULL UNIQUE,
+`a_phone` VARCHAR(45) NULL,
+`a_auth` TINYINT(4) NOT NULL DEFAULT 0,
+`a_auth_image` LONGBLOB NULL,
+`a_introduction` VARCHAR(45) NULL,
+`a_office_hours` VARCHAR(45) NULL,
+`a_profile_image` LONGBLOB NULL,
+`a_image1` LONGBLOB NULL,
+`a_image2` LONGBLOB NULL,
+`a_image3` LONGBLOB NULL,
+`created_time` TIMESTAMP DEFAULT NOW(),
+`updated_time` TIMESTAMP DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (agentList_ra_regno)
+REFERENCES agentList(ra_regno) ON UPDATE CASCADE
+);
 
 -- -----------------------------------------------------
 -- Table `mydb`.`review`

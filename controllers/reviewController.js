@@ -57,9 +57,23 @@ module.exports = {
 
   //후기 수정 DB 반영
   updatingReview: (req, res) => {
-    reviewModel.updateReviewProcess(req.params, req.body, () => {
-      res.redirect(`/resident/myReview`);
-      //res.redirect(`/resident/${req.body.userName}/myReviews`);
-    });
+	  reviewModel.updateReviewProcess(req.params, req.body, () => {
+	    res.redirect(`/resident/myReview`);
+	  });
   },
+
+	//후기 신고
+	reporting: async (req, res) => {
+		//쿠키로부터 로그인 계정 알아오기
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    let r_id = decoded.userId;
+		if(r_id === null) res.send('로그인이 필요합니다.');
+		ra_regno = await reviewModel.reportProcess(req, r_id);
+		console.log("신고완료");
+		res.redirect(`/realtor/${ra_regno[0][0].agentList_ra_regno}`);
+	}
 };
