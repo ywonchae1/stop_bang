@@ -3,6 +3,7 @@ const router = express.Router();
 
 //Controllers
 const realtorController = require("../controllers/realtorController.js");
+const reviewController = require("../controllers/reviewController.js");
 
 router.use((req, res, next) => {
   console.log("Router for realtor page was started");
@@ -27,5 +28,8 @@ router.post(
   '/:ra_regno/opening/:rv_id',
   realtorController.opening
 );
+
+//후기 신고
+router.get('/report/:rv_id', reviewController.reporting);
 
 module.exports = router;
