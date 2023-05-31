@@ -31,6 +31,7 @@ module.exports = {
       res.locals.direction = `/review/${req.params.ra_regno}/create`;
       res.locals.cmpName = res.locals.agent.cmp_nm;
       res.locals.report = getReport;
+      
       if (getRating === null) {
         res.locals.rating = 0;
         res.locals.tagsData = null;
