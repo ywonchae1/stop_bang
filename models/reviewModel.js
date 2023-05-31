@@ -14,7 +14,7 @@ module.exports = {
 		result(res[0][0]);
     },
 
-  createReviewProcess: async (r_id, params, body, result) => {
+  	createReviewProcess: async (r_id, params, body, result) => {
 		let raRegno = params.ra_regno;
 		let rate = body.rate;
 		let description = body.description;
@@ -77,30 +77,4 @@ module.exports = {
 		let res = await db.query(rawQuery, [body.rate, desc, params.rv_id]);
 		result(res);
     },
-
-	reportProcess: async (req, r_id) => {
-		let rawQuery = `
-		INSERT
-		INTO report(reporter, repo_rv_id, reportee, reason) 
-		VALUES(?, ?, ?, ?)`
-		let getReportee = `
-		SELECT r_username
-		FROM review
-		JOIN resident
-		ON resident_r_id=r_id
-		WHERE rv_id=?`
-		let getReporter = `
-		SELECT r_username
-		FROM resident
-		WHERE r_id=?`
-		let getRaRegno = `
-		SELECT agentList_ra_regno
-		FROM review
-		WHERE rv_id=?`
-		
-		let reporter = await db.query(getReporter, [r_id]);
-		let reportee = await db.query(getReportee, [req.params.rv_id]);
-		await db.query(rawQuery, [reporter[0][0].r_username, req.params.rv_id, reportee[0][0].r_username, req.query.reason]);
-		return await db.query(getRaRegno, [req.params.rv_id]);
-	}
 };
