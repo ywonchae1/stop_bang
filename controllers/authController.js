@@ -11,6 +11,24 @@ function checkUsernameExists(username, responseToClient) {
   });
 }
 
+function checkPasswordCorrect(password, responseToClient) {
+  const uppercaseRegex = /[A-Z]/;
+  const lowercaseRegex = /[a-z]/;
+  const numberRegex = /[0-9]/;
+  const specialCharRegex = /[!@#$%^&*]/;
+
+  if (
+    !uppercaseRegex.test(password) ||
+    !lowercaseRegex.test(password) ||
+    !numberRegex.test(password) ||
+    !specialCharRegex.test(password)
+  ) {
+    return responseToClient(false);
+  } else {
+    responseToClient(true);
+  }
+}
+
 module.exports = {
   registerView: (req, res) => {
     res.render("users/register");
@@ -30,6 +48,8 @@ module.exports = {
     ) {
       return res.status(400).send("필수 항목 빠짐");
     }
+
+    checkPasswordCorrect;
 
     checkUsernameExists(body.username, (usernameExists) => {
       if (usernameExists) {
@@ -78,6 +98,8 @@ module.exports = {
     ) {
       return res.status(400).send("필수 항목 빠짐");
     }
+
+    checkPasswordCorrect;
 
     checkUsernameExists(body.username, (usernameExists) => {
       if (usernameExists) {
