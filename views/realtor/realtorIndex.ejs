@@ -7,8 +7,8 @@
 <% if(agentReviewData[0] == null) { %>
     <h3>첫 후기를 작성해 보세요!</h3>
     <form action=<%= direction %> method='post'>
-        <input class="uk-button uk-button-default" type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
-        <p><input type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
+        <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+        <p><input class="uk-button uk-button-default" type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
     </form>
 <% } else { %>
     <% agentReviewData.forEach(review => { %>
@@ -24,7 +24,7 @@
 
     <% if(!r_id) { %>
         <form action='/auth/login'>
-            <p><input type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
+            <p><input class="uk-button uk-button-default" type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
         </form> 
     <% } else { %>
         <% let flag = 1; %>
