@@ -2,7 +2,7 @@
 const db = require("../config/db.js");
 
 module.exports = {
-    getRealtorProfile: async (ra_regno) => {
+	getRealtorProfile: async (ra_regno) => {
 		try {
 			const res = await db.query(`
 			SELECT agentList.rdealer_nm, agentList.cmp_nm, agentList.address, agent.a_profile_image
@@ -15,7 +15,7 @@ module.exports = {
 		} catch (error) {
 			return error;
 		}
-    },
+	},
 
     getMainInfo: async (ra_regno) => {
 		let rawQuery = `

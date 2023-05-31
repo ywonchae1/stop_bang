@@ -1,5 +1,6 @@
 //Models
 const agentModel = require("../models/agentModel.js");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   myReview: (req, res) => {
@@ -22,20 +23,20 @@ module.exports = {
 
   agentProfile: async (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    let r_id = req.cookies.authToken;
-    if(r_id === null) res.send('로그인이 필요합니다.');
-    res.locals.r_id = r_id;
-    //쿠키로부터 계정 유형 알아오기
-    let user_type = req.cookies.userType;
-    if(user_type !== 0) res.send('접근이 제한되었습니다. 공인중개사 회원 로그인이 필요합니다.');
-    res.locals.user_type = user_type;
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
     try {
       let agent = await agentModel.getAgentProfile(req.params.id);
       let getMainInfo = await agentModel.getMainInfo(req.params.id);
+      //다른 공인중개사 페이지 접근 제한(수정제한으로 수정 필요할지도)
+      if(getMainInfo.a_id !== decoded.userId) return res.send("접근이 제한되었습니다. 공인중개사 계정으로 로그인하세요");
       let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
       let getReviews = await agentModel.getReviewByRaRegno(req.params.id);
       let getRating = await agentModel.getRating(req.params.id);
-      let getReport = await agentModel.getReport(req.params.id, r_id);
+      let getReport = await agentModel.getReport(req.params.id, decoded.userId);
       res.locals.agent = agent[0];
       res.locals.agentMainInfo = getMainInfo;
       res.locals.agentSubInfo = getEnteredAgent[0][0];
@@ -208,24 +209,32 @@ module.exports = {
 	*/
   settings: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    let a_id = req.cookies.authToken;
-    if (a_id == null) res.send("로그인이 필요합니다.");
-    else {
-      agentModel.getAgentById(a_id, (result, err) => {
-        if (result === null) {
-          console.log("error occured: ", err);
-        } else {
-          res.locals.agent = result[0][0];
-          next();
-        }
-      });
-    }
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    agentModel.getAgentById(decoded, (result, err) => {
+      if (result === null) {
+        console.log("error occured: ", err);
+      } else {
+        res.locals.agent = result[0][0];
+        next();
+      }
+    });
   },
+
   settingsView: (req, res) => {
     res.render("agent/settings");
   },
+
   updateSettings: (req, res, next) => {
-    let a_id = req.cookies.authToken;
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    let a_id = decoded.userId;
     const body = req.body;
     if (a_id === null) res.send("로그인이 필요합니다.");
     else {
@@ -240,7 +249,12 @@ module.exports = {
     }
   },
   updatePassword: (req, res, next) => {
-    const a_id = req.cookies.authToken;
+    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    const a_id = decoded.userId;
     if (a_id === null) res.send("로그인이 필요합니다.");
     else {
       agentModel.updateAgentPassword(a_id, req.body, (result, err) => {

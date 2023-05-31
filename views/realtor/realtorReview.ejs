@@ -41,7 +41,7 @@
         <% let isReported = false; %>
         <% if(report != undefined) { %>
           <% report.forEach(repo => { %>
-          <% if(repo.rv_id === review.rv_id) isReported = true; }); %>
+          <% if(repo.repo_rv_id === review.rv_id) isReported = true; }); %>
         <% } %>
         <% if(!isReported) { %>
           <!-- A button to open the popup form -->

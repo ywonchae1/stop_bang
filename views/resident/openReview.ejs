@@ -6,7 +6,7 @@
   <a href="/search">🏃‍♀️휴지로 부동산 후기 보러가기💨</a>
   <% } else { %>
   <% openReviews.forEach(review=> { %>
-  <%- include('./residentReview.ejs', {review:review, mine:false}) %>
+  <%- include('./residentReview.ejs', {review:review, mine:false, tagsData:tagsData}) %>
   <% }); %>
   <% } %>
 </div>

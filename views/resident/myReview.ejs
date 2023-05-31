@@ -6,7 +6,7 @@
   <a href="/search">🏃‍♀️부동산 살펴보러 가기💨</a>
   <% } else { %>
   <% reviews.forEach(review=> { %>
-  <%- include('./residentReview.ejs', {review:review, mine:true}) %>
+  <%- include('./residentReview.ejs', {review:review, mine:true, tagsData:tagsData}) %>
   <% }); %>
   <% } %>
 </div>

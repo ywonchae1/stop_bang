@@ -4,6 +4,7 @@
     class="grid gap-4"
     name="register"
     method="post"
+    id="register"
   >
     <div class="grid gap-2">
       <label for="username">아이디</label>
@@ -16,22 +17,29 @@
         name="password"
         placeholder="비밀번호 입력"
         type="password"
-        value="passwordk"
+        value="password!A"
+        onkeyup="validatePassword(this.value)"
       />
+      <p id="passwordMessage" class="error"></p>
     </div>
 
     <div class="grid gap-2">
-      <label for="phone">핸드폰</label>
+      <label for="phone">핸드폰 번호 (필수)</label>
       <input
         name="phone"
-        placeholder="핸드폰 번호 입력"
-        value="12312-213-123"
+        placeholder="핸드폰 번호 입력 (숫자만)"
+        value="010-1111-1111"
       />
     </div>
 
     <div class="grid gap-2">
       <label for="realname">실명</label>
-      <input name="realname" placeholder="실명 입력" value="실명" />
+      <input name="realname" placeholder="실명 입력" value="김김김" />
+    </div>
+
+    <div class="grid gap-2">
+      <label for="agentList_ra_regno">raregno</label>
+      <input name="agentList_ra_regno" placeholder="111-33-4444" value=" " />
     </div>
 
     <div class="grid gap-2">
@@ -40,16 +48,53 @@
         name="email"
         placeholder="이메일 입력"
         type="email"
-        value="email@nvermoc.mod"
+        value="email@gmail.com"
       />
     </div>
 
     <div class="grid gap-2">
-      <label for="birth">생년월일 (선택)</label>
-      <input name="birth" placeholder="생년월일 입력" value="19980412" />
-    </div>
+      <label
+        >생년월일 (선택) <br />
+        <input
+          type="date"
+          name="bday"
+          required
+          pattern="\d{4}-\d{2}-\d{2}"
+          value="1999-11-11"
+        />
+        <span class="validity"></span>
+      </label>
 
-    <button type="submit">회원가입</button>
+      <!-- <label for="birth">생년월일 (선택)</label>
+      <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
+    </div>
+    <br />
+    <button type="submit" form="register">회원가입</button>
   </form>
 </main>
-<script></script>
+
+<script>
+  function validatePassword(password) {
+    const passwordMessage = document.getElementById("passwordMessage");
+
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /^(?=.*[!@#%&])/.test(password);
+
+    if (password.length < minLength) {
+      passwordMessage.innerText = `비밀번호는 ${minLength}자 이상이어야 합니다.`;
+    } else if (!hasUppercase) {
+      passwordMessage.innerText = "비밀번호에는 대문자가 포함되어야 합니다.";
+    } else if (!hasLowercase) {
+      passwordMessage.innerText = "비밀번호에는 소문자가 포함되어야 합니다.";
+    } else if (!hasNumber) {
+      passwordMessage.innerText = "비밀번호에는 숫자가 포함되어야 합니다.";
+    } else if (!hasSpecial) {
+      passwordMessage.innerText = "비밀번호에는 특수기호가 포함되어야 합니다";
+    } else {
+      passwordMessage.innerText = "";
+    }
+  }
+</script>

@@ -9,8 +9,7 @@ module.exports = {
 		let rawQuery = `
 			SELECT ra_regno, cmp_nm
 			FROM agentList
-			WHERE ra_regno=?
-			`
+			WHERE ra_regno=?`;
 		let res = await db.query(rawQuery, [raRegno]);
 		result(res[0][0]);
     },
@@ -19,7 +18,7 @@ module.exports = {
 		let raRegno = params.ra_regno;
 		let rate = body.rate;
 		let description = body.description;
-		let tags = body.tag.join("");
+		let tags = Array.isArray(body.tag) ? body.tag.join("") : body.tag;
 
 		let createReviewRawQuery = `
 			INSERT 
@@ -69,6 +68,9 @@ module.exports = {
 
     updateReviewProcess: async (params, body, result) => {
 		let desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
+		let tags = Array.isArray(body.tag)
+			? body.tag.join("") + body.checkedTags
+			: body.tag + body.checkedTags;
 		let rawQuery = `
 			UPDATE review
 			SET rating=?, content=? WHERE rv_id=?`;

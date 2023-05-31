@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 module.exports = {
-    getAgentProfile: async (ra_regno) => {
-		try {
+  getAgentProfile: async (ra_regno) => {
+    try {
 			const res = await db.query(`
 			SELECT agentList.rdealer_nm, agentList.cmp_nm, agentList.address, agent.a_profile_image
 			FROM agentList
@@ -17,18 +17,18 @@ module.exports = {
 		} catch (error) {
 			return error;
 		}
-    },
+  },
 
-    getMainInfo: async (ra_regno) => {
+  getMainInfo: async (ra_regno) => {
 		let rawQuery = `
-		SELECT ra_regno, a_image1, a_image2, a_image3, a_introduction
+		SELECT a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
 		FROM agent
 		RIGHT OUTER JOIN agentList
 		ON agentList_ra_regno=ra_regno
 		WHERE ra_regno = ?;`;
 		let res = await db.query(rawQuery, [ra_regno]);
 		return res[0][0];
-    },
+  },
 
 	getEnteredAgent: async (ra_regno) => {
 		try {
@@ -46,9 +46,9 @@ module.exports = {
 		} catch (error) {
 			return error
 		}
-    },
+  },
 
-    getReviewByRaRegno: async (ra_regno, r_id) => {
+  getReviewByRaRegno: async (ra_regno, r_id) => {
 		try {
 			let rawQuery = `
 			SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
@@ -66,7 +66,7 @@ module.exports = {
 		} catch(err) {
 			return err
 		}
-    },
+  },
 
 	getRating: async (ra_regno) => {
 		let rawQuery = `
@@ -77,7 +77,7 @@ module.exports = {
 		WHERE ra_regno=?;`;
 		let res = await db.query(rawQuery, [ra_regno]);
 		return res[0][0].agentRating;
-    },
+  },
 
 	getReport: async (ra_regno, r_id) => {
 		let rawQuery = `
@@ -95,45 +95,45 @@ module.exports = {
 		return res[0];
 	},
 
-    updateMainInfo: async (params, body, result) => {
-	let rawQuery = `
-		UPDATE agent
-		SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
-	let res = await db.query(rawQuery, [
-	    body.image1,
-	    body.image2,
-	    body.image3,
-	    body.a_introduction,
-	    params.agentList_ra_regno,
-	]);
-	result(res);
-    },
+  updateMainInfo: async (params, body, result) => {
+    let rawQuery = `
+      UPDATE agent
+      SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
+    let res = await db.query(rawQuery, [
+      body.image1,
+      body.image2,
+      body.image3,
+      body.a_introduction,
+      params.agentList_ra_regno,
+    ]);
+    result(res);
+  },
 
-    getUnEnteredAgent: async (id, result) => {
-	try {
-	    const res = await db.query("SELECT * FROM agentList WHERE ra_regno = ?", [
-		id,
-	    ]);
-	    result(res);
-	} catch (error) {
-	    result(null, error);
-	}
-    },
+  getUnEnteredAgent: async (id, result) => {
+    try {
+      const res = await db.query("SELECT * FROM agentList WHERE ra_regno = ?", [
+        id,
+      ]);
+      result(res);
+    } catch (error) {
+      result(null, error);
+    }
+  },
 
-    updateEnterdAgentInfo: async (params, body, result) => {
-	let rawQuery = `
+  updateEnterdAgentInfo: async (params, body, result) => {
+    let rawQuery = `
 		UPDATE agent_contact As contact, agentList As List, agent
 		SET agent.a_profile_image=?, contact.contact_number=?, List.telno=? WHERE agentList_ra_regno=?`;
-	let res = await db.query(rawQuery, [
-	    body.a_profile_image,
-	    body.contact_number,
-	    body.telno,
-	    params.agentList_ra_regno,
-	]);
-	result(res);
-    },
+    let res = await db.query(rawQuery, [
+      body.a_profile_image,
+      body.contact_number,
+      body.telno,
+      params.agentList_ra_regno,
+    ]);
+    result(res);
+  },
 
-    /*
+  /*
 	updateUnEnterdAgentInfo: async (params, body, result) => {
 		let rawQuery = `
 		UPDATE agentList
@@ -142,9 +142,15 @@ module.exports = {
 		result(res);
 	},
 	*/
-  getAgentById: async (id, result) => {
+  getAgentById: async (decoded, result) => {
     try {
-      const res = await db.query("SELECT * FROM agent WHERE a_id = ?", [id]);
+      let rawQuery = `
+      SELECT *
+      FROM agent
+      RIGHT OUTER JOIN agentList
+      ON ra_regno=agentList_ra_regno
+      WHERE a_id=?;`
+      const res = await db.query(rawQuery, [decoded.userId]);
       result(res);
     } catch (error) {
       result(null, error);
