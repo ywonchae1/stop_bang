@@ -57,9 +57,14 @@ router.get(
 //agent info 수정(영업시간,전화번호)
 
 router.get("/:id/update", agentController.updateEnteredInfo);
-router.post(":/id/update_process",agentController.upload.single(myImage), agentController.updatingEnteredInfo);
-
+// router.post(":/id/update_process",agentController.upload.single('myImage'), agentController.updatingEnteredInfo);
+router.post(
+  "/:id/update_process",
+  agentController.upload.single("myImage"),
+  agentController.updatingEnteredInfo,
+  agentController.redirectView
+);
 //후기 신고
-router.get('/report/:rv_id', reviewController.reporting);
+router.get("/report/:rv_id", reviewController.reporting);
 
 module.exports = router;

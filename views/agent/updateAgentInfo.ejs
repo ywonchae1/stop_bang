@@ -11,7 +11,7 @@
   <h1>부동산 프로필 수정하기</h1>
   <div class="container">
     <%= typeof msg != 'undefined' ? msg : '' %>
-    <form action="/agent/<%= agentId %>/update" method="POST" enctype="multipart/form-data">
+    <form action="/agent/<%= agentId %>/update_process" method="POST" enctype="multipart/form-data">
 	  <input type='hidden' name='agentId' value=<%- agentId %>>
       <div class="file-field input-field">
         <div class="btn grey">
@@ -22,7 +22,6 @@
           <input class="file-path validate" type="text">
         </div>
 		<br>
-		<img src="<%= typeof file != 'undefined' ? file : '' %>" width="100px" height="100px" class="responsive-img">
       </div>
 	  <p>영업시간</p>
 	  <p><input type='text' name='office_hour' placeholder='**:** ~ **:**' value=<%= officeHour %>></p>

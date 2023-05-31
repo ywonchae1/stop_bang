@@ -1,28 +1,31 @@
 //Models
 const agentModel = require("../models/agentModel.js");
 const jwt = require("jsonwebtoken");
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 // Init Upload
 const storage = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: function(req, file, cb){
-    cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
+  destination: "./public/uploads/",
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
 });
 
 // Init Upload
 const upload = multer({
   storage: storage,
-  limits:{fileSize: 1000000},
-  fileFilter: function(req, file, cb){
+  limits: { fileSize: 1000000 },
+  fileFilter: function (req, file, cb) {
     checkFileType(file, cb);
-  }
-})
+  },
+});
 
 // Check File Type
-function checkFileType(file, cb){
+function checkFileType(file, cb) {
   // Allowed ext
   const filetypes = /jpeg|jpg|png/;
   // Check ext
@@ -30,31 +33,38 @@ function checkFileType(file, cb){
   // Check mime
   const mimetype = filetypes.test(file.mimetype);
 
-  if(mimetype && extname){
-    return cb(null,true);
+  if (mimetype && extname) {
+    return cb(null, true);
   } else {
-    cb('Error: Images Only!');
+    cb("Error: Images Only!");
   }
 }
 
 module.exports = {
-  upload: async(req, res, err) => {
-    if(err){
-      res.render('agent/updateAgentInfo', {
-        msg: err
-      });
-    } else {
-      if(req.file == undefined){
-        res.render('agent/updateAgentInfo', {
-          msg: 'Error: No File Selected!'
-        });
-      } else {
-        res.render('agent/updateAgentInfo', {
-          file: `uploads/${req.file.filename}`
-        });
-      }
-    }
-  },
+  // upload: async(req, res, err) => {
+  //   if(err){
+  //     res.render('agent/updateAgentInfo', {
+  //       msg: err
+  //     });
+  //   } else {
+  //     if(req.file == undefined){
+  //       res.render('agent/updateAgentInfo', {
+  //         msg: 'Error: No File Selected!'
+  //       });
+  //     } else {
+  //       res.render('agent/updateAgentInfo', {
+  //         file: `uploads/${req.file.filename}`
+  //       });
+  //     }
+  //   }
+  // },
+  upload: multer({
+    storage: storage,
+    limits: { fileSize: 1000000 },
+    fileFilter: function (req, file, cb) {
+      checkFileType(file, cb);
+    },
+  }),
   // myReview: (req, res) => {
   //   agentModel.getReviewByRaRegno(req.params, (agentReviews) => {
   //     console.log(agentReviews);
@@ -84,7 +94,10 @@ module.exports = {
       let agent = await agentModel.getAgentProfile(req.params.id);
       let getMainInfo = await agentModel.getMainInfo(req.params.id);
       //다른 공인중개사 페이지 접근 제한(수정제한으로 수정 필요할지도)
-      if(getMainInfo.a_id !== decoded.userId) return res.send("접근이 제한되었습니다. 공인중개사 계정으로 로그인하세요");
+      if (getMainInfo.a_id !== decoded.userId)
+        return res.send(
+          "접근이 제한되었습니다. 공인중개사 계정으로 로그인하세요"
+        );
       let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
       let getReviews = await agentModel.getReviewByRaRegno(req.params.id);
       let getRating = await agentModel.getRating(req.params.id);
@@ -100,8 +113,8 @@ module.exports = {
       } else {
         res.locals.agentRating = getRating;
       }
-    } catch(err) {
-      console.error(err.stack)
+    } catch (err) {
+      console.error(err.stack);
     }
     next();
   },
@@ -205,16 +218,19 @@ module.exports = {
       let title = `부동산 정보 수정하기`;
       res.render("agent/updateAgentInfo.ejs", {
         title: title,
-        agentId: req.params.agentList_ra_regno,
+        agentId: req.params.id,
         profileImage: profileImage,
         officeHour: officeHour,
       });
     });
   },
 
-  updatingEnteredInfo: (req, res) => {
+  updatingEnteredInfo: (req, res, next) => {
     agentModel.updateEnterdAgentInfo(req.params.id, req.body, () => {
-      res.redirect(`agent/agentIndex`);
+      // res.redirect(`/agent/agentIndex`);
+      console.log(req.params.id);
+      res.locals.redirect = `/agent/${req.params.id}`;
+      next();
       //res.redirect(`/resident/${req.body.userName}/myReviews`);
     });
   },
