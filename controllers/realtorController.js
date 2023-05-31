@@ -2,6 +2,23 @@
 const realtorModel = require("../models/realtorModel.js");
 const tags = require("../public/assets/tag.js");
 
+const makeStatistics = (reviews) => {
+	let array = Array.from({ length: 10 }, () => 0);
+	let stArray = new Array(10);
+	reviews.forEach(review => {
+		review.tags.split("").forEach(tag => {
+			array[parseInt(tag)]++;
+		});
+	});
+	for (let index = 0; index < array.length; index++) {
+		stArray[index] = { id:index, tag: tags.tags[index], count: array[index] };
+	}
+	stArray.sort((a, b) => {
+		return b.count - a.count;
+	})
+	return stArray;
+}
+
 module.exports = {
     mainPage: async (req, res, next) => {
 	//쿠키로부터 로그인 계정 알아오기
@@ -14,7 +31,8 @@ module.exports = {
 	    let agentSubInfo = await realtorModel.getEnteredAgent(req.params.ra_regno);
 	    let getReviews = await realtorModel.getReviewByRaRegno(req.params.ra_regno, r_id);
 		let getRating = await realtorModel.getRating(req.params);
-		let getBookmark = await realtorModel.getBookmarkByIdnRegno(req.params.ra_regno, r_id);;
+		let getBookmark = await realtorModel.getBookmarkByIdnRegno(req.params.ra_regno, r_id);
+		let statistics = makeStatistics(getReviews.reviews);
 	    res.locals.agent = agent[0];
 	    res.locals.agentMainInfo = agentMainInfo;
 	    res.locals.agentSubInfo = agentSubInfo[0][0];
@@ -25,6 +43,7 @@ module.exports = {
 	    res.locals.direction = `/review/${req.params.ra_regno}/create`;
 		res.locals.cmpName = res.locals.agent.cmp_nm;
 		res.locals.bookmark = getBookmark[0][0] ? getBookmark[0][0] : 0;
+		res.locals.statistics = statistics;
 	    if (getRating === null) {
 		res.locals.rating = 0;
 		res.locals.tagsData = null;
