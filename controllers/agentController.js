@@ -272,6 +272,7 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
+      const userId = decoded.userId;
       agentModel.getAgentById(decoded, (result, err) => {
         if (result === null) {
           console.log("error occured: ", err);
@@ -284,7 +285,7 @@ module.exports = {
   },
 
   settingsView: (req, res) => {
-    res.render("agent/settings");
+    res.render("agent/settings", { path: "settings" });
   },
 
   updateSettings: (req, res, next) => {
