@@ -32,28 +32,26 @@
 			<% if(repo.repo_rv_id === review.rv_id) isReported = true; }); %>
 		<% } %>
 		<% if(!isReported) { %>
-			<!-- A button to open the popup form -->
-			<button class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="openForm()">신고</button>
+			<!-- This is a button toggling the modal -->
+			<button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-example">신고</button>
 
-			<!-- The form -->
-			<div class="form-popup" id="myForm">
-				<form class="form-container" action=<%= `/agent/report/${review.rv_id}` %>>
-					<h3>🚨나쁜 후기입니까?🚨</h3>
-
+			<!-- This is the modal -->
+			<div id="modal-example" uk-modal>
+				<div class="uk-modal-dialog uk-modal-body">
+					<form class="form-container" action=<%= `/realtor/report/${review.rv_id}` %>>
+					<h2 class="uk-modal-title">🚨나쁜 후기입니까?🚨</h2>
 					<label><b>신고 사유 선택</b></label>
 					<div class="report-radio-container" name="reason">
-						<label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=1>사칭/사기</label>
+						<label><input style="margin: 15px;" class="uk-radio" type="radio" required="required" name="reason" value=1>사칭/사기</label>
 						</br>
-						<label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=2>욕설/비하</label>
+						<label><input style="margin: 15px;" class="uk-radio" type="radio" required="required" name="reason" value=2>욕설/비하</label>
 						</br>
-						<label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=3>부적절한 내용</label>
+						<label><input style="margin: 15px;" class="uk-radio" type="radio" required="required" name="reason" value=3>부적절한 내용</label>
 					</div>
-
-					<div style="text-align: center;">
-						<button type="submit" class="btn">신고</button>
-						<button type="button" class="btn cancel" onclick="closeForm()">취소</button>
-					</div>
-				</form>
+					<button class="uk-button uk-button-default uk-modal-close" type="button">취소</button>
+					<button class="uk-button uk-button-primary" type="submit">신고</button>
+					</form>
+				</div>
 			</div>
 		<% } else { %>
 			<lable style="margin: 10px 0; float: right; text-align: right;">🚔신고 완료</lable>
