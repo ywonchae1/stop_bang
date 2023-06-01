@@ -1,4 +1,78 @@
-<div class="rg-container">
-  <a href="/auth/register/resident"><button class="uk-button uk-button-default me-5">입주민</button></a>
-  <a href="/auth/register/agent"><button class="uk-button uk-button-default">공인중개사</button></a>
-</div>
+<!-- <main>
+  <a href="/auth/register/resident">입주민</a>
+  <a href="/auth/register/agent">공인중개사</a>
+</main> -->
+
+<main>
+  <div class="left-section">
+    <div class="box grey">
+      <a href="/auth/register/resident">입주민</a>
+    </div>
+    <div class="box grey">
+      <a href="/auth/register/agent">공인중개사</a>
+    </div>
+  </div>
+  <div class="right-section">
+    <img url="../images/registerimg.jpeg" alt="Image" />
+  </div>
+</main>
+
+<style>
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150vh;
+  }
+
+  .left-section {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+  }
+
+  .right-section {
+    margin-left: 20px;
+  }
+
+  .box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 100px;
+    background-color: transparent;
+    border-radius: 8px;
+    margin: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .box.grey {
+    background-color: grey;
+  }
+
+  .box:hover {
+    background-color: purple;
+  }
+
+  .box a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+
+  .right-section img {
+    width: 400px;
+    height: auto;
+  }
+
+  .call-to-action {
+    position: relative;
+    background-color: #343a40;
+    background: url("../images/registerimg.jpeg") no-repeat center center;
+    background-size: cover;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+</style>
