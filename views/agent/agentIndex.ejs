@@ -4,11 +4,24 @@
 <%- include('./agentInformation.ejs', {agent: agentSubInfo}); %>
 </br>
 <h1 class="uk-heading-divider"><%= `${agent.cmp_nm}의 후기` %></h1>
+
+<% if (agentReviewData.length > 0) { %>
+	<div class="review-statistics-container">
+	  <div>후기 <%= agentReviewData.length %>개의 통계</div>
+	  <% statistics.forEach((element, index) => { %>
+	  <div class="layout-row <%= element.id < 5 ? "positive" : "negative" %> stat level<%= index %>" style="width: 300px;justify-content: space-between;">
+		<div><%= element.tag %></div>
+		<div><%= element.count %></div>
+	  </div>
+	  <% }) %>
+	</div>
+<% } %>
+
 <% if(agentReviewData[0] == null) { %>
 	<h3>아직 후기가 없습니다😥</h3>
 <% } else { %>
 	<% agentReviewData.forEach(review => { %>
-	<%- include('./agentReview.ejs', {review: review}) %>
+	<%- include('./agentReview.ejs', {review: review, tags: review.tags, tagsData: tagsData}) %>
 	<% }); %>
 <% } %>
 </div>

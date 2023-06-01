@@ -4,6 +4,23 @@ const tags = require("../public/assets/tag.js");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db.js");
 
+const makeStatistics = (reviews) => {
+  let array = Array.from({ length: 10 }, () => 0);
+  let stArray = new Array(10);
+  reviews.forEach((review) => {
+    review.tags.split("").forEach((tag) => {
+      array[parseInt(tag)]++;
+    });
+  });
+  for (let index = 0; index < array.length; index++) {
+    stArray[index] = { id: index, tag: tags.tags[index], count: array[index] };
+  }
+  stArray.sort((a, b) => {
+    return b.count - a.count;
+  });
+  return stArray;
+};
+
 module.exports = {
   myReview: (req, res) => {
     agentModel.getReviewByRaRegno(req.params, (agentReviews) => {
@@ -72,11 +89,13 @@ module.exports = {
         let getReviews = await agentModel.getReviewByRaRegno(req.params.id);
         let getReport = await agentModel.getReport(req.params.id, decoded.userId);
         let getRating = await agentModel.getRating(req.params.id);
+        let statistics = makeStatistics(getReviews);
         res.locals.agent = agent[0];
         res.locals.agentMainInfo = getMainInfo;
         res.locals.agentSubInfo = getEnteredAgent[0][0];
         res.locals.agentReviewData = getReviews;
         res.locals.report = getReport;
+        res.locals.statistics = statistics;
 
         if (getRating === null) {
           res.locals.agentRating = 0;

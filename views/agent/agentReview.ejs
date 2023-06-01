@@ -21,6 +21,11 @@
 		<% } %>
 	  </div>
 	  <!--태그넣을 곳-->
+		<% if(tags !== null) { %>
+			<% tags.split("").forEach((element, index) => { %>
+			<span class="uk-label" style="margin-right:5px; margin-bottom:5px;"><%= tagsData[element] %></span>
+			<% }) %>
+		<% } %>
 		<p class="rv-content"><%- review.content %></p>
 	</span>
 	
