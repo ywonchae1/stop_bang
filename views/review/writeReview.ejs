@@ -28,7 +28,7 @@
       <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %>> <%=element %></label>
       <% }) %>
     </div>
-    <p><textarea class="uk-textarea uk-form-width-large" rows="5" name='description' placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!'></textarea></p>
+    <p><textarea name='description' class="uk-textarea uk-form-width-large" rows="5" placeholder='부동산에 대해 솔직한 후기를 작성해 주세요!' maxlength=200></textarea></p>
     <input class="user-submit-button uk-button uk-button-default" type='submit' value='등록'>
   </form>
   <form action='/realtor/<%- realtor.ra_regno %>' method='get'>
