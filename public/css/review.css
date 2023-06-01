@@ -30,6 +30,7 @@
 .myreview-info {
   display: flex;
   flex-direction: column;
+  width: 35%;
 }
 
 .myreview-address {
@@ -44,6 +45,7 @@
   position: relative;
   top: -20px;
   white-space: pre-line;
+  width: 65%;
 }
 
 .myreview-button {
