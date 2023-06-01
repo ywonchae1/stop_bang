@@ -176,3 +176,6 @@ input.uk-checkbox:checked:focus {
   margin-bottom: 10px;
   white-space: pre-wrap;
 }
+.blur-content{
+    filter: blur(5px);
+}
