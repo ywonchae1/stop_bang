@@ -45,6 +45,7 @@ module.exports = {
           req.params.ra_regno,
           r_id
         );
+        console.log(getReviews);
         let getReport = await realtorModel.getReport(req.params, r_id);
         let getRating = await realtorModel.getRating(req.params);
         let getBookmark = await realtorModel.getBookmarkByIdnRegno(
