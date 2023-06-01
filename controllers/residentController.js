@@ -5,23 +5,25 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   myReview: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    const decoded = jwt.verify(
-      req.cookies.authToken,
-      process.env.JWT_SECRET_KEY
-    );
-    let r_id = decoded.userId;
-    if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    if (req.cookies.authToken == undefined) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
-      residentModel.getReviewById(r_id, (result, err) => {
-        if (result === null) {
-          console.log("error occured: ", err);
-        } else {
-          res.locals.reviews = result[0];
-          res.locals.tagsData = tags;
-          next();
-        }
-      });
+      const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+      )
+      let r_id = decoded.userId;
+      if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      else {
+        residentModel.getReviewById(r_id, (result, err) => {
+          if (result === null) {
+            console.log("error occured: ", err);
+          } else {
+            res.locals.reviews = result[0];
+            res.locals.tagsData = tags;
+            next();
+          }
+        });
+      }
     }
   },
   myReviewView: (req, res) => {
@@ -29,43 +31,47 @@ module.exports = {
   },
   openReview: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    const decoded = jwt.verify(
-      req.cookies.authToken,
-      process.env.JWT_SECRET_KEY
-    );
-    let r_id = decoded.userId;
-    if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    if (req.cookies.authToken == undefined) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
-      residentModel.getOpenedReviewById(r_id, (result, err) => {
-        if (result === null) {
-          console.log("error occured: ", err);
-        } else {
-          res.locals.openReviews = result[0];
-          res.locals.tagsData = tags;
-          next();
-        }
-      });
+      const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+      );
+      let r_id = decoded.userId;
+      if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      else {
+        residentModel.getOpenedReviewById(r_id, (result, err) => {
+          if (result === null) {
+            console.log("error occured: ", err);
+          } else {
+            res.locals.openReviews = result[0];
+            res.locals.tagsData = tags;
+            next();
+          }
+        });
+      }
     }
   },
   openReviewView: (req, res) => {
     res.render("resident/openReview", { path: "openreview" });
   },
   bookmark: (req, res, next) => {
-    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    const decoded = jwt.verify(
-      req.cookies.authToken,
-      process.env.JWT_SECRET_KEY
-    );
-    let r_id = decoded.userId;
-    residentModel.getBookMarkById(r_id, (result, err) => {
-      if (result === null) {
-        console.log("error occured: ", err);
-      } else {
-        res.locals.bookmarks = result[0];
-        next();
-      }
-    });
+    if (req.cookies.authToken == undefined) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    else {
+      const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+      );
+      let r_id = decoded.userId;
+      residentModel.getBookMarkById(r_id, (result, err) => {
+        if (result === null) {
+          console.log("error occured: ", err);
+        } else {
+          res.locals.bookmarks = result[0];
+          next();
+        }
+      });
+    }
   },
   bookmarkView: (req, res) => {
     res.render("resident/bookmark", { path: "bookmark" });
@@ -82,23 +88,25 @@ module.exports = {
   },
   settings: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    const decoded = jwt.verify(
-      req.cookies.authToken,
-      process.env.JWT_SECRET_KEY
-    );
-    let r_id = decoded.userId;
-    if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    if (req.cookies.authToken == undefined) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
-      residentModel.getResidentById(r_id, (result, err) => {
-        if (result === null) {
-          console.log("error occured: ", err);
-        } else {
-          res.locals.resident = result[0][0];
-          next();
-        }
-      });
-    }
+      const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+      );
+      let r_id = decoded.userId;
+      if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      else {
+        residentModel.getResidentById(r_id, (result, err) => {
+          if (result === null) {
+            console.log("error occured: ", err);
+          } else {
+            res.locals.resident = result[0][0];
+            next();
+          }
+        });
+      }
+  }
   },
   settingsView: (req, res) => {
     res.render("resident/settings", { path: "settings" });
@@ -107,47 +115,51 @@ module.exports = {
     next();
   },
   updateSettings: (req, res, next) => {
-    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    const decoded = jwt.verify(
-      req.cookies.authToken,
-      process.env.JWT_SECRET_KEY
-    );
-    let r_id = decoded.userId;
-    const body = req.body;
-    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    if (req.cookies.authToken == undefined) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
-      if (body.birth === "") body.birth = null;
-      residentModel.updateResident(r_id, body, (result, err) => {
-        if (result === null) {
-          console.log("error occured: ", err);
-        } else {
-          res.locals.redirect = "/resident/settings";
-          next();
-        }
-      });
-    }
-  },
-  updatePassword: (req, res, next) => {
-    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    const decoded = jwt.verify(
-      req.cookies.authToken,
-      process.env.JWT_SECRET_KEY
-    );
-    const r_id = decoded.userId;
-    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
-    else {
-      residentModel.updateResidentPassword(r_id, req.body, (result, err) => {
-        if (result === null) {
-          if (err === "pwerror") {
-            // res.locals.pwerr = "pwerror";
+      const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+      );
+      let r_id = decoded.userId;
+      const body = req.body;
+      if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      else {
+        if (body.birth === "") body.birth = null;
+        residentModel.updateResident(r_id, body, (result, err) => {
+          if (result === null) {
+            console.log("error occured: ", err);
+          } else {
             res.locals.redirect = "/resident/settings";
             next();
           }
-        } else {
-          res.locals.redirect = "/resident/settings";
-          next();
-        }
-      });
+        });
+      }
+    }
+  },
+  updatePassword: (req, res, next) => {
+    if (req.cookies.authToken == undefined) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    else {
+      const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+      );
+      const r_id = decoded.userId;
+      if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      else {
+        residentModel.updateResidentPassword(r_id, req.body, (result, err) => {
+          if (result === null) {
+            if (err === "pwerror") {
+              // res.locals.pwerr = "pwerror";
+              res.locals.redirect = "/resident/settings";
+              next();
+            }
+          } else {
+            res.locals.redirect = "/resident/settings";
+            next();
+          }
+        });
+      }
     }
   },
   redirectView: (req, res, next) => {
