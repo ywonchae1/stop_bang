@@ -3,16 +3,14 @@ const router = express.Router();
 const authController = require("../controllers/authController");
 // const passwordSchema = require("../models/passwordValidator");
 const nodemailer = require("nodemailer");
-const ejs = require("ejs");
 const path = require("path");
-var appDir = path.dirname(require.main.filename);
 
 router.get("/register", authController.registerView);
 
 router.post("/send-mail", async (req, res, next) => {
   var email = req.body.email;
 
-  //console.log(sendEmail(email, fullUrl));
+  // console.log(sendEmail(email, fullUrl));
 
   connection.query(
     'SELECT * FROM verifications WHERE email ="' + email + '"',
