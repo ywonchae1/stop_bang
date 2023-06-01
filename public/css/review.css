@@ -5,7 +5,7 @@
 .layout-row {
   display: flex;
   flex-direction: row;
-  align-items: center !important;
+  /*align-items: center !important;*/
 }
 
 .layout-row p {
@@ -144,4 +144,11 @@ input.uk-checkbox:checked:focus {
 .form-container .btn:hover, .open-button:hover {
   background-color: var(--purple) !important;
   color: white !important;
+}
+
+/* 후기 내용 */
+.rv-content {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
 }

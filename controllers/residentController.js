@@ -5,13 +5,13 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   myReview: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     let r_id = decoded.userId;
-    if (r_id == null) res.send("로그인이 필요합니다.");
+    if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
       residentModel.getReviewById(r_id, (result, err) => {
         if (result === null) {
@@ -29,13 +29,13 @@ module.exports = {
   },
   openReview: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     let r_id = decoded.userId;
-    if (r_id == null) res.send("로그인이 필요합니다.");
+    if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
       residentModel.getOpenedReviewById(r_id, (result, err) => {
         if (result === null) {
@@ -52,7 +52,7 @@ module.exports = {
     res.render("resident/openReview", { path: "openreview" });
   },
   bookmark: (req, res, next) => {
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
@@ -82,13 +82,13 @@ module.exports = {
   },
   settings: (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     let r_id = decoded.userId;
-    if (r_id == null) res.send("로그인이 필요합니다.");
+    if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
       residentModel.getResidentById(r_id, (result, err) => {
         if (result === null) {
@@ -107,14 +107,14 @@ module.exports = {
     next();
   },
   updateSettings: (req, res, next) => {
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     let r_id = decoded.userId;
     const body = req.body;
-    if (r_id === null) res.send("로그인이 필요합니다.");
+    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
       if (body.birth === "") body.birth = null;
       residentModel.updateResident(r_id, body, (result, err) => {
@@ -128,13 +128,13 @@ module.exports = {
     }
   },
   updatePassword: (req, res, next) => {
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     const r_id = decoded.userId;
-    if (r_id === null) res.send("로그인이 필요합니다.");
+    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
       residentModel.updateResidentPassword(r_id, req.body, (result, err) => {
         if (result === null) {

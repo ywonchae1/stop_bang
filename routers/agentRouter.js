@@ -6,7 +6,6 @@ const router = express.Router();
 
 //Controllers
 const agentController = require("../controllers/agentController.js");
-const reviewController = require("../controllers/reviewController.js");
 /*
 
 const upload = multer({
@@ -61,6 +60,6 @@ router.get(
 router.get("/:id/update", agentController.updateEnteredInfo);
 
 //후기 신고
-router.get("/report/:rv_id", reviewController.reporting);
+router.get('/report/:rv_id', agentController.reporting);
 
 module.exports = router;

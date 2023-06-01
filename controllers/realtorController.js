@@ -6,13 +6,13 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   mainPage: async (req, res, next) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     let r_id = decoded.userId;
-    if (r_id === null) res.send("로그인이 필요합니다.");
+    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     res.locals.r_id = r_id;
     try {
       let agent = await realtorModel.getRealtorProfile(req.params.ra_regno);
@@ -31,13 +31,14 @@ module.exports = {
       res.locals.direction = `/review/${req.params.ra_regno}/create`;
       res.locals.cmpName = res.locals.agent.cmp_nm;
       res.locals.report = getReport;
-        if (getRating === null) {
-      res.locals.rating = 0;
-      res.locals.tagsData = null;
-        } else {
-      res.locals.rating = getRating;
-      res.locals.tagsData = tags.tags;
-        }
+      
+      if (getRating === null) {
+        res.locals.rating = 0;
+        res.locals.tagsData = null;
+      } else {
+        res.locals.rating = getRating;
+        res.locals.tagsData = tags.tags;
+      }
     } catch (err) {
         console.error(err.stack)
     }
@@ -49,27 +50,42 @@ module.exports = {
 
   opening: async (req, res) => {
     //쿠키로부터 로그인 계정 알아오기
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     let r_id = decoded.userId;
-    if (r_id === null) res.send("로그인이 필요합니다.");
+    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     let rv_id = req.params.rv_id;
     await realtorModel.insertOpenedReview(r_id, rv_id, () => {
-        res.redirect(`/realtor/${req.params.ra_regno}`);
+      res.redirect(`/realtor/${req.params.ra_regno}`);
     });
   },
 
+  //후기 신고
+	reporting: async (req, res) => {
+		//쿠키로부터 로그인 계정 알아오기
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+    const decoded = jwt.verify(
+      req.cookies.authToken,
+      process.env.JWT_SECRET_KEY
+    );
+    let r_id = decoded.userId;
+		if(r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+		ra_regno = await realtorModel.reportProcess(req, r_id);
+		console.log("신고완료");
+	  res.redirect(`${req.baseUrl}/${ra_regno[0][0].agentList_ra_regno}`);
+	},
+
   updateBookmark: (req, res) => {
-    if (!req.cookies.authToken) return res.send("로그인 필요합니다");
+    if (!req.cookies.authToken) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     const decoded = jwt.verify(
       req.cookies.authToken,
       process.env.JWT_SECRET_KEY
     );
     const r_id = decoded.userId;
-    if (r_id === null) res.send("로그인이 필요합니다.");
+    if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
     else {
       let body = {
         raRegno: req.params.ra_regno,

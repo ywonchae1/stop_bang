@@ -8,19 +8,24 @@
 	}
 </script>
 
-<div class="display-review">
-	<div class="layout-row" style="align-items: center;">
-	  <div style="margin-right:10px"><%- review.r_username %></div>
-	  <% for( let index = 0; index < 5; index++ ) { %>
-	  <% if (index < review.rating) { %>
-	  <p>★</p>
-	  <% } else { %>
-	  <p>☆</p>
-	  <% } %>
-	  <% } %>
-	  <div style="float:right; margin-left:auto">
-		<label><%= review.created_time %></label>
-		<label>작성</label>
+<div class="uk-card uk-card-default uk-card-hover uk-card-body layout-row" style="display: flex; margin-bottom: 15px; max-width: 80%;">
+	<span style="margin-right: auto; width: 80%;">
+	  <div class="layout-row">
+		<p style="margin-right:10px"><%- review.r_username %></p>
+		<% for( let index = 0; index < 5; index++ ) { %>
+		  <% if (index < review.rating) { %>
+		  <p>★</p>
+		  <% } else { %>
+		  <p>☆</p>
+		  <% } %>
+		<% } %>
+	  </div>
+	  <!--태그넣을 곳-->
+		<p class="rv-content"><%- review.content %></p>
+	</span>
+	
+	<span class="layout-column">
+		<label style="margin: 10px 0; float: right;"><%= review.created_time %>작성</label>
 		<% let isReported = false; %>
 		<% if(report != undefined) { %>
 			<% report.forEach(repo => { %>
@@ -28,7 +33,7 @@
 		<% } %>
 		<% if(!isReported) { %>
 			<!-- A button to open the popup form -->
-			<button class="uk-button uk-button-default" onclick="openForm()">신고</button>
+			<button class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="openForm()">신고</button>
 
 			<!-- The form -->
 			<div class="form-popup" id="myForm">
@@ -51,9 +56,7 @@
 				</form>
 			</div>
 		<% } else { %>
-			<lable>신고 완료</lable>
+			<lable style="margin: 10px 0; float: right; text-align: right;">🚔신고 완료</lable>
 		<% } %>
-	  </div>
-	</div>
-	<p><%- review.content %></p>
+	</span>
 </div>

@@ -1,41 +1,42 @@
-<%- include('./realtorProfile.ejs', {agent: agent, rating: rating}); %>
-<%- include('./realtorMainInfo.ejs', {agent: agentMainInfo}); %>
-<%- include('./realtorInformation.ejs', {agent: agentSubInfo}); %>
+<div style="padding: 20px 30px;">
+    <%- include('./realtorProfile.ejs', {agent: agent, rating: rating}); %>
+    <%- include('./realtorMainInfo.ejs', {agent: agentMainInfo}); %>
+    <%- include('./realtorInformation.ejs', {agent: agentSubInfo}); %>
 </br>
 <h1 class="uk-heading-divider"><%= `${agent.cmp_nm}의 후기` %></h1>
 <% if(agentReviewData[0] == null) { %>
     <h3>첫 후기를 작성해 보세요!</h3>
     <form action=<%= direction %> method='post'>
-	<input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
-	<p><input type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
+        <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+        <p><input class="uk-button uk-button-default" type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
     </form>
 <% } else { %>
     <% agentReviewData.forEach(review => { %>
         <% let flag = true; %>
         <% report.forEach(repo => { %>
-            <% if(repo.check_repo === 0 && repo.repo_rv_id === review.rv_id) flag = false;}); %>
-        <% if(flag) { %>
-	        <%- include('./realtorReview.ejs', {r_id: r_id, review: review, report: report, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}); %>
+            <% if(repo.check_repo === 0 && repo.repo_rv_id === review.rv_id) flag = false; }); %>
+        <% if(flag === true) { %>
+            <%- include('./realtorReview.ejs', {r_id: r_id, review: review, report: report, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}); %>
         <% } else { %>
-            <%- include('./realtorRepoReview.ejs', {review: review}) %>
+            <%- include('./realtorRepoReview.ejs', {review: review}); %>
         <% } %>
     <% }); %>
 
     <% if(!r_id) { %>
         <form action='/auth/login'>
-            <p><input type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
+            <p><input class="uk-button uk-button-default" type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
         </form> 
     <% } else { %>
         <% let flag = 1; %>
-        <% agentReviewData.forEach(review => { %>
-        <% if(review.r_id == r_id) flag = 0;}); %>
+        <% agentReviewData.forEach(review => { if(review.r_id == r_id) flag = 0; }); %>
         <% if(flag == 1) { %>
             <form action=<%= direction %> method='post'>
                 <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
-                <p><input type='submit' value='후기 작성하고 휴지 받기'></p>
+                <p><input class="uk-button uk-button-default" type='submit' value='후기 작성하고 휴지 받기'></p>
             </form>
         <% } else { %>
             <p>이미 후기를 작성하셨습니다.</p>
         <% } %>
     <% } %>
 <% } %>
+</div>
