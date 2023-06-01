@@ -29,9 +29,10 @@
 
   <div class="myreview-content">
     <div class="layout-row" style="flex-wrap:wrap">
+      <% if(review.tags != null) { %>
       <% review.tags.split("").forEach((element, index) => { %>
       <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData.tags[element] %></span>
-      <% }) %>
+      <% })} %>
     </div>
     <%= review.content %>
   </div>
