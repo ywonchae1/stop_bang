@@ -47,7 +47,7 @@ module.exports = {
       !body.email ||
       !body.birth
     ) {
-      return res.status(400).send("필수 항목 빠짐");
+      return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
     }
 
     if (!checkPasswordCorrect(body.password))
@@ -93,7 +93,7 @@ module.exports = {
       !body.phone ||
       !body.agentList_ra_regno
     ) {
-      return res.status(400).send("필수 항목 빠짐");
+      return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
     }
 
     if (!checkPasswordCorrect(body.password))
@@ -130,7 +130,7 @@ module.exports = {
     const body = req.body;
 
     if (!body.username || !body.password) {
-      return res.status(400).send("필수 항목 빠짐");
+      return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
     }
 
     // Login
