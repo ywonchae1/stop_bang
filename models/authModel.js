@@ -9,6 +9,11 @@ const checkUsernameExists = async (params) => {
       SELECT COUNT(*) as count FROM resident WHERE r_username = ?;
     `;
     const res = await db.query(rawQuery, [params.username]);
+    res[0][0].count > 0;
+    const rawQuery2 = `
+      SELECT COUNT(*) as count FROM agent WHERE a_username = ?;
+    `;
+    const res2 = await db.query(rawQuery, [params.username]);
     return res[0][0].count > 0;
   } catch (err) {
     console.error("🚀 ~ err:", err);
@@ -17,8 +22,6 @@ const checkUsernameExists = async (params) => {
 };
 
 module.exports = {
-  checkUsernameExists,
-
   registerResident: async (params, result) => {
     try {
       // 비밀번호 암호화해서 db에 저장하기

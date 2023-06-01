@@ -39,8 +39,19 @@
 
     <div class="grid gap-2">
       <label for="agentList_ra_regno">raregno</label>
-      <input name="agentList_ra_regno" placeholder="111-33-4444" value=" " />
+      <input
+        id="agentList_ra_regno"
+        name="agentList_ra_regno"
+        placeholder="111-33-4444"
+        value="00599"
+      />
     </div>
+
+    <button onclick="getAgentPhoneNumber()" type="button">
+      핸드폰 번호 불러오기
+    </button>
+
+    <p id="agent_phone_number"></p>
 
     <div class="grid gap-2">
       <label for="email">본인 확인 이메일 (필수)</label>
@@ -51,6 +62,29 @@
         value="email@gmail.com"
       />
     </div>
+
+    <div
+      id="verificationCodeContainer"
+      class="grid gap-2"
+      style="display: none"
+    >
+      <label for="verificationCode">이메일 인증 코드</label>
+      <input
+        id="verificationCode"
+        name="verificationCode"
+        placeholder="인증 코드 입력"
+      />
+    </div>
+
+    <button onclick="sendVerificationEmail()" type="button">
+      이메일 인증 코드 전송
+    </button>
+
+    <button onclick="verifyEmail()" type="button" style="display: none">
+      이메일 인증 확인 하기
+    </button>
+
+    <div id="verificationStatus"></div>
 
     <div class="grid gap-2">
       <label
@@ -95,6 +129,75 @@
       passwordMessage.innerText = "비밀번호에는 특수기호가 포함되어야 합니다";
     } else {
       passwordMessage.innerText = "";
+    }
+  }
+
+  async function getAgentPhoneNumber() {
+    const raRegnoElement = document.getElementById("agentList_ra_regno");
+
+    const response = await fetch(
+      `/agent/phoneNumber?raRegno=${raRegnoElement.value}`
+    );
+    const result = await response.json();
+
+    if (!result.phoneNumber)
+      return alert("Failed to get a phone number of agent");
+
+    const agentPhoneNumberElement =
+      document.getElementById("agent_phone_number");
+
+    agentPhoneNumberElement.innerText = result.phoneNumber;
+  }
+
+  async function generateActivationCode() {
+    const response = await fetch("/randomBytes?length=16");
+    const randomBytes = await response.arrayBuffer();
+    const hexString = Array.from(new Uint8Array(randomBytes))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+
+    return hexString;
+  }
+
+  async function sendVerificationEmail() {
+    const emailElement = document.getElementById("email");
+    const verificationCodeContainer = document.getElementById(
+      "verificationCodeContainer"
+    );
+    const verificationCodeElement = document.getElementById("verificationCode");
+    const verifyEmailButton = document.querySelector(
+      "button[onclick='verifyEmail()']"
+    );
+
+    const activationCode = await generateActivationCode();
+
+    console.log("Activation Code:", activationCode);
+
+    verificationCodeElement.value = activationCode;
+
+    verificationCodeContainer.style.display = "grid";
+    verifyEmailButton.style.display = "block";
+  }
+
+  function verifyEmail() {
+    const verificationCodeElement = document.getElementById("verificationCode");
+    const storedVerificationCode = verificationCodeElement.value.trim();
+    const userVerificationCode = prompt(
+      "Enter the verification code from your email:"
+    );
+
+    const verificationStatusElement =
+      document.getElementById("verificationStatus");
+
+    if (
+      userVerificationCode &&
+      userVerificationCode.trim() === storedVerificationCode
+    ) {
+      verificationStatusElement.innerText = "이메일 인증이 완료되었습니다.";
+      verificationStatusElement.style.color = "green";
+    } else {
+      verificationStatusElement.innerText = "이메일 인증이 실패했습니다.";
+      verificationStatusElement.style.color = "red";
     }
   }
 </script>

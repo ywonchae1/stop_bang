@@ -3,12 +3,31 @@ const authModel = require("../models/authModel");
 const passwordValidator = require("password-validator");
 const passwordSchema = new passwordValidator();
 const residentModel = require("../models/residentModel");
+const agentModel = require("../models/agentModel");
 const jwt = require("jsonwebtoken");
 
 function checkUsernameExists(username, responseToClient) {
   residentModel.getUserByUsername(username, (user) => {
-    responseToClient(user[0].length !== 0);
+    if (user[0].length !== 0) return responseToClient(true);
+
+    agentModel.getAgentByUsername(username, (user) => {
+      responseToClient(user[0].length !== 0);
+    });
   });
+}
+
+function checkPasswordCorrect(password) {
+  const uppercaseRegex = /[A-Z]/;
+  const lowercaseRegex = /[a-z]/;
+  const numberRegex = /[0-9]/;
+  const specialCharRegex = /[!@#$%^&*]/;
+
+  return (
+    uppercaseRegex.test(password) &&
+    lowercaseRegex.test(password) &&
+    numberRegex.test(password) &&
+    specialCharRegex.test(password)
+  );
 }
 
 module.exports = {
@@ -31,13 +50,12 @@ module.exports = {
       return res.status(400).send("필수 항목 빠짐");
     }
 
+    if (!checkPasswordCorrect(body.password))
+      return res.status(400).send("비밀번호 제약을 확인해주세요");
+
     checkUsernameExists(body.username, (usernameExists) => {
       if (usernameExists) {
         return res.status(400).send("이미 사용중인 아이디입니다.");
-      }
-
-      if (!passwordSchema.validate(body.password)) {
-        return res.status(400).send("비밀번호 제약을 확인해주세요.");
       }
 
       // Save new user information to the database
@@ -77,6 +95,9 @@ module.exports = {
     ) {
       return res.status(400).send("필수 항목 빠짐");
     }
+
+    if (!checkPasswordCorrect(body.password))
+      return res.status(400).send("비밀번호 제약을 확인해주세요");
 
     checkUsernameExists(body.username, (usernameExists) => {
       if (usernameExists) {

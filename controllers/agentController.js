@@ -2,6 +2,7 @@
 const agentModel = require("../models/agentModel.js");
 const tags = require("../public/assets/tag.js");
 const jwt = require("jsonwebtoken");
+const db = require("../config/db.js");
 
 module.exports = {
   myReview: (req, res) => {
@@ -16,6 +17,20 @@ module.exports = {
         raRegno: raRegno,
       });
     });
+  },
+
+  getAgentPhoneNumber: async (req, res) => {
+    if (!req.query.raRegno) return res.send("Requires `raRegno`");
+
+    try {
+      const agent = await db.query(
+        `SELECT telno FROM agentList WHERE ra_regno = ?`,
+        [req.query.raRegno]
+      );
+      return res.send({ phoneNumber: agent[0][0].telno });
+    } catch (error) {
+      return res.send(error.message);
+    }
   },
 
   myReviewView: (req, res) => {
@@ -48,7 +63,7 @@ module.exports = {
       let agent = await agentModel.getAgentProfile(req.params.id);
       let getMainInfo = await agentModel.getMainInfo(req.params.id);
       //다른 공인중개사 페이지 접근 제한(수정제한으로 수정 필요할지도)
-      if(getMainInfo.a_id !== decoded.userId)
+      if (getMainInfo.a_id !== decoded.userId)
         res.render('notFound.ejs', {message: "접근이 제한되었습니다. 공인중개사 계정으로 로그인하세요"});
       let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
       let getReviews = await agentModel.getReviewByRaRegno(req.params.id);
@@ -67,8 +82,8 @@ module.exports = {
         res.locals.agentRating = getRating;
         res.locals.tagsData = tags.tags;
       }
-    } catch(err) {
-      console.error(err.stack)
+    } catch (err) {
+      console.error(err.stack);
     }
     next();
   },
