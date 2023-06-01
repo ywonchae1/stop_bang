@@ -1,122 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="/css/admin.css">
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="/css/admin.css" />
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+    integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
 
-<body >
+  <body>
     <main>
-        <div>
-            <div class="bnc">
-                    <div class="sidebar">
-                        <ol class="sidebar--link">
-                            <li>사용자 관리</li>
-                            <li>리뷰 신고 관리</li>
-                            <li>공인중개사 인증관리</li>
-                            <li>기타</li>
-                        </ol>
-                    </div>
+      <div>
+        <div class="bnc">
+          <div class="sidebar">
+            <ol class="sidebar--link">
+              <li>사용자 관리</li>
+              <li>리뷰 신고 관리</li>
+              <li>공인중개사 인증관리</li>
+              <li>기타</li>
+            </ol>
+          </div>
 
-                    <div class="admin--content">
-                        <div class="upper--box">
-                            <div id="admin--intro">멈춰방 관리자 페이지</div>
+          <div class="admin--content">
+            <div class="upper--box">
+              <div id="admin--intro">멈춰방 관리자 페이지</div>
 
-                            <div class="upper--box--one" style="color:white;">
-                                <section class="box"  style ="background-color:#474747;" >
-                                    <div class="inner--box" >
-                                        <p class="box-title"><span uk-icon="users"style="padding-right: 8px;"></span>
-                                            신규 가입자</p>
-                                        <p class="box-info" >
-                                          <%=userCount%> 명
-                                       
-                                        </p>
-                                    </div>
-                                </section>
-                                <section class="box"  style ="background-color:#474747;" >
-                                    <div class="inner--box" style="color:white;">
-                                        <p class="box-title" ><span uk-icon="warning"style="padding-right: 8px;"></span>
-                                            리뷰 신고 건수</p>
+              <div class="upper--box--one" style="color: white">
+                <section class="box" style="background-color: #474747">
+                  <div class="inner--box">
+                    <p class="box-title">
+                      <span uk-icon="users" style="padding-right: 8px"></span>
+                      신규 가입자
+                    </p>
+                    <p class="box-info"><%=userCount%> 명</p>
+                  </div>
+                </section>
+                <section class="box" style="background-color: #474747">
+                  <div class="inner--box" style="color: white">
+                    <p class="box-title">
+                      <span uk-icon="warning" style="padding-right: 8px"></span>
+                      리뷰 신고 건수
+                    </p>
 
-                                        <p class="box-info" > 건</p>
-                                    </div>
-                                </section>
-                            </div>
-                            <div class="upper--box--two" style="color:white;">
-                                <section class="box" style ="background-color:#474747;"  >
-                                    <div class="inner--box" >
-                                      <p class="box-title" ><span uk-icon="bell" style="padding-right: 8px;"></span>부동산 인증 처리요청</p>
-                                      <% const newAgentCount = Object.keys(newAgent).length%>                                                
+                    <p class="box-info">건</p>
+                  </div>
+                </section>
+              </div>
+              <div class="upper--box--two" style="color: white">
+                <section class="box" style="background-color: #474747">
+                  <div class="inner--box">
+                    <p class="box-title">
+                      <span uk-icon="bell" style="padding-right: 8px"></span
+                      >부동산 인증 처리요청
+                    </p>
+                    <% const newAgentCount = Object.keys(newAgent).length%>
 
-                                      <p class="box-info" ><%= newAgentCount %> 건</p>
-                                    </div>
-                                </section>
-                            </div>
-                            </div>
+                    <p class="box-info"><%= newAgentCount %> 건</p>
+                  </div>
+                </section>
+              </div>
+            </div>
 
+            <div class="admin--content--two">
+              <div class="two--content">
+                <div
+                  class="r-title"
+                  style="margin-bottom: 18px; font-weight: 500"
+                >
+                  <span uk-icon="warning" style="padding-right: 8px"></span>리뷰
+                  신고 내역
+                </div>
+                <div class="r-report">
+                  <div class="r--report--item">
+                    <ul>
+                      <li>리뷰 2번에 관한 신고</li>
+                      <li>신고자 : user0</li>
+                      <li>신고사유 : 허위사실 기재</li>
+                      <li>신청일 : 2023/12/10</li>
+                    </ul>
+                    <ul>
+                      <li>리뷰 10번에 관한 신고</li>
+                      <li>신고자 : user9</li>
+                      <li>신고사유 : 욕설 및 비방</li>
+                      <li>신청일 : 2023/12/10</li>
+                    </ul>
+                    <ul>
+                      <li>리뷰 13번에 관한 신고</li>
+                      <li>신고사유 : 허위사실 기재</li>
+                      <li>신청일 : 2023/12/10</li>
+                    </ul>
 
-                            <div class="admin--content--two">
-                                <div class="two--content">
-                                <div class="r-title"  style="margin-bottom:18px; font-weight: 500; "><span uk-icon="warning"style="padding-right: 8px;"></span>리뷰 신고 내역</div>
-                                    <div class="r-report">
+                    <div style="margin-left: 28px; color: grey">더보기</div>
+                  </div>
+                </div>
+              </div>
+              <div class="two--content">
+                <div
+                  class="r-title"
+                  style="margin-bottom: 18px; font-weight: 500"
+                >
+                  <span uk-icon="check" style="padding-right: 8px"></span>부동산
+                  인증요청
+                </div>
+                <div class="r-report">
+                  <div class="r--report--item">
+                    <% for (let i=0; i < newAgent.length; i++) { %>
 
-                                        <div class="r--report--item">
-                                            <ul>
-                                                <li>리뷰 2번에 관한 신고</li>
-                                                <li>신고자 : user0</li>
-                                                <li>신고사유 : 허위사실 기재</li>
-                                                <li>신청일 : 2023/12/10</li>
-                                            </ul>
-                                            <ul>
-                                                <li>리뷰 10번에 관한 신고</li>
-                                                <li>신고자 : user9</li>
-                                                <li>신고사유 : 욕설 및 비방</li>
-                                                <li>신청일 : 2023/12/10</li>
-                                            </ul>
-                                            <ul>
-                                                <li>리뷰 13번에 관한 신고</li>
-                                                <li>신고사유 : 허위사실 기재</li>
-                                                <li>신청일 : 2023/12/10</li>
-                                            </ul>
+                    <ul class="signedup_agent">
+                      <li class="s_user_name">
+                        신청자 : <%= newAgent[i].a_realname %>
+                      </li>
+                      <li class="s_user_id">
+                        아이디 : <%= newAgent[i].a_username %>
+                      </li>
+                      <% const formattedDate = new
+                      Date(newAgent[i].created_time).toISOString().slice(0, 10);
+                      %>
+                      <li class="s_signup_date">
+                        신청일 : <%= formattedDate %>
+                      </li>
+                    </ul>
+                    <% } %>
 
-                                            <div style="margin-left:28px; color: grey;">더보기</div>
-                                        </div>
-                                      
-                                    </div>
-                                    </div>
-                                <div class="two--content">
-                                <div class="r-title" style="margin-bottom:18px; font-weight: 500;"><span uk-icon="check"style="padding-right: 8px;"></span>부동산 인증요청 </div>
-                                    <div class="r-report">
-
-                                        <div class="r--report--item">
-                                            <% for (let i=0; i < newAgent.length; i++) { %>
-
-                                            <ul class="signedup_agent">
-                                                <li class="s_user_name">신청자 : <%= newAgent[i].a_realname %></li>
-                                                <li class="s_user_id">아이디 : <%= newAgent[i].a_username %></li>
-                                                <% const formattedDate = new Date(newAgent[i].created_time).toISOString().slice(0, 10); %>
-                                                <li class="s_signup_date">신청일 : <%= formattedDate %></li>                                            </ul>
-                                            <% } %>
-
-                                            <div style="margin-left:28px; color: grey;">더보기</div>
-
-                                        </div>
-                                      
-                                    </div>
-                                    </div>
-
-                            </div>
-
-
-
-                        </div>
-                    </div>
-                    </div>
-
+                    <div style="margin-left: 28px; color: grey">더보기</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
-</body>
+  </body>
 
-
-<script>
-
-
-</script>
+  <script></script>
+</html>

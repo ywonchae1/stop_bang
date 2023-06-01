@@ -3,6 +3,19 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 let residentModel = {
+  getUserByUsername: async (username, result) => {
+    try {
+      const res = await sql.query(
+        `SELECT r_username FROM resident WHERE r_username = ?`,
+        [username]
+      );
+      result(res);
+    } catch (error) {
+      console.log("🚀 ~ getUserByUsername error:", error);
+      result(null, error);
+    }
+  },
+
   getReviewById: async (id, result) => {
     try {
       const res = await sql.query(

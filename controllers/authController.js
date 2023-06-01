@@ -1,6 +1,34 @@
-//Models
-
 const authModel = require("../models/authModel");
+// const passwordSchema = require("../models/passwordValidator");
+const passwordValidator = require("password-validator");
+const passwordSchema = new passwordValidator();
+const residentModel = require("../models/residentModel");
+const agentModel = require("../models/agentModel");
+const jwt = require("jsonwebtoken");
+
+function checkUsernameExists(username, responseToClient) {
+  residentModel.getUserByUsername(username, (user) => {
+    if (user[0].length !== 0) return responseToClient(true);
+
+    agentModel.getAgentByUsername(username, (user) => {
+      responseToClient(user[0].length !== 0);
+    });
+  });
+}
+
+function checkPasswordCorrect(password) {
+  const uppercaseRegex = /[A-Z]/;
+  const lowercaseRegex = /[a-z]/;
+  const numberRegex = /[0-9]/;
+  const specialCharRegex = /[!@#$%^&*]/;
+
+  return (
+    uppercaseRegex.test(password) &&
+    lowercaseRegex.test(password) &&
+    numberRegex.test(password) &&
+    specialCharRegex.test(password)
+  );
+}
 
 module.exports = {
   registerView: (req, res) => {
@@ -8,7 +36,7 @@ module.exports = {
   },
 
   registerResident: (req, res) => {
-    // 입력값에 필수 정보가 빠졌는지 확인하기
+    // Check if required fields are missing
     const body = req.body;
 
     if (
@@ -18,21 +46,34 @@ module.exports = {
       !body.realname ||
       !body.email ||
       !body.birth
-    )
+    ) {
       return res.status(400).send("필수 항목 빠짐");
+    }
 
-    // DB에 새로운 사용자 정보 저장히기
-    authModel.registerResident(req.body, (userId) => {
-      // 오류났을 때
-      if (!userId) return res.status(400).send("회원가입 실패");
+    if (!checkPasswordCorrect(body.password))
+      return res.status(400).send("비밀번호 제약을 확인해주세요");
 
-      // 회원가입 완료하면 사용자 userId를 쿠키에 저장하기
-      res
-        .cookie("authToken", userId, {
-          maxAge: 86400_000,
-          httpOnly: true,
-        })
-        .redirect("/");
+    checkUsernameExists(body.username, (usernameExists) => {
+      if (usernameExists) {
+        return res.status(400).send("이미 사용중인 아이디입니다.");
+      }
+
+      // Save new user information to the database
+      authModel.registerResident(req.body, (userId) => {
+        // Error during registration
+        if (!userId) {
+          return res.status(400).send("회원가입 실패");
+        }
+
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
+        // Store user's userId in the cookie upon successful registration
+        res
+          .cookie("authToken", token, {
+            maxAge: 86400_000,
+            httpOnly: true,
+          })
+          .redirect("/");
+      });
     });
   },
 
@@ -41,27 +82,45 @@ module.exports = {
   },
 
   registerAgent: (req, res) => {
-    // 입력값에 필수 정보가 빠졌는지 확인하기
+    // Check if required fields are missing
     const body = req.body;
 
     if (
-      !body.agentList_ra_regno ||
       !body.username ||
       !body.password ||
       !body.realname ||
       !body.email ||
-      !body.authimage
-    )
+      !body.phone ||
+      !body.agentList_ra_regno
+    ) {
       return res.status(400).send("필수 항목 빠짐");
+    }
 
-    // DB에 새로운 공인중개사 정보 저장히기
-    authModel.registerAgent(req.body, (userId) => {
-      if (!userId) return;
+    if (!checkPasswordCorrect(body.password))
+      return res.status(400).send("비밀번호 제약을 확인해주세요");
 
-      // 회원가입 완료하면 공인중개사 userId를 쿠키에 저장하기 -> 로그인 후에 되어야 하지 않을까..?
-      res.cookie("authToken", userId, {
-        maxAge: 86400_000,
-        httpOnly: true,
+    checkUsernameExists(body.username, (usernameExists) => {
+      if (usernameExists) {
+        return res.status(400).send("이미 사용중인 아이디입니다.");
+      }
+
+      if (!passwordSchema.validate(body.password)) {
+        return res.status(400).send("비밀번호를 다시 확인해주세요.");
+      }
+
+      // Save new agent information to the database
+      authModel.registerAgent(req.body, (userId) => {
+        if (!userId) {
+          return res.status(400).send("회원가입 실패");
+        }
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
+        // Store agent's userId in the cookie upon successful registration
+        res
+          .cookie("authToken", token, {
+            maxAge: 86400_000,
+            httpOnly: true,
+          })
+          .redirect("/");
       });
     });
   },
@@ -71,20 +130,22 @@ module.exports = {
   },
 
   login: (req, res) => {
-    // 입력값에 필수 정보가 빠졌는지 확인하기
+    // Check if required fields are missing
     const body = req.body;
-    console.log("🚀 ~ body:", body);
 
-    if (!body.username || !body.password)
+    if (!body.username || !body.password) {
       return res.status(400).send("필수 항목 빠짐");
+    }
 
-    // 로그인하기
+    // Login
     authModel.getUser(req.body, (userId, isAgent) => {
-      // 오류났을 때
-      if (!userId) return res.render("users/login");
-
-      // 로그인 성공하면 사용자/공인중개사 userId를 쿠키에 저장하기 -> 넘 취약해서 걱정돼요
-      res.cookie("authToken", userId, {
+      // Error during login
+      if (!userId) {
+        return res.render("users/login");
+      }
+      const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
+      // Store user/agent's userId in the cookie upon successful login
+      res.cookie("authToken", token, {
         maxAge: 86400_000,
         httpOnly: true,
       });

@@ -1,15 +1,14 @@
-<!DOCTYPE HTML>
-<html>
-	<head>
-	</head>
-	<body>
-		<%- include('./agentProfile.ejs', {agent: agent, rating: agentRating}); %>
-		<%- include('./agentMainInfo.ejs', {agent: agentMainInfo}); %>
-		<%- include('./agentInformation.ejs', {agent: agentSubInfo}); %>
-	</br>
-		<h1 class="uk-heading-divider">후기</h1>
-		<% agentReviewData.forEach(review => { %>
-		<%- include('./agentReview.ejs', {createdTime: review.created_time, rate: review.rating, author: review.r_username, description: review.content}) %>
-		<% }); %>
-	</body>
-</html>
+<div style="padding: 20px 30px;">
+<%- include('./agentProfile.ejs', {agent: agent, rating: agentRating}); %>
+<%- include('./agentMainInfo.ejs', {agent: agentMainInfo}); %>
+<%- include('./agentInformation.ejs', {agent: agentSubInfo}); %>
+</br>
+<h1 class="uk-heading-divider"><%= `${agent.cmp_nm}의 후기` %></h1>
+<% if(agentReviewData[0] == null) { %>
+	<h3>아직 후기가 없습니다😥</h3>
+<% } else { %>
+	<% agentReviewData.forEach(review => { %>
+	<%- include('./agentReview.ejs', {review: review}) %>
+	<% }); %>
+<% } %>
+</div>

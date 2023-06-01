@@ -24,8 +24,11 @@ router.post(
 
 //후기를 열람할 때
 router.post(
-    '/:ra_regno/opening/:rv_id',
-    realtorController.opening
+  '/:ra_regno/opening/:rv_id',
+  realtorController.opening
 );
+
+//후기 신고
+router.get('/report/:rv_id', realtorController.reporting);
 
 module.exports = router;

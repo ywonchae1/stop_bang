@@ -16,40 +16,145 @@
         name="password"
         placeholder="비밀번호 입력"
         type="password"
-        value="passwordk"
+        value=""
+        onkeyup="validatePassword(this.value)"
       />
+      <p id="passwordMessage" class="error"></p>
     </div>
 
     <div class="grid gap-2">
-      <label for="phone">핸드폰</label>
+      <label for="phone">핸드폰 번호 (필수)</label>
       <input
         name="phone"
-        placeholder="핸드폰 번호 입력"
-        value="12312-213-123"
+        placeholder="핸드폰 번호 입력 (숫자만)"
+        value="010-0000-0000"
       />
     </div>
 
     <div class="grid gap-2">
       <label for="realname">실명</label>
-      <input name="realname" placeholder="실명 입력" value="실명" />
+      <input name="realname" placeholder="실명 입력" value=" " />
     </div>
-
     <div class="grid gap-2">
       <label for="email">본인 확인 이메일 (필수)</label>
+      <input name="email" placeholder="이메일 입력" type="email" value=" " />
+    </div>
+
+    <div
+      id="verificationCodeContainer"
+      class="grid gap-2"
+      style="display: none"
+    >
+      <label for="verificationCode">이메일 인증 코드</label>
       <input
-        name="email"
-        placeholder="이메일 입력"
-        type="email"
-        value="email@nvermoc.mod"
+        id="verificationCode"
+        name="verificationCode"
+        placeholder="인증 코드 입력"
       />
     </div>
 
-    <div class="grid gap-2">
-      <label for="birth">생년월일 (선택)</label>
-      <input name="birth" placeholder="생년월일 입력" value="19980412" />
-    </div>
+    <button onclick="sendVerificationEmail()" type="button">
+      이메일 인증 코드 전송
+    </button>
 
+    <button onclick="verifyEmail()" type="button" style="display: none">
+      이메일 인증 확인 하기
+    </button>
+
+    <div id="verificationStatus"></div>
+
+    <div class="grid gap-2">
+      <form>
+        <label
+          >생년월일 (선택) <br />
+          <input type="date" name="bday" required pattern="\d{4}-\d{2}-\d{2}" />
+          <span class="validity"></span>
+        </label>
+      </form>
+
+      <!-- <label for="birth">생년월일 (선택)</label>
+      <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
+    </div>
+    <br />
+    <br />
     <button type="submit">회원가입</button>
   </form>
 </main>
-<script></script>
+
+<script>
+  function validatePassword(password) {
+    const passwordMessage = document.getElementById("passwordMessage");
+
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /^(?=.*[!@#%&])/.test(password);
+
+    if (password.length < minLength) {
+      passwordMessage.innerText = `비밀번호는 ${minLength}자 이상이어야 합니다.`;
+    } else if (!hasUppercase) {
+      passwordMessage.innerText = "비밀번호에는 대문자가 포함되어야 합니다.";
+    } else if (!hasLowercase) {
+      passwordMessage.innerText = "비밀번호에는 소문자가 포함되어야 합니다.";
+    } else if (!hasNumber) {
+      passwordMessage.innerText = "비밀번호에는 숫자가 포함되어야 합니다.";
+    } else if (!hasSpecial) {
+      passwordMessage.innerText = "비밀번호에는 특수기호가 포함되어야 합니다";
+    } else {
+      passwordMessage.innerText = "";
+    }
+  }
+
+  async function generateActivationCode() {
+    const response = await fetch("/randomBytes?length=16");
+    const randomBytes = await response.arrayBuffer();
+    const hexString = Array.from(new Uint8Array(randomBytes))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+
+    return hexString;
+  }
+
+  async function sendVerificationEmail() {
+    const emailElement = document.getElementById("email");
+    const verificationCodeContainer = document.getElementById(
+      "verificationCodeContainer"
+    );
+    const verificationCodeElement = document.getElementById("verificationCode");
+    const verifyEmailButton = document.querySelector(
+      "button[onclick='verifyEmail()']"
+    );
+
+    const activationCode = await generateActivationCode();
+
+    console.log("Activation Code:", activationCode);
+
+    verificationCodeElement.value = activationCode;
+
+    verificationCodeContainer.style.display = "grid";
+    verifyEmailButton.style.display = "block";
+  }
+
+  function verifyEmail() {
+    const verificationCodeElement = document.getElementById("verificationCode");
+    const storedVerificationCode = verificationCodeElement.value.trim();
+    const userVerificationCode = prompt(
+      "Enter the verification code from your email:"
+    );
+
+    const verificationStatusElement =
+      document.getElementById("verificationStatus");
+
+    if (
+      userVerificationCode &&
+      userVerificationCode.trim() === storedVerificationCode
+    ) {
+      verificationStatusElement.innerText = "이메일 인증이 완료되었습니다.";
+      verificationStatusElement.style.color = "green";
+    } else {
+      verificationStatusElement.innerText = "이메일 인증이 실패했습니다.";
+      verificationStatusElement.style.color = "red";
+    }
+  }
+</script>

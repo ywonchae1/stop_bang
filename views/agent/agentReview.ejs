@@ -1,19 +1,62 @@
-<div class="display-review">
-	<div style="float:left;"><%- author %></div>
-	<div style="float:right;">
-		<label>
-			<%= createdTime %>
-		</label>
-		<label>작성</label>
-	</div>
-	<div class="layout-row">
-		<% for( let index=0; index < 5; index++ ) { %>
-			<% if (index < rate) { %>
-				<p>★</p>
-			<% } else { %>
-				<p>☆</p>
-			<% } %>
+<script>
+	function openForm() {
+		document.getElementById("myForm").style.display = "block";
+	}
+
+	function closeForm() {
+		document.getElementById("myForm").style.display = "none";
+	}
+</script>
+
+<div class="uk-card uk-card-default uk-card-hover uk-card-body layout-row" style="display: flex; margin-bottom: 15px; max-width: 80%;">
+	<span style="margin-right: auto; width: 80%;">
+	  <div class="layout-row">
+		<p style="margin-right:10px"><%- review.r_username %></p>
+		<% for( let index = 0; index < 5; index++ ) { %>
+		  <% if (index < review.rating) { %>
+		  <p>★</p>
+		  <% } else { %>
+		  <p>☆</p>
+		  <% } %>
 		<% } %>
-	</div>
-	<p><%- description %></p>
+	  </div>
+	  <!--태그넣을 곳-->
+		<p class="rv-content"><%- review.content %></p>
+	</span>
+	
+	<span class="layout-column">
+		<label style="margin: 10px 0; float: right;"><%= review.created_time %>작성</label>
+		<% let isReported = false; %>
+		<% if(report != undefined) { %>
+			<% report.forEach(repo => { %>
+			<% if(repo.repo_rv_id === review.rv_id) isReported = true; }); %>
+		<% } %>
+		<% if(!isReported) { %>
+			<!-- A button to open the popup form -->
+			<button class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="openForm()">신고</button>
+
+			<!-- The form -->
+			<div class="form-popup" id="myForm">
+				<form class="form-container" action=<%= `/agent/report/${review.rv_id}` %>>
+					<h3>🚨나쁜 후기입니까?🚨</h3>
+
+					<label><b>신고 사유 선택</b></label>
+					<div class="report-radio-container" name="reason">
+						<label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=1>사칭/사기</label>
+						</br>
+						<label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=2>욕설/비하</label>
+						</br>
+						<label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=3>부적절한 내용</label>
+					</div>
+
+					<div style="text-align: center;">
+						<button type="submit" class="btn">신고</button>
+						<button type="button" class="btn cancel" onclick="closeForm()">취소</button>
+					</div>
+				</form>
+			</div>
+		<% } else { %>
+			<lable style="margin: 10px 0; float: right; text-align: right;">🚔신고 완료</lable>
+		<% } %>
+	</span>
 </div>

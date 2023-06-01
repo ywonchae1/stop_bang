@@ -2,7 +2,7 @@
 const db = require("../config/db.js");
 
 module.exports = {
-    getRealtorProfile: async (ra_regno) => {
+	getRealtorProfile: async (ra_regno) => {
 		try {
 			const res = await db.query(`
 			SELECT agentList.rdealer_nm, agentList.cmp_nm, agentList.address, agent.a_profile_image
@@ -15,7 +15,7 @@ module.exports = {
 		} catch (error) {
 			return error;
 		}
-    },
+	},
 
     getMainInfo: async (ra_regno) => {
 		let rawQuery = `
@@ -90,14 +90,53 @@ module.exports = {
 		}
     },
 
-    getRating: async (params) => {
+	//7회 이상 신고된 후기인지 표시하는 check_repo 컬럼 SELECT문에 추가(나쁜후기 0 좋은후기 1)
+	getReport: async (params, r_id) => {
+		let rawQuery = `
+		SELECT repo_rv_id, r_id, agentList_ra_regno,
+		CASE
+		WHEN repo_rv_id IN (
+		SELECT repo_rv_id
+		FROM report
+		GROUP BY repo_rv_id
+		HAVING COUNT(repo_rv_id) >= 7)
+		THEN 0
+		ELSE 1
+		END AS check_repo
+		FROM review
+		JOIN (
+		SELECT repo_rv_id, r_id
+		FROM report
+		JOIN resident
+		ON reporter=r_username
+		WHERE r_id=?
+		) newTable
+		ON rv_id=repo_rv_id
+		GROUP BY rv_id
+		HAVING agentList_ra_regno=?`
+		let res = await db.query(rawQuery, [r_id, params.ra_regno]);
+		return res[0];
+	},
+
+	//신고된 후기는 별점 반영X
+	getRating: async (params) => {
 		let rawQuery = `
 		SELECT TRUNCATE(AVG(rating), 1) AS agentRating
 		FROM review
 		RIGHT OUTER JOIN agentList
 		ON agentList_ra_regno=ra_regno
-		WHERE ra_regno=?;`;
-		let res = await db.query(rawQuery, [params.ra_regno]);
+		WHERE ra_regno=? AND rv_id NOT IN (
+			SELECT rv_id
+			FROM (
+			SELECT rv_id, COUNT(rv_id) AS cnt, agentList_ra_regno
+			FROM report
+			JOIN review
+			ON repo_rv_id=rv_id
+			WHERE agentList_ra_regno=?
+			GROUP BY rv_id
+			HAVING cnt >= 7) newTable
+		);`;
+		let res = await db.query(rawQuery, [params.ra_regno, params.ra_regno]);
 		return res[0][0].agentRating;
     },
 
@@ -116,6 +155,32 @@ module.exports = {
 		await db.query(usePointRawQuery, [r_id]);
 		result();
     },
+
+	reportProcess: async (req, r_id) => {
+		let rawQuery = `
+		INSERT
+		INTO report(reporter, repo_rv_id, reportee, reason) 
+		VALUES(?, ?, ?, ?)`
+		let getReportee = `
+		SELECT r_username
+		FROM review
+		JOIN resident
+		ON resident_r_id=r_id
+		WHERE rv_id=?`
+		let getReporter = `
+		SELECT r_username
+		FROM resident
+		WHERE r_id=?`
+		let getRaRegno = `
+		SELECT agentList_ra_regno
+		FROM review
+		WHERE rv_id=?`
+		
+		let reporter = await db.query(getReporter, [r_id]);
+		let reportee = await db.query(getReportee, [req.params.rv_id]);
+		await db.query(rawQuery, [reporter[0][0].r_username, req.params.rv_id, reportee[0][0].r_username, req.query.reason]);
+		return await db.query(getRaRegno, [req.params.rv_id]);
+	},
 
     updateBookmark: async (id, body, result) => {
 		let rawQuery = ``;

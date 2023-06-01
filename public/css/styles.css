@@ -21,18 +21,6 @@ a:hover {
   --purple: #865dff;
 }
 
-.grid {
-  display: grid;
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
 .user-submit-button,
 .user-cancel-button {
   color: var(--purple) !important;
