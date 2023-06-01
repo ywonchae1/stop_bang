@@ -92,10 +92,12 @@ module.exports = {
   updateMainInfo: async (req, res) => {
     let getMainInfo = await agentModel.getMainInfo(req.params.id);
 
-    let image1 = getMainInfo[0][0].a_image1;
-    let image2 = getMainInfo[0][0].a_image2;
-    let image3 = getMainInfo[0][0].a_image3;
-    let introduction = getMainInfo[0][0].a_introduction;
+    let image1 = getMainInfo.a_image1;
+    let image2 = getMainInfo.a_image2;
+    let image3 = getMainInfo.a_image3;
+    let introduction = getMainInfo.a_introduction;
+
+    //여기가 문제같음...........내일 가서 model쪽이랑 여기 물어보자
 
       let title = `소개글 수정하기`;
       res.render("agent/updateMainInfo.ejs", {

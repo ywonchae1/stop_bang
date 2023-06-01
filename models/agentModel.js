@@ -24,7 +24,7 @@ module.exports = {
   //   let rawQuery = `
 	// 	SELECT a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
 	// 	FROM agent
-	// 	RIGHT OUTER JOIN agentList
+	// 	LEFT JOIN agentList
 	// 	ON agentList_ra_regno=ra_regno
 	// 	WHERE ra_regno = ?;`;
   //   let res = await db.query(rawQuery, [ra_regno]);
@@ -34,12 +34,14 @@ module.exports = {
   getMainInfo: async (ra_regno) => {
     try {
       const res = await db.query(
-        `SELECT agentList_ra_regno, a_image1, a_image2, a_image3, a_introduction
+        `SELECT a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
         FROM agent
-        WHERE agentList_ra_regno = ?;`,
+        LEFT JOIN agentList
+        ON agentList_ra_regno=ra_regno
+        WHERE ra_regno = ?;`,
         [ra_regno]
       );
-      return res;
+      return res[0][0];
     } catch (error) {
       console.error(error);
       //   result(null, error);
@@ -120,12 +122,13 @@ module.exports = {
 
   updateMainInfo: async (ra_regno, files, body, result) => {
     try {
+      console.log(files);
       const res = await db.query(
         `UPDATE agent SET a_image1=?, a_image2=?, a_image3=?, a_introduction=?
 			WHERE agentList_ra_regno=?`,
-        [files.myImage1.filename ? files.myImage1.filename : null,
-         files.myImage2.filename ? files.myImage2.filename : null,
-         files.myImage3.filename ? files.myImage3.filename : null,
+        [files.myImage1 ? files.myImage1[0].filename : null,
+         files.myImage2 ? files.myImage2[0].filename : null,
+         files.myImage3 ? files.myImage3[0].filename : null,
          body.introduction, ra_regno]
       );
       result(res);
