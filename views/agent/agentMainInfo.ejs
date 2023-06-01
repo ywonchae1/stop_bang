@@ -1,28 +1,30 @@
-<table class = "table">
+<link rel="stylesheet" href="/css/agent.css">
+
+<table class = "table" style="margin:auto;">
     <tr>
         <% if(agent.a_image1 == null) { %>
             <td></td>
         <% } else { %>
-            <td><img src="/uploads/<%= agent.a_image1 %>" style="width: 100px" /></td>
+            <td><img src="/uploads/<%= agent.a_image1 %>" /></td>
         <% } %>
     </tr>
     <tr>
         <% if(agent.a_image2 == null) { %>
             <td></td>
         <% } else { %>
-            <td><img src="/uploads/<%= agent.a_image2 %>" style="width: 100px" /></td>
+            <td><img src="/uploads/<%= agent.a_image2 %>" /></td>
         <% } %>
     </tr>
     <tr>
         <% if(agent.a_image3 == null) { %>
             <td></td>
         <% } else { %>
-            <td><img src="/uploads/<%= agent.a_image3 %>" style="width: 100px" /></td>
+            <td><img src="/uploads/<%= agent.a_image3 %>" /></td>
         <% } %>
     </tr>
     <tr>
-        <td><%= agent.a_introduction %></td>
+        <p><%= agent.a_introduction %></p>
     </tr>
 </table>
 
-<a href="/agent/<%= agent.ra_regno %>/info_edit %>">수정</a>
+<a class="a--mm--alink" href="/agent/<%= agent.ra_regno %>/info_edit %>">수정</a>
