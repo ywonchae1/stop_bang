@@ -68,7 +68,6 @@ module.exports = {
 
     updateReviewProcess: async (params, body, result) => {
 		let desc = body.originDesc;
-		console.log(body.description);
 		if(body.description == "\n")
 			desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
 		let tags = Array.isArray(body.tag)
