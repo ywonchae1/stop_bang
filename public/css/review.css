@@ -95,6 +95,30 @@ input.uk-checkbox:checked:focus {
   margin-left: 20px;
 }
 
+.review-statistics-container{
+  padding: 20px;
+}
+
+.layout-row.stat{
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom:2px;
+  color:#000000;
+}
+
+.layout-row.positive{
+  background-color: rgba(134, 93, 255, 0.2)
+}
+.layout-row.negative{
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.layout-row.positive.level0,
+.layout-row.positive.level1{
+  background-color: rgba(134, 93, 255, 0.4)
+}
+.layout-row.negative.level0,
+.layout-row.negative.level1{
+  background-color: rgba(134, 93, 255, 0.1)
 /* 신고 관련 */
 /* The popup form - hidden by default */
 .form-popup {

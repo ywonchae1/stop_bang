@@ -13,78 +13,78 @@
     <div class="layout-row">
       <p style="margin-right:10px"><%- review.r_username %></p>
       <% for( let index = 0; index < 5; index++ ) { %>
-        <% if (index < review.rating) { %>
-        <p>★</p>
-        <% } else { %>
-        <p>☆</p>
-        <% } %>
+      <% if (index < review.rating) { %>
+      <p>★</p>
+      <% } else { %>
+      <p>☆</p>
+      <% } %>
       <% } %>
     </div>
-      <% if(tags !== null) { %>
-        <% tags.split("").forEach((element, index) => { %>
-        <span class="uk-label" style="margin-right:5px; margin-bottom:5px;"><%= tagsData[element] %></span>
-        <% }) %>
-      <% } %>
+    <% if(tags !== null) { %>
+    <% tags.split("").forEach((element, index) => { %>
+    <span class="uk-label" style="margin-right:5px; margin-bottom:5px;"><%= tagsData[element] %></span>
+    <% }) %>
+    <% } %>
 
-      <% let isMyReview = false; %>
-      <% if(review.r_id == r_id) isMyReview = true; %>
-      <% let isOpened = false; %>
-      <% opened.forEach(open => { %>
-      <% if(open.review_rv_id === review.rv_id) isOpened = true; }); %>
+    <% let isMyReview = false; %>
+    <% if(review.r_id == r_id) isMyReview = true; %>
+    <% let isOpened = false; %>
+    <% opened.forEach(open => { %>
+    <% if(open.review_rv_id === review.rv_id) isOpened = true; }); %>
 
-      <% if(!isOpened && !isMyReview) { %>
-        <p class="rv-content">후기를 열람해 보세요!</p>
-      <% } else { %>
-        <p class="rv-content"><%- review.content %></p>
-      <% } %>
+    <% if(!isOpened && !isMyReview) { %>
+    <p class="rv-content">후기를 열람해 보세요!</p>
+    <% } else { %>
+    <p class="rv-content"><%- review.content %></p>
+    <% } %>
   </span>
-    
+
   <span class="layout-column">
     <label style="margin: 10px 0; float: right;"><%= review.created_time %>작성</label>
 
     <% if(!isOpened && !isMyReview) { %>
-      <% if(canOpen === 1) { %>
-        <form action=<%= `/realtor/${review.ra_regno}/opening/${review.rv_id}` %> method='post'>
-          <input type='submit' class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="return window.confirm('후기를 열람하면 2 🧻 휴지를 사용하게 됩니다. 열람하시겠습니까?');" value='열람'>
-        </form>
-      <% } else { %>
-          <form>
-            <input type='submit' class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="return window.alert('🧻 휴지가 부족하여 열람할 수 없습니다.');" value='열람'>
-          </form>
-      <% } %>
+    <% if(canOpen === 1) { %>
+    <form action=<%= `/realtor/${review.ra_regno}/opening/${review.rv_id}` %> method='post'>
+      <input type='submit' class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="return window.confirm('후기를 열람하면 2 🧻 휴지를 사용하게 됩니다. 열람하시겠습니까?');" value='열람'>
+    </form>
+    <% } else { %>
+    <form>
+      <input type='submit' class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="return window.alert('🧻 휴지가 부족하여 열람할 수 없습니다.');" value='열람'>
+    </form>
+    <% } %>
     <% } else if(!isMyReview) { %>
-      <% let isReported = false; %>
-      <% if(report != undefined) { %>
-        <% report.forEach(repo => { %>
-        <% if(repo.repo_rv_id === review.rv_id) isReported = true; }); %>
-      <% } %>
-      <% if(!isReported) { %>
-        <!-- A button to open the popup form -->
-        <button class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="openForm()">신고</button>
+    <% let isReported = false; %>
+    <% if(report != undefined) { %>
+    <% report.forEach(repo => { %>
+    <% if(repo.repo_rv_id === review.rv_id) isReported = true; }); %>
+    <% } %>
+    <% if(!isReported) { %>
+    <!-- A button to open the popup form -->
+    <button class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="openForm()">신고</button>
 
-        <!-- The form -->
-        <div class="form-popup" id="myForm">
-          <form class="form-container" action=<%= `/realtor/report/${review.rv_id}` %>>
-            <h3>🚨나쁜 후기입니까?🚨</h3>
+    <!-- The form -->
+    <div class="form-popup" id="myForm">
+      <form class="form-container" action=<%= `/realtor/report/${review.rv_id}` %>>
+        <h3>🚨나쁜 후기입니까?🚨</h3>
 
-            <label><b>신고 사유 선택</b></label>
-            <div class="report-radio-container" name="reason">
-              <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=1>사칭/사기</label>
-              </br>
-              <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=2>욕설/비하</label>
-              </br>
-              <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=3>부적절한 내용</label>
-            </div>
-
-            <div style="text-align: center;">
-              <button type="submit" class="btn">신고</button>
-              <button type="button" class="btn cancel" onclick="closeForm()">취소</button>
-            </div>
-          </form>
+        <label><b>신고 사유 선택</b></label>
+        <div class="report-radio-container" name="reason">
+          <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=1>사칭/사기</label>
+          </br>
+          <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=2>욕설/비하</label>
+          </br>
+          <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=3>부적절한 내용</label>
         </div>
-      <% } else { %>
-        <lable style="margin: 10px 0; float: right; text-align: right;">🚔신고 완료</lable>
-      <% } %>
+
+        <div style="text-align: center;">
+          <button type="submit" class="btn">신고</button>
+          <button type="button" class="btn cancel" onclick="closeForm()">취소</button>
+        </div>
+      </form>
+    </div>
+    <% } else { %>
+    <lable style="margin: 10px 0; float: right; text-align: right;">🚔신고 완료</lable>
+    <% } %>
     <% } %>
   </span>
 </div>
