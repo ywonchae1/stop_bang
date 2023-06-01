@@ -82,7 +82,7 @@ module.exports = {
       ON r_id=resident_r_id
       ) newTable
       ON agentList_ra_regno=ra_regno
-      WHERE ra_regno=00754;`;
+      WHERE ra_regno=?;`;
 
       let checkOpenedRawQuery = `
 			SELECT review_rv_id
