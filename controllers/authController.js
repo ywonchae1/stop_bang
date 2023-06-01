@@ -104,10 +104,6 @@ module.exports = {
         return res.status(400).send("이미 사용중인 아이디입니다.");
       }
 
-      if (!passwordSchema.validate(body.password)) {
-        return res.status(400).send("비밀번호를 다시 확인해주세요.");
-      }
-
       // Save new agent information to the database
       authModel.registerAgent(req.body, (userId) => {
         if (!userId) {
