@@ -10,7 +10,7 @@
     <h3><%= bookmark.cmp_nm %></h3>
     <%= bookmark.address %>
     <form class="mybookmark-button" action="/resident/bookmark/<%= bookmark.bm_id%>/delete" method="post">
-      <input type="submit" name="" value="삭제">
+      <input class="uk-button uk-button-default" type="submit" name="" value="삭제">
     </form>
   </div>
   <% }); %>
