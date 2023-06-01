@@ -10,7 +10,7 @@
   }
 </script>
 
-<body>
+<div style="padding: 20px 30px;">
   <% let rate = 0; %>
   <h3><%= realtor.cmp_nm %> 후기 작성하기</h3>
   <form action='/review/<%- realtor.ra_regno %>/create_process' method='post'>
@@ -34,4 +34,4 @@
   <form action='/realtor/<%- realtor.ra_regno %>' method='get'>
     <input class="user-cancel-button uk-button uk-button-default" type='submit' value='취소'>
   </form>
-</body>
+</div>
