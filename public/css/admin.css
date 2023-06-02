@@ -83,6 +83,7 @@ body{
     width: 100%;
     margin-left: 210px;
     background-color: ghostwhite;
+    min-height: calc(100vh - 80px);
 
 }
 
@@ -123,7 +124,60 @@ body{
 
 
 .a--r--report--item{
-    border: 1px solid black;
+    border: 3px solid #865dff;
     padding: 20px;
+    background-color: white;
     border-radius: 10px;
+}
+
+.a--r--report--item li{
+    line-height: 1.5rem;
+}
+.text-veri{
+    font-weight: 700;
+    ;
+}
+
+.c--agent--list{
+    line-height: 2rem;
+}
+
+.a--c--btn{
+    color:white;
+    background-color: #865dff;
+    padding:7px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}
+.sidebar--link li a:hover{
+    color:#865dff;
+}
+
+.a--c--btn:hover{
+    cursor: pointer;
+}
+
+.a--signedup_agent{
+    line-height: 1.5rem;
+    list-style: none;
+
+}
+
+#r_span{
+    display: block;
+    width: 190px; /* 보이는 글의 너비 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.report--comment--item{
+    border: 3px solid #865dff;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    list-style: none;
 }

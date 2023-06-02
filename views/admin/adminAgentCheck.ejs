@@ -10,10 +10,8 @@
             <div class="bnc">
                     <div class="sidebar">
                         <ol class="sidebar--link">
-                            <li>사용자 관리</li>
-                            <li>리뷰 신고 관리</li>
-                            <li>공인중개사 인증관리</li>
-                            <li>기타</li>
+                            <li><a href="/admin/reports">리뷰 신고 관리</a></li>
+                            <li><a href="/admin/newagent">공인중개사 인증관리</a></li>
                         </ol>
                     </div>
 
@@ -23,14 +21,15 @@
                             <div class="a--agent--list">
                                 <div>
                                 <div class="a--r--report--item">
-                                    <% for (let i=0; i < newAgent.length; i++) { %>
-
-                                    <ul class="a--signedup_agent">
-                                        <li class="s_user_name">신청자 : <%= newAgent[i].a_realname %></li>
-                                        <li class="s_user_id">아이디 : <%= newAgent[i].a_username %></li>
-                                        <% const formattedDate = new Date(newAgent[i].created_time).toISOString().slice(0, 10); %>
-                                        <li class="s_signup_date">신청일 : <%= formattedDate %></li>                                            </ul>
-                                    <% } %>
+                                    <% for (let i = 0; i < newAgent.length; i++) { %>
+                                        <ul class="a--signedup_agent">
+                                          <li class="s_user_name"><a href="/admin/newagent/confirm/<%= newAgent[i].agentList_ra_regno %>">신청자 : <%= newAgent[i].a_realname %></a></li>
+                                          <li class="s_user_id">아이디 : <%= newAgent[i].a_username %></li>
+                                          <li class="s_user_id">중개번호 : <%= newAgent[i].agentList_ra_regno %></li>
+                                          <% const formattedDate = new Date(newAgent[i].created_time).toISOString().slice(0, 10); %>
+                                          <li class="s_signup_date">신청일 : <%= formattedDate %></li>                                            
+                                        </ul>
+                                      <% } %>
 
 
                                 </div>

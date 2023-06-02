@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/css/admin.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<body >
+    <main>
+        <div>
+            <div class="bnc">
+                    <div class="sidebar">
+                        <ol class="sidebar--link">
+                            <li><a href="/admin/reports">리뷰 신고 관리</a></li>
+                            <li><a href="/admin/newagent">공인중개사 인증관리</a></li>
+                        </ol>
+                    </div>
+
+                    <div class="admin--content">
+                        <div class="upper--box">
+                            <div id="admin--intro">댓글 신고 관리</div>
+                            <div class="a--agent--list">
+                                <div>
+               
+                                    <div class="r--report--item">
+                                        <% for (let i=0; i < reports.length; i++) { %>
+
+                                        <ul class="report--comment--item">
+                                            <li class="s_user_name"><a href="/admin/reports/confirm/<%= reports[i].rv_id %>">리뷰 <%= reports[i].repo_rv_id %>번에 대한 신고</a></li>
+                                            <li class="s_user_id">신고자 아이디 : <%= reports[i].reporter %></li>
+                                            <%
+                                                function r_array(num) {
+                                                    const reasons = [ "사칭/사기","욕설/비하","부적절한 내용"];
+                                                    const reasonsContent = reasons[num-1];
+                                                    return reasonsContent;
+                                                }
+                                                %>
+                                            <% const reportReason = r_array(reports[i].reason); %>
+                                            <li class="s_user_id">신고 사유 : <%= reportReason%></li>
+                                            <li class="s_user_id"><span>신고 댓글 내용 : <span id="r_span"><%= reports[i].content%></span></span></li>
+                                            <% const formattedDate = new Date(reports[i].created_time).toISOString().slice(0, 10); %>
+                                            <li class="s_signup_date">신고일 : <%= formattedDate %></li>  
+                                        </ul>
+                                        <% } %>
+
+
+                                    </div>
+                                  
+                               </div>
+
+                            </div>
+
+
+                        </div>
+                                      
+                    </div>
+                </div>
+
+            </div>
+
+
+
+                   
+
+    </main>
+</body>
+
+
+<script>
+
+
+</script>
