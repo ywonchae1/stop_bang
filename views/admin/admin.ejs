@@ -10,10 +10,8 @@
             <div class="bnc">
                     <div class="sidebar">
                         <ol class="sidebar--link">
-                            <li>사용자 관리</li>
-                            <li>리뷰 신고 관리</li>
-                            <li>공인중개사 인증관리</li>
-                            <li>기타</li>
+                            <li><a href="/admin/reports">리뷰 신고 관리</a></li>
+                            <li><a href="/admin/newagent">공인중개사 인증관리</a></li>
                         </ol>
                     </div>
 
@@ -36,8 +34,8 @@
                                     <div class="inner--box" style="color:white;">
                                         <p class="box-title" ><span uk-icon="warning"style="padding-right: 8px;"></span>
                                             리뷰 신고 건수</p>
-
-                                        <p class="box-info" > 건</p>
+                                            <% const reportsCount = Object.keys(reports).length%>                                                
+                                        <p class="box-info" > <%= reportsCount %> 건</p>
                                     </div>
                                 </section>
                             </div>
@@ -60,28 +58,31 @@
                                     <div class="r-report">
 
                                         <div class="r--report--item">
-                                            <ul>
-                                                <li>리뷰 2번에 관한 신고</li>
-                                                <li>신고자 : user0</li>
-                                                <li>신고사유 : 허위사실 기재</li>
-                                                <li>신청일 : 2023/12/10</li>
-                                            </ul>
-                                            <ul>
-                                                <li>리뷰 10번에 관한 신고</li>
-                                                <li>신고자 : user9</li>
-                                                <li>신고사유 : 욕설 및 비방</li>
-                                                <li>신청일 : 2023/12/10</li>
-                                            </ul>
-                                            <ul>
-                                                <li>리뷰 13번에 관한 신고</li>
-                                                <li>신고사유 : 허위사실 기재</li>
-                                                <li>신청일 : 2023/12/10</li>
-                                            </ul>
+                                            <% for (let i=0; i < reports.length; i++) { %>
 
-                                            <div style="margin-left:28px; color: grey;">더보기</div>
+                                            <ul class="signedup_agent">
+                                                <li class="s_user_name"><a href="/admin/reports/%>">리뷰 <%= reports[i].repo_rv_id %>번에 대한 신고</a></li>
+                                                <li class="s_user_id">신고자 아이디 : <%= reports[i].reporter %></li>
+                                                <%
+                                                    function r_array(num) {
+                                                        const reasons = [ "사칭/사기","욕설/비하","부적절한 내용"];
+                                                        const reasonsContent = reasons[num-1];
+                                                        return reasonsContent;
+                                                    }
+                                                    %>
+                                                <% const reportReason = r_array(reports[i].reason); %>
+                                                <li class="s_user_id">신고 사유 : <%= reportReason%></li>
+                                                <li class="s_user_id"><span>신고 댓글 내용 : <span id="r_span"><%= reports[i].content%></span></span></li>
+                                                <% const formattedDate = new Date(reports[i].created_time).toISOString().slice(0, 10); %>
+                                                <li class="s_signup_date">신고일 : <%= formattedDate %></li>  
+                                            </ul>
+                                            <% } %>
+
+
                                         </div>
-                                      
-                                    </div>
+                                        <div style="margin-left:28px; color: grey;"><a href="/admin/reports/">더보기</a></div>
+
+                                   </div>
                                     </div>
                                 <div class="two--content">
                                 <div class="r-title" style="margin-bottom:18px; font-weight: 500;"><span uk-icon="check"style="padding-right: 8px;"></span>부동산 인증요청 </div>
@@ -91,15 +92,18 @@
                                             <% for (let i=0; i < newAgent.length; i++) { %>
 
                                             <ul class="signedup_agent">
-                                                <li class="s_user_name">신청자 : <%= newAgent[i].a_realname %></li>
+                                                <li class="s_user_name"><a href="/admin/newagent/confirm/<%=newAgent[i].agentList_ra_regno %>">신청자 : <%= newAgent[i].a_realname %></a></li>
                                                 <li class="s_user_id">아이디 : <%= newAgent[i].a_username %></li>
+                                                <li class="s_user_id">중개번호 : <%= newAgent[i].agentList_ra_regno %></li>
                                                 <% const formattedDate = new Date(newAgent[i].created_time).toISOString().slice(0, 10); %>
-                                                <li class="s_signup_date">신청일 : <%= formattedDate %></li>                                            </ul>
+                                                <li class="s_signup_date">신청일 : <%= formattedDate %></li>  
+                                            </ul>
                                             <% } %>
 
-                                            <div style="margin-left:28px; color: grey;">더보기</div>
 
                                         </div>
+                                        <div style="margin-left:28px; color: grey;"><a href="/admin/newagent/">더보기</a></div>
+
                                       
                                     </div>
                                     </div>

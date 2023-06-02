@@ -24,7 +24,7 @@
       <span id="review-star5" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(5)"></span>
     </div>
     <div id="review-tags" name="reviewtags" class="layout-row checkboxes">
-      <% tagsdata.forEach((element, index) => { %>
+      <% data.forEach((element, index) => { %>
       <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %>> <%=element %></label>
       <% }) %>
     </div>
