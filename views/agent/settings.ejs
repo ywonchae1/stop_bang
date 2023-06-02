@@ -1,4 +1,4 @@
-<%- include('./agentMenu.ejs'); %>
+<%- include('./agentMenu.ejs', {agent: agent}); %>
 <script>
   function checkSetting() {
     alert("변경 사항이 저장되었습니다.");
@@ -9,10 +9,12 @@
     let pw = document.getElementById("newpw").value;
     let pw2 = document.getElementById("newpw2").value;
     if (pw !== pw2) {
-      document.getElementById("checkpw").innerText = "비밀번호를 다시 확인해주세요.";
+      document.getElementById("checkpw").innerText =
+        "비밀번호를 다시 확인해주세요.";
       return false;
     } else if (pw.length < 6) {
-      document.getElementById("checkpw").innerText = "비밀번호를 5자 이상으로 설정해주세요.";
+      document.getElementById("checkpw").innerText =
+        "비밀번호를 5자 이상으로 설정해주세요.";
       return false;
     } else {
       document.getElementById("checkpw").innerText = "";
@@ -24,15 +26,36 @@
   <h3 class="mypage-hr">계정 정보</h3>
   <form classname="user-setting" action="/agent/settings/update" method="post">
     <label class="user-label">🧸 아이디</label>
-    <input class="uk-input uk-form-width-medium" name="username" value="<%= agent.a_username %>" placeholder="아이디" readonly="true" />
+    <input
+      class="uk-input uk-form-width-medium"
+      name="username"
+      value="<%= agent.a_username %>"
+      placeholder="아이디"
+      readonly="true"
+    />
     <br />
     <label class="user-label">✅ 실명</label>
-    <input class="uk-input uk-form-width-medium" value="<%= agent.a_realname %>" required />
+    <input
+      class="uk-input uk-form-width-medium"
+      value="<%= agent.a_realname %>"
+      required
+    />
     <br />
     <label class="user-label">📬 이메일</label>
-    <input class="uk-input uk-form-width-medium" name="email" value="<%= agent.a_email %>" type="email" />
+    <input
+      class="uk-input uk-form-width-medium"
+      name="email"
+      value="<%= agent.a_email %>"
+      type="email"
+    />
     <br />
-    <button class=" user-submit-button uk-button uk-button-default" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
+    <button
+      class="user-submit-button uk-button uk-button-default"
+      type="submit"
+      onclick="return checkSetting()"
+    >
+      변경 내용 저장하기
+    </button>
   </form>
   <br />
 
@@ -41,23 +64,48 @@
     <label class="user-label">🔑 현재 비밀번호</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input class="uk-input uk-form-width-medium" name="oldpassword" type="password" aria-label="Not clickable icon" required />
+      <input
+        class="uk-input uk-form-width-medium"
+        name="oldpassword"
+        type="password"
+        aria-label="Not clickable icon"
+        required
+      />
     </div>
     <br />
 
     <label class="user-label">🔓 새 비밀번호</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input id="newpw" name="password" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
+      <input
+        id="newpw"
+        name="password"
+        class="uk-input uk-form-width-medium"
+        type="password"
+        aria-label="Not clickable icon"
+        required
+      />
     </div>
     <br />
     <label class="user-label">🔒 새 비밀번호 확인</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input id="newpw2" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
+      <input
+        id="newpw2"
+        class="uk-input uk-form-width-medium"
+        type="password"
+        aria-label="Not clickable icon"
+        required
+      />
     </div>
     <label id="checkpw"></label>
     <br />
-    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkPassword()">비밀번호 변경하기</button>
+    <button
+      class="user-submit-button uk-button uk-button-default"
+      type="submit"
+      onclick="return checkPassword()"
+    >
+      비밀번호 변경하기
+    </button>
   </form>
 </div>

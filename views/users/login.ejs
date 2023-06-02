@@ -1,4 +1,96 @@
-<main>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 50;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 100px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 100px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      .margin-tb {
+        margin: 20px 0 10px 0;
+      }
+
+      .align-btn {
+        margin-top: 20px;
+        display:flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Login</h1>
+      <main>
+        <form action="/auth/login" name="login" method="post">
+          <label class="margin-tb" for="username">아이디</label>
+          <input class="uk-input uk-width-medium" name="username" placeholder="아이디 입력" />
+          <label class="margin-tb" for="password">비밀번호</label>
+          <input class="uk-input uk-width-medium" name="password" placeholder="비밀번호 입력" />
+          <div class="align-btn"><button class="uk-button uk-button-default margin-tb" type="submit">로그인</button></div>
+        </form>
+      </main>
+    </div>
+    <script>
+      function login(e) {
+        e.preventDefault();
+        console.log(123);
+      }
+    </script>
+  </body>
+</html>
+
+<!-- <main>
   <form action="/auth/login" name="login" method="post">
     <label for="username">아이디</label>
     <input name="username" placeholder="아이디 입력" />
@@ -12,4 +104,4 @@
     e.preventDefault();
     console.log(123);
   }
-</script>
+</script> -->

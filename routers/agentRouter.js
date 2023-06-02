@@ -6,7 +6,6 @@ const router = express.Router();
 
 //Controllers
 const agentController = require("../controllers/agentController.js");
-
 /*
 
 const upload = multer({
@@ -30,6 +29,8 @@ router.post('/upload', upload.single(img), (req, res) => {
 })
 
 */
+router.get("/phoneNumber", agentController.getAgentPhoneNumber);
+
 //agent 사용자 정보 확인용
 router.get("/settings", agentController.settings, agentController.settingsView);
 router.post(
@@ -57,5 +58,8 @@ router.get(
 //agent info 수정(영업시간,전화번호)
 
 router.get("/:id/update", agentController.updateEnteredInfo);
+
+//후기 신고
+router.get('/report/:rv_id', agentController.reporting);
 
 module.exports = router;

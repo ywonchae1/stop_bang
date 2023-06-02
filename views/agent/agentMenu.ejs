@@ -2,6 +2,11 @@
   <script>
   </script>
   <div class="col-sm nav-align">
+    <p class="r-menu-index">활동</p>
+    <a href=<%= `/agent/${agent.ra_regno}` %> class="r-menu-button" <%= path==="myagent"? "highlight":"" %>">
+      나의 부동산
+    </a>
+    <br />
     <p class="r-menu-index">설정</p>
     <a href="/agent/settings" class="r-menu-button highlight">
       계정 정보
