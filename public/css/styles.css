@@ -50,3 +50,9 @@ a:hover {
 .highlight.uk-icon[uk-icon="icon: star; ratio:1.5"] svg polygon {
   fill: var(--purple);
 }
+
+.set-btn {
+  border-width: 3px !important;
+  padding: 15px 30px !important;
+  font-size: 25px !important;
+}
