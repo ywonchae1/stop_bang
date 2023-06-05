@@ -129,6 +129,14 @@
 
   async function sendVerificationEmail() {
     const emailElement = document.getElementById("email");
+    await fetch("/auth/certification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: emailElement.value }),
+    });
+
     const verificationCodeContainer = document.getElementById(
       "verificationCodeContainer"
     );
@@ -137,30 +145,40 @@
       "button[onclick='verifyEmail()']"
     );
 
-    const activationCode = await generateActivationCode();
+    // const activationCode = await generateActivationCode();
 
-    console.log("Activation Code:", activationCode);
+    // console.log("Activation Code:", activationCode);
 
-    verificationCodeElement.value = activationCode;
+    // verificationCodeElement.value = activationCode;
 
     verificationCodeContainer.style.display = "grid";
     verifyEmailButton.style.display = "block";
   }
 
-  function verifyEmail() {
+  async function verifyEmail() {
+    const emailElement = document.getElementById("email");
     const verificationCodeElement = document.getElementById("verificationCode");
-    const storedVerificationCode = verificationCodeElement.value.trim();
-    const userVerificationCode = prompt(
-      "Enter the verification code from your email:"
-    );
+
+    const result = await fetch("/auth/certification-check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: emailElement.value,
+        code: verificationCodeElement.value,
+      }),
+    });
+
+    // const storedVerificationCode = verificationCodeElement.value.trim();
+    // const userVerificationCode = prompt(
+    //   "Enter the verification code from your email:"
+    // );
 
     const verificationStatusElement =
       document.getElementById("verificationStatus");
 
-    if (
-      userVerificationCode &&
-      userVerificationCode.trim() === storedVerificationCode
-    ) {
+    if (result.status === 200) {
       verificationStatusElement.innerText = "이메일 인증이 완료되었습니다.";
       verificationStatusElement.style.color = "green";
     } else {
