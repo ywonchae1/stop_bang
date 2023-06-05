@@ -126,4 +126,3 @@ exports.confirmModel = async(regno,a_id) => {
 
 };
 
-
