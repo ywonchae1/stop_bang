@@ -2,10 +2,78 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
 // const passwordSchema = require("../models/passwordValidator");
-const nodemailer = require("nodemailer");
+const mailer = require("../modules/mailer");
 const path = require("path");
+const db = require("../config/db");
+
+const _makeCertificationKey = () => {
+  var key = ""; // 인증키
+
+  // 난수 생성 후 인증키로 활용
+  for (var i = 0; i < 5; i++) {
+    key = key + Math.floor(Math.random() * (10 - 0));
+  }
+
+  return key;
+};
 
 router.get("/register", authController.registerView);
+
+router.post("/certification", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || typeof email !== "string") {
+      return res.status(400).send("Invalid Param");
+    }
+
+    const code = _makeCertificationKey();
+    const [rows, fields] = await db.query(
+      `SELECT * FROM certification WHERE email='${email}'`
+    );
+    if (rows.length > 0) {
+      await db.query(
+        `UPDATE certification SET code='${code}' WHERE email='${email}'`
+      );
+    } else {
+      await db.query("INSERT INTO certification (email, code) VALUE(?, ?);", [
+        email,
+        code,
+      ]);
+    }
+    await mailer.sendEmail(email, code);
+    res.send("Success!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.post("/certification-check", async (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    if (
+      !email ||
+      typeof email !== "string" ||
+      !code ||
+      typeof code !== "string"
+    ) {
+      return res.status(400).send("Invalid Param");
+    }
+
+    const [rows, fields] = await db.query(
+      `SELECT * FROM certification WHERE email='${email}' AND code='${code}'`
+    );
+    if (!rows[0]) {
+      return res.status(404).send("Data Not Found.");
+    }
+
+    res.send("Success!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+});
 
 router.post("/send-mail", async (req, res, next) => {
   var email = req.body.email;
