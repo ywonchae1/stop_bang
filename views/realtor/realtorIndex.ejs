@@ -18,6 +18,7 @@
   <% if (agentReviewData.length > 0) { %>
   <div class="review-statistics-container">
     <div>후기 <%= agentReviewData.length %>개의 통계</div>
+    <% console.log(statistics); %>
     <% statistics.forEach((element, index) => { %>
     <div class="layout-row <%= element.id < 5 ? "positive" : "negative" %> stat level<%= index %>" style="width: 300px;justify-content: space-between;">
       <div><%= element.tag %></div>
