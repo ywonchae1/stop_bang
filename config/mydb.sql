@@ -173,3 +173,11 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`certification`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`certification` (
+  `email` VARCHAR(255) CHARACTER SET 'utf8' NOT NULL,
+  `code` VARCHAR(45) CHARACTER SET 'utf8' NOT NULL)
+ENGINE = InnoDB;
