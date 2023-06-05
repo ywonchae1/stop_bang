@@ -34,10 +34,10 @@ exports.getNewAgentModel = async () => {
   }
 },
 
-exports.getAdminModel = async(r_id) => {
+exports.getAdminModel = async(r_username) => {
   try{
-    const query = `SELECT * FROM resident WHERE r_id = ?`
-    const [rows,fields] = await db.query(query,[r_id]);
+    const query = `SELECT * FROM resident WHERE r_username = ?`
+    const [rows,fields] = await db.query(query,[r_username]);
     const result = rows[0];
     //const result= ob.r_isadmin;
     //console.log("***admin : ", result);

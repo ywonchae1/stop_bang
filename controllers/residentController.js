@@ -11,10 +11,10 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       )
-      let r_id = decoded.userId;
-      if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      let r_username = decoded.userId;
+      if (r_username == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
       else {
-        residentModel.getReviewById(r_id, (result, err) => {
+        residentModel.getReviewById(r_username, (result, err) => {
           if (result === null) {
             console.log("error occured: ", err);
           } else {
@@ -37,10 +37,10 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
-      let r_id = decoded.userId;
-      if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      let r_username = decoded.userId;
+      if (r_username == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
       else {
-        residentModel.getOpenedReviewById(r_id, (result, err) => {
+        residentModel.getOpenedReviewById(r_username, (result, err) => {
           if (result === null) {
             console.log("error occured: ", err);
           } else {
@@ -62,8 +62,8 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
-      let r_id = decoded.userId;
-      residentModel.getBookMarkById(r_id, (result, err) => {
+      let r_username = decoded.userId;
+      residentModel.getBookMarkById(r_username, (result, err) => {
         if (result === null) {
           console.log("error occured: ", err);
         } else {
@@ -94,10 +94,10 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
-      let r_id = decoded.userId;
-      if (r_id == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      let r_username = decoded.userId;
+      if (r_username == null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
       else {
-        residentModel.getResidentById(r_id, (result, err) => {
+        residentModel.getResidentById(r_username, (result, err) => {
           if (result === null) {
             console.log("error occured: ", err);
           } else {
@@ -121,12 +121,12 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
-      let r_id = decoded.userId;
+      let r_username = decoded.userId;
       const body = req.body;
-      if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      if (r_username === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
       else {
         if (body.birth === "") body.birth = null;
-        residentModel.updateResident(r_id, body, (result, err) => {
+        residentModel.updateResident(r_username, body, (result, err) => {
           if (result === null) {
             console.log("error occured: ", err);
           } else {
@@ -144,10 +144,10 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
-      const r_id = decoded.userId;
-      if (r_id === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
+      const r_username = decoded.userId;
+      if (r_username === null) res.render('notFound.ejs', {message: "로그인이 필요합니다"});
       else {
-        residentModel.updateResidentPassword(r_id, req.body, (result, err) => {
+        residentModel.updateResidentPassword(r_username, req.body, (result, err) => {
           if (result === null) {
             if (err === "pwerror") {
               // res.locals.pwerr = "pwerror";

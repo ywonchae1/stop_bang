@@ -83,7 +83,7 @@ module.exports = {
         let agent = await agentModel.getAgentProfile(req.params.id);
         let getMainInfo = await agentModel.getMainInfo(req.params.id);
         //다른 공인중개사 페이지 접근 제한(수정제한으로 수정 필요할지도)
-        if (getMainInfo.a_id !== decoded.userId)
+        if (getMainInfo.a_username !== decoded.userId)
           res.render('notFound.ejs', {message: "접근이 제한되었습니다. 공인중개사 계정으로 로그인하세요"});
         let getEnteredAgent = await agentModel.getEnteredAgent(req.params.id);
         let getReviews = await agentModel.getReviewByRaRegno(req.params.id);

@@ -21,7 +21,7 @@ module.exports = {
 
   getMainInfo: async (ra_regno) => {
     let rawQuery = `
-    SELECT a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
+    SELECT a_username, a_id, ra_regno, a_image1, a_image2, a_image3, a_introduction
     FROM agent
     RIGHT OUTER JOIN agentList
     ON agentList_ra_regno=ra_regno
@@ -49,7 +49,7 @@ module.exports = {
 		}
   },
 
-  getReviewByRaRegno: async (ra_regno, r_id) => {
+  getReviewByRaRegno: async (ra_regno) => {
     try {
       let rawQuery = `
       SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
@@ -91,7 +91,7 @@ module.exports = {
 		return res[0][0].agentRating;
   },
 
-	getReport: async (ra_regno, a_id) => {
+	getReport: async (ra_regno, a_username) => {
 		let rawQuery = `
 		SELECT repo_rv_id
 		FROM review
@@ -102,12 +102,12 @@ module.exports = {
 		ON reporter=a_username
 		) newTable
 		ON rv_id=repo_rv_id
-		WHERE newTable.agentList_ra_regno=? AND a_id=?;`
-		let res = await db.query(rawQuery, [ra_regno, a_id]);
+		WHERE newTable.agentList_ra_regno=? AND a_username=?;`
+		let res = await db.query(rawQuery, [ra_regno, a_username]);
 		return res[0];
 	},
 
-	reportProcess: async (req, a_id) => {
+	reportProcess: async (req, a_username) => {
 		let rawQuery = `
 		INSERT
 		INTO report(reporter, repo_rv_id, reportee, reason) 
@@ -116,18 +116,18 @@ module.exports = {
 		SELECT r_username
 		FROM review
 		JOIN resident
-		ON resident_r_id=r_id
+		ON resident_r_username=r_username
 		WHERE rv_id=?`
 		let getReporter = `
 		SELECT a_username
 		FROM agent
-		WHERE a_id=?`
+		WHERE a_username=?`
 		let getRaRegno = `
 		SELECT agentList_ra_regno
 		FROM review
 		WHERE rv_id=?`
 		
-		let reporter = await db.query(getReporter, [a_id]);
+		let reporter = await db.query(getReporter, [a_username]);
 		let reportee = await db.query(getReportee, [req.params.rv_id]);
 		await db.query(rawQuery, [reporter[0][0].a_username, req.params.rv_id, reportee[0][0].r_username, req.query.reason]);
 		return await db.query(getRaRegno, [req.params.rv_id]);
@@ -199,7 +199,7 @@ module.exports = {
       FROM agent
       RIGHT OUTER JOIN agentList
       ON ra_regno=agentList_ra_regno
-      WHERE a_id=?;`;
+      WHERE a_username=?;`;
       const res = await db.query(rawQuery, [decoded.userId]);
       result(res);
     } catch (error) {
@@ -210,7 +210,7 @@ module.exports = {
     try {
       const res = await db.query(
         `UPDATE agent SET a_email=? 
-      WHERE a_id=?`,
+      WHERE a_username=?`,
         [body.email, id]
       );
       result(res);
@@ -233,7 +233,7 @@ module.exports = {
       // } else {
       //왜안된담....
       const res = await db.query(
-        "UPDATE agent SET a_password=aaa WHERE a_id = ?",
+        "UPDATE agent SET a_password=aaa WHERE a_username = ?",
         [passwordHash, id]
       );
       console.log(res);

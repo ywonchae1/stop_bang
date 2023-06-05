@@ -2,6 +2,20 @@
 const db = require("../config/db.js");
 
 module.exports = {
+  whoAreYou: async (r_username) => {
+    try {
+      let rawQuery = `
+      SELECT r_id
+      FROM resident
+      WHERE r_username=?;`;
+      let who = await db.query(rawQuery, [r_username]);
+      if(who[0][0] == null) return 0;
+      else return 1;
+    } catch (error) {
+      return error;
+    }
+  },
+
   getRealtorProfile: async (ra_regno) => {
     try {
       const res = await db.query(
@@ -48,11 +62,11 @@ module.exports = {
     }
   },
 
-  getBookmarkByIdnRegno: async (ra_regno, r_id) => {
+  getBookmarkByIdnRegno: async (ra_regno, r_username) => {
     try {
       const res = await db.query(
-        `SELECT * FROM bookmark WHERE agentList_ra_regno=? AND resident_r_id=?`,
-        [ra_regno, r_id]
+        `SELECT * FROM bookmark JOIN resident ON resident_r_id=r_id WHERE agentList_ra_regno=? AND r_username=?`,
+        [ra_regno, r_username]
       );
       return res;
     } catch (error) {
@@ -60,11 +74,11 @@ module.exports = {
     }
   },
 
-  getReviewByRaRegno: async (ra_regno, r_id) => {
+  getReviewByRaRegno: async (ra_regno, r_username) => {
     try {
       //입주민 회원이 작성한 후기 평균을 가져오느라 조인 많이~
       let rawQuery = `
-			SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
+      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
       FROM agentList
       JOIN(
       SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, avgRRating, newTable3.created_time AS created_time
@@ -82,33 +96,51 @@ module.exports = {
       ON r_id=resident_r_id
       ) newTable
       ON agentList_ra_regno=ra_regno
-      WHERE ra_regno=?;`;
-
-      let checkOpenedRawQuery = `
-			SELECT review_rv_id
-			FROM opened_review
-			WHERE resident_r_id=?`;
-
-      let checkRPointRawQuery = `
-			SELECT r_point
-			FROM resident
-			WHERE r_id=?`;
+      WHERE ra_regno=?`;
 
       let reviews = await db.query(rawQuery, [ra_regno]);
-      let opened = await db.query(checkOpenedRawQuery, [r_id]);
-      let rPoint = await db.query(checkRPointRawQuery, [r_id]);
-      let canOpen = 1;
-      if (rPoint[0][0].r_point < 2) canOpen = 0;
-      return { reviews: reviews[0], opened: opened[0], canOpen: canOpen };
+      return reviews[0];
     } catch (err) {
       return err;
     }
   },
 
+  getOpenedReview: async (r_username) => {
+    try {  
+      let checkOpenedRawQuery = `
+      SELECT review_rv_id
+      FROM opened_review
+      JOIN resident
+      ON resident_r_id=r_id
+      WHERE r_username=?`;
+
+      let opened = await db.query(checkOpenedRawQuery, [r_username]);
+      return opened[0];
+    } catch (err) {
+      return err;
+    }
+  },
+
+  canIOpen: async (r_username) => {
+    try {
+      let checkRPointRawQuery = `
+			SELECT r_point
+			FROM resident
+			WHERE r_username=?`;
+
+      let rPoint = await db.query(checkRPointRawQuery, [r_username]);
+      let canOpen = 1;
+      if (rPoint[0][0].r_point < 2) canOpen = 0;
+      return canOpen;
+    } catch(err) {
+      return err;
+    }
+  },
+
   //7회 이상 신고된 후기인지 표시하는 check_repo 컬럼 SELECT문에 추가(나쁜후기 0 좋은후기 1)
-  getReport: async (params, r_id) => {
+  getReport: async (params, r_username) => {
     let rawQuery = `
-		SELECT repo_rv_id, r_id, agentList_ra_regno,
+		SELECT repo_rv_id, r_username, r_id, agentList_ra_regno,
 		CASE
 		WHEN repo_rv_id IN (
 		SELECT repo_rv_id
@@ -120,16 +152,16 @@ module.exports = {
 		END AS check_repo
 		FROM review
 		JOIN (
-		SELECT repo_rv_id, r_id
+		SELECT repo_rv_id, r_id, r_username
 		FROM report
 		JOIN resident
 		ON reporter=r_username
-		WHERE r_id=?
+		WHERE r_username=?
 		) newTable
 		ON rv_id=repo_rv_id
 		GROUP BY rv_id
 		HAVING agentList_ra_regno=?`;
-    let res = await db.query(rawQuery, [r_id, params.ra_regno]);
+    let res = await db.query(rawQuery, [r_username, params.ra_regno]);
     return res[0];
   },
 
@@ -155,7 +187,11 @@ module.exports = {
     return res[0][0].agentRating;
   },
 
-  insertOpenedReview: async (r_id, rv_id, result) => {
+  insertOpenedReview: async (r_username, rv_id, result) => {
+    let getRIdRawQuery = `
+    SELECT r_id
+    FROM resident
+    WHERE r_username=?`
     let insertRawQuery = `
 		INSERT
 		INTO opened_review(resident_r_id, review_rv_id)
@@ -164,14 +200,16 @@ module.exports = {
     let usePointRawQuery = `
 		UPDATE resident
 		SET r_point=r_point - 2
-		WHERE r_id=?;
+		WHERE r_username=?;
 		`;
-    await db.query(insertRawQuery, [r_id, rv_id]);
-    await db.query(usePointRawQuery, [r_id]);
+    getRId = await db.query(getRIdRawQuery, [r_username]);
+    console.log(getRId[0][0].r_id);
+    await db.query(insertRawQuery, [getRId[0][0].r_id, rv_id]);
+    await db.query(usePointRawQuery, [r_username]);
     result();
   },
 
-  reportProcess: async (req, r_id) => {
+  reportProcess: async (req, r_username) => {
     let rawQuery = `
 		INSERT
 		INTO report(reporter, repo_rv_id, reportee, reason) 
@@ -182,19 +220,21 @@ module.exports = {
 		JOIN resident
 		ON resident_r_id=r_id
 		WHERE rv_id=?`;
+    /*
     let getReporter = `
 		SELECT r_username
 		FROM resident
 		WHERE r_id=?`;
+    */
     let getRaRegno = `
 		SELECT agentList_ra_regno
 		FROM review
 		WHERE rv_id=?`;
 
-    let reporter = await db.query(getReporter, [r_id]);
+    //let reporter = await db.query(getReporter, [r_id]);
     let reportee = await db.query(getReportee, [req.params.rv_id]);
     await db.query(rawQuery, [
-      reporter[0][0].r_username,
+      r_username,
       req.params.rv_id,
       reportee[0][0].r_username,
       req.query.reason,
@@ -202,8 +242,11 @@ module.exports = {
     return await db.query(getRaRegno, [req.params.rv_id]);
   },
 
-  updateBookmark: async (id, body, result) => {
-    let rawQuery = ``;
+  updateBookmark: async (r_username, body, result) => {
+    let getRIdRawQuery = `
+    SELECT r_id
+    FROM resident
+    WHERE r_username=?`;
     let res;
 
     try {
@@ -211,8 +254,9 @@ module.exports = {
         rawQuery = `DELETE FROM bookmark WHERE bm_id=?`;
         res = await db.query(rawQuery, [body.isBookmark]);
       } else {
-        rawQuery = `INSERT INTO bookmark (resident_r_id, agentList_ra_regno) values (?, ?)`;
-        res = await db.query(rawQuery, [body.id, body.raRegno]);
+        insertRawQuery = `INSERT INTO bookmark (resident_r_id, agentList_ra_regno) values (?, ?)`;
+        r_username = await db.query(getRIdRawQuery, [r_username]);
+        res = await db.query(insertRawQuery, [r_username[0][0].r_id, body.raRegno]);
       }
       result(res);
     } catch (error) {
