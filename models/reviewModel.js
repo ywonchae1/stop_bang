@@ -77,9 +77,13 @@ module.exports = {
 		let desc = body.originDesc;
 		if(body.description !== "\n")
 			desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
-		let tags = Array.isArray(body.tag)
-			? body.tag.join("") + body.checkedTags
-			: body.tag + body.checkedTags;
+		
+		let tags = body.checkedTags;
+		if(body.tag !== undefined) {
+			tags += Array.isArray(body.tag)
+				? body.tag.join("")
+				: body.tag;
+		}
 		let rawQuery = `
 			UPDATE review
 			SET rating=?, content=?, tags=? WHERE rv_id=?`;

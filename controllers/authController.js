@@ -38,6 +38,7 @@ module.exports = {
   registerResident: (req, res) => {
     // Check if required fields are missing
     const body = req.body;
+    console.log(!body.username);
 
     if (
       !body.username ||
