@@ -66,17 +66,19 @@ module.exports = {
 		result(res[0][0]);
 	},
 
-    updateReviewProcess: async (params, body, result) => {
+	updateReviewProcess: async (params, body, result) => {
 		let desc = body.originDesc;
-		if(body.description == "\n")
+		if(body.description !== "\n")
 			desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
-		let tags = Array.isArray(body.tag)
+
+		let tags = body.tag === undefined ? body.checkedTags : Array.isArray(body.tag)
 			? body.tag.join("") + body.checkedTags
 			: body.tag + body.checkedTags;
+
 		let rawQuery = `
 			UPDATE review
 			SET rating=?, content=?, tags=? WHERE rv_id=?`;
 		let res = await db.query(rawQuery, [body.rate, desc, tags, params.rv_id]);
-		result(res);
+		result();
     },
 };
