@@ -26,11 +26,10 @@
       <% } %>
       <% } %>
     </div>
-    <% console.log(checkedTags) %>
     <input type='hidden' name='checkedTags' value=<%- checkedTags %>>
     <div id="review-tags" name="reviewtags" class="layout-row checkboxes">
       <% tagsdata.forEach((element, index) => { %>
-      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %> <% if (checkedTags.split("").toString().indexOf(index) !== -1) { %> disabled checked <% } %>> <%=element %></label>
+      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %> <% if (checkedTags !== null && checkedTags.split("").toString().indexOf(index) !== -1) { %> disabled checked <% } %>> <%=element %></label>
       <% }) %>
     </div>
     <p><textarea name='originDesc' class="uk-textarea uk-form-width-large" readonly><%- description %></textarea></p>

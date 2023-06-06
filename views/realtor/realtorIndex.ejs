@@ -1,9 +1,25 @@
-<div style="padding: 20px 30px;">
-  <%- include('./realtorProfile.ejs', {agent: agent, rating: rating}); %>
-  <%- include('./realtorMainInfo.ejs', {agent: agentMainInfo}); %>
-  <%- include('./realtorInformation.ejs', {agent: agentSubInfo}); %>
+<link rel="stylesheet" href="/css/agent.css">
+<div class="container">
+	<div class="inner--container">
+		<div class="top--container">
+			<div class="m--left">
+				<div class="m--m--left">
+					<%- include('./realtorProfile.ejs', {agent: agent, rating: rating}); %>
+				</div>
+			</div>
+			<div class="m--right">
+				<p><%- include('./realtorInformation.ejs', {agent: agentSubInfo}); %></p>
+			</div>
 
-  <% if (r_id) { %>
+		</div>
+		<hr class="uk-divider-icon" style="padding:35px 0px">
+
+		<div class="bottom--center">
+			<p><%- include('./realtorMainInfo.ejs', {agent: agentMainInfo}); %></p>
+		</div>
+	</div>
+
+  <% if (r_username && who == 1) { %>
   <form action="/realtor/<%= agentMainInfo.ra_regno %>/bookmark" method="post">
     <input type="hidden" name="bookmarkData" value="<%= bookmark !== 0 ? bookmark.bm_id : 0 %>" />
     <button class="bookmark-button" type="submit">
@@ -18,6 +34,7 @@
   <% if (agentReviewData.length > 0) { %>
   <div class="review-statistics-container">
     <div>후기 <%= agentReviewData.length %>개의 통계</div>
+    <% console.log(statistics); %>
     <% statistics.forEach((element, index) => { %>
     <div class="layout-row <%= element.id < 5 ? "positive" : "negative" %> stat level<%= index %>" style="width: 300px;justify-content: space-between;">
       <div><%= element.tag %></div>
@@ -27,40 +44,49 @@
   </div>
   <% } %>
 
-
   <% if(agentReviewData[0] == null) { %>
-  <h3>첫 후기를 작성해 보세요!</h3>
-  <form action=<%= direction %> method='post'>
-    <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
-    <p><input class="uk-button uk-button-default" type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
-  </form>
+    <% if(who === 1) { %>
+      <h3>첫 후기를 작성해 보세요!</h3>
+      <form action=<%= direction %> method='post'>
+        <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+        <p><input class="uk-button uk-button-default" type='submit' value='첫 후기 작성하고 🧻 5휴지 받기'></p>
+      </form>
+    <% } else { %>
+      <h3>공인중개사 회원은 후기를 작성할 수 없습니다.</br>입주민 회원으로 가입해 주세요.</h3>
+      <a href="/auth/register"><button class="uk-button uk-button-default">회원가입하러 가기</button></a>
+    <% } %>
   <% } else { %>
   <% agentReviewData.forEach(review => { %>
   <% let flag = true; %>
   <% report.forEach(repo => { %>
   <% if(repo.check_repo === 0 && repo.repo_rv_id === review.rv_id) flag = false; }); %>
   <% if(flag === true) { %>
-  <%- include('./realtorReview.ejs', {r_id: r_id, review: review, report: report, opened: openedReviewData, canOpen: canOpen, tags: review.tags, tagsData: tagsData}); %>
-  <% } else { %>
-  <%- include('./realtorRepoReview.ejs', {review: review}); %>
-  <% } %>
+    <%- include('./realtorReview.ejs', {r_username: r_username, review: review, report: report, opened: openedReviewData, canOpen: canOpen, who: who, tags: review.tags, tagsData: tagsData}); %>
+    <% } else { %>
+    <%- include('./realtorRepoReview.ejs', {review: review}); %>
+    <% } %>
   <% }); %>
 
-  <% if(!r_id) { %>
-  <form action='/auth/login'>
-    <p><input class="uk-button uk-button-default" type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
-  </form>
+  <% if(who === 1) { %>
+    <% if(!r_username) { %>
+      <form action='/auth/login'>
+        <p><input class="uk-button uk-button-default" type='submit' onclick="return window.confirm('로그인이 필요합니다.');" value='후기 작성하고 휴지 받기'></p>
+      </form>
+      <% } else { %>
+      <% let flag = 1; %>
+      <% agentReviewData.forEach(review => { if(review.r_username == r_username) flag = 0; }); %>
+      <% if(flag == 1) { %>
+      <form action=<%= direction %> method='post'>
+        <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
+        <p><input class="uk-button uk-button-default" type='submit' value='후기 작성하고 휴지 받기'></p>
+      </form>
+      <% } else { %>
+      <p>이미 후기를 작성하셨습니다.</p>
+      <% } %>
+    <% } %>
   <% } else { %>
-  <% let flag = 1; %>
-  <% agentReviewData.forEach(review => { if(review.r_id == r_id) flag = 0; }); %>
-  <% if(flag == 1) { %>
-  <form action=<%= direction %> method='post'>
-    <input type='hidden' name='raRegno' value=<%= agent.ra_regno %>>
-    <p><input class="uk-button uk-button-default" type='submit' value='후기 작성하고 휴지 받기'></p>
-  </form>
-  <% } else { %>
-  <p>이미 후기를 작성하셨습니다.</p>
-  <% } %>
+    <h5>공인중개사 회원은 후기를 작성할 수 없습니다.</br>입주민 회원으로 가입해 주세요.</h5>
+    <a href="/auth/register"><button class="uk-button uk-button-default">회원가입하러 가기</button></a>
   <% } %>
   <% } %>
 </div>
