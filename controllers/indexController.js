@@ -12,8 +12,9 @@ module.exports = {
         let r_id = decoded.userId;
         const is_admin = await adminControl.getAdmin(r_id);
         res.render("index", { is_admin: is_admin });
+      } else {
+        res.render("index");  
       }
-      res.render("index");
     } catch (err) {
       console.log(err);
     }

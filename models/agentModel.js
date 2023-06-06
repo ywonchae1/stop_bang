@@ -134,17 +134,21 @@ module.exports = {
 	},
 
   updateMainInfo: async (params, body, result) => {
-    let rawQuery = `
+    try {
+      let rawQuery = `
       UPDATE agent
       SET a_image1=?, a_image2=?, a_image3=?, a_introduction=? WHERE agentList_ra_regno=?`;
-    let res = await db.query(rawQuery, [
-      body.image1,
-      body.image2,
-      body.image3,
-      body.a_introduction,
-      params.agentList_ra_regno,
-    ]);
-    result(res);
+      let res = await db.query(rawQuery, [
+        body.image1,
+        body.image2,
+        body.image3,
+        body.a_introduction,
+        params.agentList_ra_regno,
+      ]);
+      result(res);
+    } catch (error) {
+      result(null, "imageError");
+    }
   },
 
   getUnEnteredAgent: async (id, result) => {
