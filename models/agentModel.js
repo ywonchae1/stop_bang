@@ -30,7 +30,6 @@ module.exports = {
     return res[0][0];
   },
 
-  //이건 안 쓰나?
   getEnteredAgent: async (ra_regno) => {
     try {
       const res = await db.query(
