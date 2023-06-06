@@ -220,25 +220,23 @@ module.exports = {
   },
   updateAgentPassword: async (id, body, result) => {
     try {
-      console.log(body.password);
-      const passwordHash = bcrypt.hash(body.password, saltRounds);
-      // const passwordResult = await db.query(
-      //   `SELECT a_password FROM agent WHERE a_id=?`,
-      //   [id]
-      // );
-      // const password = passwordResult[0][0].a_password;
-
-      // if (body.oldpassword !== password) {
-      //   result(null, "pwerror");
-      // } else {
-      //왜안된담....
-      const res = await db.query(
-        "UPDATE agent SET a_password=aaa WHERE a_id = ?",
-        [passwordHash, id]
+      const passwordHash = await bcrypt.hash(body.password, saltRounds);
+      const passwordResult = await db.query(
+        `SELECT a_password FROM agent WHERE a_id=?`,
+        [id]
       );
-      console.log(res);
-      result(res);
-      // }
+      const password = passwordResult[0][0].a_password;
+      const test = await bcrypt.compare(body.oldpassword, password);
+      if (!test) {
+        console.log(test);
+        result(null, "pwerror");
+      } else {
+        const res = await db.query(
+          "UPDATE agent SET a_password=? WHERE a_id=?",
+          [passwordHash, id]
+        );
+        result(res);
+      }
     } catch (error) {
       console.error(error);
       result(null, error);

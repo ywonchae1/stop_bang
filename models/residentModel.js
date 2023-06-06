@@ -98,14 +98,15 @@ let residentModel = {
   },
   updateResidentPassword: async (id, body, result) => {
     try {
-      const passwordHash = bcrypt.hash(body.password, saltRounds);
+      const passwordHash = await bcrypt.hash(body.password, saltRounds);
       const passwordResult = await sql.query(
         `SELECT r_password FROM resident WHERE r_id=?`,
         [id]
       );
       const password = passwordResult[0][0].r_password;
-
-      if (body.oldpassword !== password) {
+      const test = await bcrypt.compare(body.oldpassword, password);
+      if (!test) {
+        console.log(test);
         result(null, "pwerror");
       } else {
         const res = await sql.query(
