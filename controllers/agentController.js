@@ -191,7 +191,6 @@ module.exports = {
         req.cookies.authToken,
         process.env.JWT_SECRET_KEY
       );
-      const userId = decoded.userId;
       agentModel.getAgentById(decoded, (result, err) => {
         if (result === null) {
           console.log("error occured: ", err);
@@ -242,9 +241,7 @@ module.exports = {
         agentModel.updateAgentPassword(a_id, req.body, (result, err) => {
           if (result === null) {
             if (err === "pwerror") {
-              // res.locals.pwerr = "pwerror";
-              res.locals.redirect = "/agent/settings";
-              next();
+              res.render('notFound.ejs', { message: "입력한 비밀번호가 잘못되었습니다." });
             }
           } else {
             res.locals.redirect = "/agent/settings";

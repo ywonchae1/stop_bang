@@ -150,9 +150,7 @@ module.exports = {
         residentModel.updateResidentPassword(r_username, req.body, (result, err) => {
           if (result === null) {
             if (err === "pwerror") {
-              // res.locals.pwerr = "pwerror";
-              res.locals.redirect = "/resident/settings";
-              next();
+              res.render('notFound.ejs', {message: "입력한 비밀번호가 잘못되었습니다."});
             }
           } else {
             res.locals.redirect = "/resident/settings";

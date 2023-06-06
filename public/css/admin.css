@@ -50,21 +50,20 @@ body{
 }
 
 .sidebar{
-   /* background-color: #474747;*/
-    width: 25%;
+    background-color: white;
+    width: 20%;
     padding: 30px;
     min-height: calc(100vh - 80px);
     border: 1px solid grey;
     border-left-style:none;
+    position:fixed;
 }
 
 /* 링크 스타일 */
 .sidebar--link a {
 
-    display: block; /* 링크를 블록 요소로 표시하여 너비를 100%로 설정 */
-    padding: 8px 16px; /* 링크의 패딩 */
     text-decoration: none; /* 밑줄 제거 */
-    color: white !important; /* 링크 텍스트 색상 */
+    color: black; /* 링크 텍스트 색상 */
 
 }
 
@@ -82,7 +81,9 @@ body{
 
 .admin--content{
     width: 100%;
+    margin-left: 210px;
     background-color: ghostwhite;
+    min-height: calc(100vh - 80px);
 
 }
 
@@ -117,6 +118,66 @@ body{
     margin: 10px 0px;
 }
 
-li:not(:first-child) {
+.signedup_agent li:not(:first-child) {
+    list-style: none;
+}
+
+
+.a--r--report--item{
+    border: 3px solid #865dff;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.a--r--report--item li{
+    line-height: 1.5rem;
+}
+.text-veri{
+    font-weight: 700;
+    ;
+}
+
+.c--agent--list{
+    line-height: 2rem;
+}
+
+.a--c--btn{
+    color:white;
+    background-color: #865dff;
+    padding:7px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}
+.sidebar--link li a:hover{
+    color:#865dff;
+}
+
+.a--c--btn:hover{
+    cursor: pointer;
+}
+
+.a--signedup_agent{
+    line-height: 1.5rem;
+    list-style: none;
+
+}
+
+#r_span{
+    display: block;
+    width: 190px; /* 보이는 글의 너비 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.report--comment--item{
+    border: 3px solid #865dff;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
     list-style: none;
 }

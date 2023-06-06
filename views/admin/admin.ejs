@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/css/admin.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" integrity="sha512-fD9DI5bZwQxOi7MhYWnnNPlvXdp/2Pj3XSTRrFs5FQa4mizyGLnJcN6tuvUS6LbmgN1ut+XGSABKvjN0H6Aoow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<body >
+    <main>
+        <div>
+            <div class="bnc">
+                    <div class="sidebar">
+                        <ol class="sidebar--link">
+                            <li><a href="/admin/reports">리뷰 신고 관리</a></li>
+                            <li><a href="/admin/newagent">공인중개사 인증관리</a></li>
+                        </ol>
+                    </div>
+
+                    <div class="admin--content">
+                        <div class="upper--box">
+                            <div id="admin--intro">멈춰방 관리자 페이지</div>
+
+                            <div class="upper--box--one" style="color:white;">
+                                <section class="box"  style ="background-color:#474747;" >
+                                    <div class="inner--box" >
+                                        <p class="box-title"><span uk-icon="users"style="padding-right: 8px;"></span>
+                                            신규 가입자</p>
+                                        <p class="box-info" >
+                                          <%=userCount%> 명
+                                       
+                                        </p>
+                                    </div>
+                                </section>
+                                <section class="box"  style ="background-color:#474747;" >
+                                    <div class="inner--box" style="color:white;">
+                                        <p class="box-title" ><span uk-icon="warning"style="padding-right: 8px;"></span>
+                                            리뷰 신고 건수</p>
+                                            <% const reportsCount = Object.keys(reports).length%>                                                
+                                        <p class="box-info" > <%= reportsCount %> 건</p>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="upper--box--two" style="color:white;">
+                                <section class="box" style ="background-color:#474747;"  >
+                                    <div class="inner--box" >
+                                      <p class="box-title" ><span uk-icon="bell" style="padding-right: 8px;"></span>부동산 인증 처리요청</p>
+                                      <% const newAgentCount = Object.keys(newAgent).length%>                                                
+
+                                      <p class="box-info" ><%= newAgentCount %> 건</p>
+                                    </div>
+                                </section>
+                            </div>
+                            </div>
+
+
+                            <div class="admin--content--two">
+                                <div class="two--content">
+                                <div class="r-title"  style="margin-bottom:18px; font-weight: 500; "><span uk-icon="warning"style="padding-right: 8px;"></span>리뷰 신고 내역</div>
+                                    <div class="r-report">
+
+                                        <div class="r--report--item">
+                                            <% for (let i=0; i < reports.length; i++) { %>
+
+                                            <ul class="signedup_agent">
+                                                <li class="s_user_name"><a href="/admin/reports/%>">리뷰 <%= reports[i].repo_rv_id %>번에 대한 신고</a></li>
+                                                <li class="s_user_id">신고자 아이디 : <%= reports[i].reporter %></li>
+                                                <%
+                                                    function r_array(num) {
+                                                        const reasons = [ "사칭/사기","욕설/비하","부적절한 내용"];
+                                                        const reasonsContent = reasons[num-1];
+                                                        return reasonsContent;
+                                                    }
+                                                    %>
+                                                <% const reportReason = r_array(reports[i].reason); %>
+                                                <li class="s_user_id">신고 사유 : <%= reportReason%></li>
+                                                <li class="s_user_id"><span>신고 댓글 내용 : <span id="r_span"><%= reports[i].content%></span></span></li>
+                                                <% const formattedDate = new Date(reports[i].created_time).toISOString().slice(0, 10); %>
+                                                <li class="s_signup_date">신고일 : <%= formattedDate %></li>  
+                                            </ul>
+                                            <% } %>
+
+
+                                        </div>
+                                        <div style="margin-left:28px; color: grey;"><a href="/admin/reports/">더보기</a></div>
+
+                                   </div>
+                                    </div>
+                                <div class="two--content">
+                                <div class="r-title" style="margin-bottom:18px; font-weight: 500;"><span uk-icon="check"style="padding-right: 8px;"></span>부동산 인증요청 </div>
+                                    <div class="r-report">
+
+                                        <div class="r--report--item">
+                                            <% for (let i=0; i < newAgent.length; i++) { %>
+
+                                            <ul class="signedup_agent">
+                                                <li class="s_user_name"><a href="/admin/newagent/confirm/<%=newAgent[i].agentList_ra_regno %>">신청자 : <%= newAgent[i].a_realname %></a></li>
+                                                <li class="s_user_id">아이디 : <%= newAgent[i].a_username %></li>
+                                                <li class="s_user_id">중개번호 : <%= newAgent[i].agentList_ra_regno %></li>
+                                                <% const formattedDate = new Date(newAgent[i].created_time).toISOString().slice(0, 10); %>
+                                                <li class="s_signup_date">신청일 : <%= formattedDate %></li>  
+                                            </ul>
+                                            <% } %>
+
+
+                                        </div>
+                                        <div style="margin-left:28px; color: grey;"><a href="/admin/newagent/">더보기</a></div>
+
+                                      
+                                    </div>
+                                    </div>
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    </div>
+
+    </main>
+</body>
+
+
+<script>
+
+
+</script>
