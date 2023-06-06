@@ -142,18 +142,16 @@ module.exports = {
       } else {
         const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
         // Store user/agent's userId in the cookie upon successful login
+        res.cookie("authToken", token, {
+          maxAge: 86400_000,
+          httpOnly: true,
+        });
         res
-          .cookie("authToken", token, {
+          .cookie("userType", isAgent ? 0 : 1, {
             maxAge: 86400_000,
             httpOnly: true,
           })
           .redirect("/");
-        // res
-        //   .cookie("userType", isAgent ? 0 : 1, {
-        //     maxAge: 86400_000,
-        //     httpOnly: true,
-        //   })
-        //   .redirect("/");
       }
     });
   },
