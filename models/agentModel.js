@@ -172,10 +172,12 @@ module.exports = {
       const res = await db.query(
         `UPDATE agent SET a_profile_image=?, a_office_hours=? 
 			WHERE agentList_ra_regno=?`,
-        [file.filename ? file.filename : null, body.office_hour, ra_regno]
+        [file ? file.filename : null, body.office_hour, ra_regno]
       );
+      console.log(res);
       result(res);
     } catch (error) {
+      console.error(error);
       result(null, error);
     }
   },
