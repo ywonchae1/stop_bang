@@ -1,12 +1,8 @@
 const express = require("express");
-//const multer = require('multer');
-//const fs = require('fs');
-//const path = require('path');
 const router = express.Router();
 
 //Controllers
 const agentController = require("../controllers/agentController.js");
-const reviewController = require("../controllers/reviewController.js");
 
 //agent 사용자 정보 확인용
 router.get("/settings", agentController.settings, agentController.settingsView);
@@ -25,17 +21,11 @@ router.get(
   "/:id",
   agentController.agentProfile,
   agentController.agentProfileView
-  // agentController.enteredagentInfo,
-  // agentController.enteredagentInfoView,
-  // agentController.agentMainInfo,
-  // agentController.agentMainInfoView,
-  // //agentController.myReview,
-  // agentController.myReviewView
 );
-//agent info 수정(영업시간,전화번호)
 
+//agent info 수정(영업시간,전화번호)
 router.get("/:id/update", agentController.updateEnteredInfo);
-// router.post(":/id/update_process",agentController.upload.single('myImage'), agentController.updatingEnteredInfo);
+
 router.post(
   "/:id/update_process",
   agentController.upload.single("myImage"),
@@ -52,6 +42,6 @@ router.post(
 );
 
 //후기 신고
-router.get("/report/:rv_id", reviewController.reporting);
+router.get('/report/:rv_id', agentController.reporting);
 
 module.exports = router;

@@ -8,80 +8,86 @@
   }
 </script>
 
-<div class="display-review">
-  <div class="layout-row" style="align-items: center;">
-    <div style="margin-right:10px"><%- review.r_username %></div>
-    <% for( let index = 0; index < 5; index++ ) { %>
-    <% if (index < review.rating) { %>
-    <p>★</p>
-    <% } else { %>
-    <p>☆</p>
+<div class="uk-card uk-card-default uk-card-hover uk-card-body layout-row" style="display: flex; margin-bottom: 15px; max-width: 80%;">
+  <span style="margin-right: auto; width: 80%;">
+    <div class="layout-row">
+      <p style="margin-right:10px"><%- review.r_username %></p>
+      <% for( let index = 0; index < 5; index++ ) { %>
+      <% if (index < review.rating) { %>
+      <p>★</p>
+      <% } else { %>
+      <p>☆</p>
+      <% } %>
+      <% } %>
+    </div>
+    <p>이 작성자의 후기 평균: <%- review.avgRRating %></p>
+    <% if(tags !== null) { %>
+    <% tags.split("").forEach((element, index) => { %>
+    <span class="uk-label" style="margin-right:5px; margin-bottom:5px;"><%= tagsData[element] %></span>
+    <% }) %>
     <% } %>
-    <% } %>
-    <div style="float:right; margin-left:auto">
-      <label><%= review.created_time %></label>
-      <label>작성</label>
-      <% let isMyReview = false; %>
-      <% if(review.r_id == r_id) isMyReview = true; %>
-      <% let isOpened = false; %>
+
+    <% let isMyReview = false; %>
+    <% if(review.r_username == r_username) isMyReview = true; %>
+    <% let isOpened = false; %>
+    <% if(opened != null) { %>
       <% opened.forEach(open => { %>
       <% if(open.review_rv_id === review.rv_id) isOpened = true; }); %>
+    <% } %>
 
+    <% if(!isOpened && !isMyReview) { %>
+    <p class="rv-content blur-content">후기를 열람해 보세요! 스타일 지워도 안보이지롱...굿굿 다시한번 해봐도 보이지 않을거예요 왜냐면 데이터를 안주닉가... 히히 신기하죠? 저도그래요</p>
+    <% } else { %>
+    <p class="rv-content"><%- review.content %></p>
+    <% } %>
+  </span>
+
+  <span class="layout-column">
+    <label style="margin: 10px 0; float: right;"><%= review.created_time %>작성</label>
+
+    <% if(who == 1) { %>
       <% if(!isOpened && !isMyReview) { %>
         <% if(canOpen === 1) { %>
-          <form action=<%= `/realtor/${review.ra_regno}/opening/${review.rv_id}` %> method='post'>
-            <input type='submit' class="uk-button uk-button-default" onclick="return window.confirm('후기를 열람하면 2 🧻 휴지를 사용하게 됩니다. 열람하시겠습니까?');" value='열람'>
-          </form>
+        <form action=<%= `/realtor/${review.ra_regno}/opening/${review.rv_id}` %> method='post'>
+          <input type='submit' class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="return window.confirm('후기를 열람하면 2 🧻 휴지를 사용하게 됩니다. 열람하시겠습니까?');" value='열람'>
+        </form>
         <% } else { %>
-            <form>
-              <input type='submit' class="uk-button uk-button-default" onclick="return window.alert('🧻 휴지가 부족하여 열람할 수 없습니다.');" value='열람'>
-            </form>
+        <form>
+          <input type='submit' class="uk-button uk-button-default" style="margin: 10px 0; float: right;" onclick="return window.alert('🧻 휴지가 부족하여 열람할 수 없습니다.');" value='열람'>
+        </form>
         <% } %>
-      <% } else if(!isMyReview) {%>
+      <% } else if(!isMyReview) { %>
         <% let isReported = false; %>
         <% if(report != undefined) { %>
           <% report.forEach(repo => { %>
           <% if(repo.repo_rv_id === review.rv_id) isReported = true; }); %>
         <% } %>
         <% if(!isReported) { %>
-          <!-- A button to open the popup form -->
-          <button class="uk-button uk-button-default" onclick="openForm()">신고</button>
+        <!-- This is a button toggling the modal -->
+        <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-example">신고</button>
 
-          <!-- The form -->
-          <div class="form-popup" id="myForm">
+        <!-- This is the modal -->
+        <div id="modal-example" uk-modal>
+          <div class="uk-modal-dialog uk-modal-body">
             <form class="form-container" action=<%= `/realtor/report/${review.rv_id}` %>>
-              <h3>🚨나쁜 후기입니까?🚨</h3>
-
+              <h2 class="uk-modal-title">🚨나쁜 후기입니까?🚨</h2>
               <label><b>신고 사유 선택</b></label>
               <div class="report-radio-container" name="reason">
-                <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=1>사칭/사기</label>
+                <label><input style="margin: 15px;" class="uk-radio" type="radio" required="required" name="reason" value=1>사칭/사기</label>
                 </br>
-                <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=2>욕설/비하</label>
+                <label><input style="margin: 15px;" class="uk-radio" type="radio" required="required" name="reason" value=2>욕설/비하</label>
                 </br>
-                <label><input style="margin: 15px;" class="uk-radio" type="radio" name="reason" value=3>부적절한 내용</label>
+                <label><input style="margin: 15px;" class="uk-radio" type="radio" required="required" name="reason" value=3>부적절한 내용</label>
               </div>
-
-              <div style="text-align: center;">
-                <button type="submit" class="btn">신고</button>
-                <button type="button" class="btn cancel" onclick="closeForm()">취소</button>
-              </div>
+              <button class="uk-button uk-button-default uk-modal-close" type="button">취소</button>
+              <button class="uk-button uk-button-primary" type="submit">신고</button>
             </form>
           </div>
+        </div>
         <% } else { %>
-          <lable>신고 완료</lable>
+        <lable style="margin: 10px 0; float: right; text-align: right;">🚔신고 완료</lable>
         <% } %>
       <% } %>
-    </div>
-  </div>
-  <% if(tags !== null) { %>
-  <% tags.split("").forEach((element, index) => { %>
-  <span class="uk-label" style="margin-right:5px;margin-bottom:5px;"><%= tagsData[element] %></span>
-  <% }) %>
     <% } %>
-
-  <% if(!isOpened && !isMyReview) { %>
-    <p>후기를 열람해 보세요!</p>
-  <% } else { %>
-    <p><%- review.content %></p>
-  <% } %>
+  </span>
 </div>

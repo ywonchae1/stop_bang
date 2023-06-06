@@ -13,10 +13,10 @@ module.exports = {
         const is_admin = await adminControl.getAdmin(r_id);
         res.render("index", { is_admin: is_admin });
       } else {
-        res.render("index");
+        res.render("index");  
       }
     } catch (err) {
       console.log(err);
     }
-  },
+  }
 };

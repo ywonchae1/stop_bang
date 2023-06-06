@@ -1,5 +1,3 @@
-<!DOCTYPE HTML>
-<html>
 <script>
   function onStarClick(number) {
     document.getElementById("review-rate").value = number;
@@ -12,12 +10,12 @@
   }
 </script>
 
-<body>
+<div style="padding: 20px 30px;">
   <h3 class="uk-text-lead"><%- title %></h3>
   <form action='/review/<%- reviewId %>/update_process' method='post'>
     <div class="uk-text-meta">이미 작성한 후기는 유지되지만 태그와 내용을 추가할 수 있습니다. </div>
     <input type='hidden' name='raRegno' value=<%- raRegno %>>
-    <input class="uk-input uk-form-blank uk-form-width-medium" type='text' name='updatedTime' value=<%= updatedTime %>>
+    <input class="uk-input uk-form-blank uk-form-width-medium" type='text' name='updatedTime' readonly value=<%= updatedTime %>>
     <input id="review-rate" type="hidden" name="rate" value=<%= rate %>>
     <div class="layout-row">
       <% for( let index = 1; index <= 5; index++ ) { %>
@@ -28,20 +26,17 @@
       <% } %>
       <% } %>
     </div>
-    <% console.log(checkedTags) %>
     <input type='hidden' name='checkedTags' value=<%- checkedTags %>>
     <div id="review-tags" name="reviewtags" class="layout-row checkboxes">
       <% tagsdata.forEach((element, index) => { %>
-      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %> <% if (checkedTags.split("").toString().indexOf(index) !== -1) { %> disabled checked <% } %>> <%=element %></label>
+      <label><input class="uk-checkbox" type="checkbox" name="tag" value=<%=index %> <% if (checkedTags !== null && checkedTags.split("").toString().indexOf(index) !== -1) { %> disabled checked <% } %>> <%=element %></label>
       <% }) %>
     </div>
     <p><textarea name='originDesc' class="uk-textarea uk-form-width-large" readonly><%- description %></textarea></p>
-    <p><textarea name='description' class="uk-textarea uk-form-width-large" rows="3" maxlength='<%= 200-description.length-13 %>' placeholder='당신의 후기를 추가하세요(이미 작성된 후기는 수정할 수 없습니다.)'></textarea></p>
+    <p><textarea name='description' class="uk-textarea uk-form-width-large" rows="3" placeholder='당신의 후기를 추가하세요(이미 작성된 후기는 수정할 수 없습니다.)' maxlength=<%= 200-description.length-updatedTime.length-1 > 0 ? 200-description.length-updatedTime.length-1 : 0 %>></textarea></p>
     <input type='submit' class="user-submit-button uk-button uk-button-default" value='등록'>
   </form>
   <form action='/resident/myReview' method='get'>
     <input type='submit' class="user-cancel-button uk-button uk-button-default" value='취소'>
   </form>
-</body>
-
-</html>
+</div>

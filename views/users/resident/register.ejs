@@ -4,6 +4,7 @@
     class="grid gap-4"
     name="register"
     method="post"
+    id="register"
   >
     <div class="grid gap-2">
       <label for="username">아이디</label>
@@ -38,29 +39,51 @@
 
     <div class="grid gap-2">
       <label for="email">본인 확인 이메일 (필수)</label>
+      <input id="email" placeholder="이메일 입력" type="email" value="" />
+    </div>
+
+    <div
+      id="verificationCodeContainer"
+      class="grid gap-2"
+      style="display: none"
+    >
+      <label for="verificationCode">이메일 인증 코드</label>
       <input
-        name="email"
-        placeholder="이메일 입력"
-        type="email"
-        value="email@gmail.com"
+        id="verificationCode"
+        name="verificationCode"
+        placeholder="인증 코드 입력"
       />
     </div>
 
+    <button onclick="sendVerificationEmail()" type="button">
+      이메일 인증 코드 전송
+    </button>
+
+    <button onclick="verifyEmail()" type="button" style="display: none">
+      이메일 인증 확인 하기
+    </button>
+
+    <div id="verificationStatus"></div>
+
     <div class="grid gap-2">
-      <form>
-        <label
-          >생년월일 (선택) <br />
-          <input type="date" name="bday" required pattern="\d{4}-\d{2}-\d{2}" />
-          <span class="validity"></span>
-        </label>
-      </form>
+      <label
+        >생년월일 (선택) <br />
+        <input
+          type="date"
+          name="bday"
+          required
+          pattern="\d{4}-\d{2}-\d{2}"
+          value="1999-11-11"
+        />
+        <span class="validity"></span>
+      </label>
 
       <!-- <label for="birth">생년월일 (선택)</label>
       <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
     </div>
     <br />
     <br />
-    <button type="submit">회원가입</button>
+    <button type="submit" form="register">회원가입</button>
   </form>
 </main>
 
@@ -86,6 +109,66 @@
       passwordMessage.innerText = "비밀번호에는 특수기호가 포함되어야 합니다";
     } else {
       passwordMessage.innerText = "";
+    }
+  }
+
+  async function sendVerificationEmail() {
+    const emailElement = document.getElementById("email");
+    await fetch("/auth/certification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: emailElement.value }),
+    });
+
+    const verificationCodeContainer = document.getElementById(
+      "verificationCodeContainer"
+    );
+    const verificationCodeElement = document.getElementById("verificationCode");
+    const verifyEmailButton = document.querySelector(
+      "button[onclick='verifyEmail()']"
+    );
+
+    // const activationCode = await generateActivationCode();
+
+    // console.log("Activation Code:", activationCode);
+
+    // verificationCodeElement.value = activationCode;
+
+    verificationCodeContainer.style.display = "grid";
+    verifyEmailButton.style.display = "block";
+  }
+
+  async function verifyEmail() {
+    const emailElement = document.getElementById("email");
+    const verificationCodeElement = document.getElementById("verificationCode");
+
+    const result = await fetch("/auth/certification-check", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: emailElement.value,
+        code: verificationCodeElement.value,
+      }),
+    });
+
+    // const storedVerificationCode = verificationCodeElement.value.trim();
+    // const userVerificationCode = prompt(
+    //   "Enter the verification code from your email:"
+    // );
+
+    const verificationStatusElement =
+      document.getElementById("verificationStatus");
+
+    if (result.status === 200) {
+      verificationStatusElement.innerText = "이메일 인증이 완료되었습니다.";
+      verificationStatusElement.style.color = "green";
+    } else {
+      verificationStatusElement.innerText = "이메일 인증이 실패했습니다.";
+      verificationStatusElement.style.color = "red";
     }
   }
 </script>

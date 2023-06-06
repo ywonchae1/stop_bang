@@ -21,18 +21,6 @@ a:hover {
   --purple: #865dff;
 }
 
-.grid {
-  display: grid;
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
-}
-
 .user-submit-button,
 .user-cancel-button {
   color: var(--purple) !important;
@@ -61,4 +49,10 @@ a:hover {
 }
 .highlight.uk-icon[uk-icon="icon: star; ratio:1.5"] svg polygon {
   fill: var(--purple);
+}
+
+.set-btn {
+  border-width: 3px !important;
+  padding: 15px 30px !important;
+  font-size: 25px !important;
 }

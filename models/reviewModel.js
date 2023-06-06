@@ -14,11 +14,16 @@ module.exports = {
 		result(res[0][0]);
     },
 
-  createReviewProcess: async (r_id, params, body, result) => {
+  	createReviewProcess: async (r_username, params, body, result) => {
 		let raRegno = params.ra_regno;
 		let rate = body.rate;
 		let description = body.description;
 		let tags = Array.isArray(body.tag) ? body.tag.join("") : body.tag;
+
+		let findRId = `
+		SELECT r_id
+		FROM resident
+		WHERE r_username=?;`;
 
 		let createReviewRawQuery = `
 			INSERT 
@@ -38,23 +43,25 @@ module.exports = {
 			THEN r_point+5
 			ELSE r_point+3
 			END
-			WHERE r_id=?;
+			WHERE r_username=?;
 			`;
+		
+		found = await db.query(findRId, [r_username]);
 		await db.query(createReviewRawQuery, [
-		r_id,
+		found[0][0].r_id,
 		raRegno,
 		rate,
 		description,
 		tags,
 		]);
-		await db.query(pointRawQuery, [raRegno, r_id]);
+		await db.query(pointRawQuery, [raRegno, r_username]);
 		result();
 	},
 
     getReviewByRvId: async (params, result) => {
 		let reviewId = params.rv_id;
 		let rawQuery = `
-			SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, CONCAT(newTable.updated_time, "수정됨") AS check_point
+			SELECT rv_id, resident_r_id, r_username, cmp_nm, ra_regno, newTable.rating AS rating, content, tags, CONCAT(newTable.updated_time, "수정됨") AS check_point
 			FROM resident
 			JOIN (SELECT rv_id, resident_r_id, cmp_nm, ra_regno, rating, tags, content, DATE_FORMAT(review.updated_time, "%Y-%m-%d") AS updated_time
 				FROM review
@@ -66,41 +73,21 @@ module.exports = {
 		result(res[0][0]);
 	},
 
-    updateReviewProcess: async (params, body, result) => {
-		let desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
-		let tags = Array.isArray(body.tag)
-			? body.tag.join("") + body.checkedTags
-			: body.tag + body.checkedTags;
+	updateReviewProcess: async (params, body, result) => {
+		let desc = body.originDesc;
+		if(body.description !== "\n")
+			desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
+		
+		let tags = body.checkedTags;
+		if(body.tag !== undefined) {
+			tags += Array.isArray(body.tag)
+				? body.tag.join("")
+				: body.tag;
+		}
 		let rawQuery = `
 			UPDATE review
-			SET rating=?, content=? WHERE rv_id=?`;
-		let res = await db.query(rawQuery, [body.rate, desc, params.rv_id]);
-		result(res);
+			SET rating=?, content=?, tags=? WHERE rv_id=?`;
+		let res = await db.query(rawQuery, [body.rate, desc, tags, params.rv_id]);
+		result();
     },
-
-	reportProcess: async (req, r_id) => {
-		let rawQuery = `
-		INSERT
-		INTO report(reporter, repo_rv_id, reportee, reason) 
-		VALUES(?, ?, ?, ?)`
-		let getReportee = `
-		SELECT r_username
-		FROM review
-		JOIN resident
-		ON resident_r_id=r_id
-		WHERE rv_id=?`
-		let getReporter = `
-		SELECT r_username
-		FROM resident
-		WHERE r_id=?`
-		let getRaRegno = `
-		SELECT agentList_ra_regno
-		FROM review
-		WHERE rv_id=?`
-		
-		let reporter = await db.query(getReporter, [r_id]);
-		let reportee = await db.query(getReportee, [req.params.rv_id]);
-		await db.query(rawQuery, [reporter[0][0].r_username, req.params.rv_id, reportee[0][0].r_username, req.query.reason]);
-		return await db.query(getRaRegno, [req.params.rv_id]);
-	}
 };

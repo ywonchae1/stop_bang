@@ -6,11 +6,11 @@
   <a href="/search">🏃‍♀️부동산 살펴보러 가기💨</a>
   <% } else { %>
   <% bookmarks.forEach(bookmark => { %>
-  <div class="mypage-bookmark" onclick="location.href='../agent/<%=bookmark.agentList_ra_regno%>';">
+  <div class="mypage-bookmark" onclick="location.href='../realtor/<%=bookmark.agentList_ra_regno%>';">
     <h3><%= bookmark.cmp_nm %></h3>
     <%= bookmark.address %>
     <form class="mybookmark-button" action="/resident/bookmark/<%= bookmark.bm_id%>/delete" method="post">
-      <input type="submit" name="" value="삭제">
+      <input class="uk-button uk-button-default" type="submit" name="" value="삭제">
     </form>
   </div>
   <% }); %>

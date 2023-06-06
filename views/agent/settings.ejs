@@ -1,4 +1,4 @@
-<%- include('./agentMenu.ejs'); %>
+<%- include('./agentMenu.ejs', {agent: agent}); %>
 <script>
   function checkSetting() {
     alert("변경 사항이 저장되었습니다.");
@@ -8,16 +8,31 @@
   function checkPassword() {
     let pw = document.getElementById("newpw").value;
     let pw2 = document.getElementById("newpw2").value;
+    let passwordMessage = document.getElementById("checkpw");
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(pw);
+    const hasLowercase = /[a-z]/.test(pw);
+    const hasNumber = /[0-9]/.test(pw);
+    const hasSpecial = /^(?=.*[!@#%&])/.test(pw);
     if (pw !== pw2) {
-      document.getElementById("checkpw").innerText = "비밀번호를 다시 확인해주세요.";
+      passwordMessage.innerText =
+        "비밀번호를 다시 확인해주세요.";
       return false;
-    } else if (pw.length < 6) {
-      document.getElementById("checkpw").innerText = "비밀번호를 5자 이상으로 설정해주세요.";
-      return false;
+    } else if (pw.length < minLength) {
+      passwordMessage.innerText = `비밀번호는 ${minLength}자 이상이어야 합니다.`;
+    } else if (!hasUppercase) {
+      passwordMessage.innerText = "비밀번호에는 대문자가 포함되어야 합니다.";
+    } else if (!hasLowercase) {
+      passwordMessage.innerText = "비밀번호에는 소문자가 포함되어야 합니다.";
+    } else if (!hasNumber) {
+      passwordMessage.innerText = "비밀번호에는 숫자가 포함되어야 합니다.";
+    } else if (!hasSpecial) {
+      passwordMessage.innerText = "비밀번호에는 특수기호가 포함되어야 합니다";
     } else {
-      document.getElementById("checkpw").innerText = "";
+      passwordMessage.innerText = "";
       return true;
     }
+    return false;
   }
 </script>
 <div class="mypage-container">
@@ -32,7 +47,9 @@
     <label class="user-label">📬 이메일</label>
     <input class="uk-input uk-form-width-medium" name="email" value="<%= agent.a_email %>" type="email" />
     <br />
-    <button class=" user-submit-button uk-button uk-button-default" type="submit" onclick="return checkSetting()">변경 내용 저장하기</button>
+    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkSetting()">
+      변경 내용 저장하기
+    </button>
   </form>
   <br />
 
@@ -58,6 +75,8 @@
     </div>
     <label id="checkpw"></label>
     <br />
-    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkPassword()">비밀번호 변경하기</button>
+    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkPassword()">
+      비밀번호 변경하기
+    </button>
   </form>
 </div>
