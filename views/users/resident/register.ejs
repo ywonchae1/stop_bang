@@ -33,10 +33,10 @@
         <td><label for="phone">핸드폰 번호 (필수)</label></td>
         <td>
           <input
+            oninput="autoHyphen2(this)"
             class="uk-input"
             name="phone"
-            placeholder="핸드폰 번호 입력 (숫자만)"
-            value="010-0000-0000"
+            placeholder="010-0000-0000"
           />
         </td>
       </tr>
@@ -53,7 +53,6 @@
 
       <tr
         id="verificationCodeContainer"
-        class="grid gap-2"
         style="display: none"
       >
         <td><label for="verificationCode">이메일 인증 코드</label></td>
@@ -108,6 +107,11 @@
 </div>
 
 <script>
+  const autoHyphen2 = (target) => {
+    target.value = target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+  }
   function validatePassword(password) {
     const passwordMessage = document.getElementById("passwordMessage");
 
@@ -134,6 +138,11 @@
 
   async function sendVerificationEmail() {
     const emailElement = document.getElementById("email");
+    if(emailElement.value === '') {
+      alert('인증번호를 전송할 이메일 주소를 작성하세요');
+      return;
+    }
+    alert('인증번호가 전송되었습니다.');
     await fetch("/auth/certification", {
       method: "POST",
       headers: {
@@ -156,7 +165,7 @@
 
     // verificationCodeElement.value = activationCode;
 
-    verificationCodeContainer.style.display = "grid";
+    verificationCodeContainer.style.display = "";
     verifyEmailButton.style.display = "block";
   }
 

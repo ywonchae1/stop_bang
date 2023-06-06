@@ -73,7 +73,10 @@
         <td><input class="uk-input" id="email" placeholder="이메일 입력" type="email" value="" /></td>
       </tr>
 
-      <tr>
+      <tr
+        id="verificationCodeContainer"
+        style="display: none"
+      >
         <td><label for="verificationCode">이메일 인증 코드</label></td>
         <td>
           <input
@@ -91,7 +94,6 @@
             이메일 인증 코드 전송
           </button>
         </td>
-
         <td>
           <button class="uk-button uk-button-default" onclick="verifyEmail()" type="button" style="display: none">
             이메일 인증 확인 하기
@@ -185,6 +187,11 @@
 
   async function sendVerificationEmail() {
     const emailElement = document.getElementById("email");
+    if(emailElement.value === '') {
+      alert('인증번호를 전송할 이메일 주소를 작성하세요');
+      return;
+    }
+    alert('인증번호가 전송되었습니다.');
     await fetch("/auth/certification", {
       method: "POST",
       headers: {
@@ -207,7 +214,7 @@
 
     // verificationCodeElement.value = activationCode;
 
-    verificationCodeContainer.style.display = "grid";
+    verificationCodeContainer.style.display = "";
     verifyEmailButton.style.display = "block";
   }
 
