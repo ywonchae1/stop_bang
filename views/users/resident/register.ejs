@@ -8,7 +8,7 @@
   >
     <div class="grid gap-2">
       <label for="username">아이디</label>
-      <input name="username" placeholder="아이디 입력" />
+      <input name="username" placeholder="아이디 입력" required />
     </div>
 
     <div class="grid gap-2">
@@ -19,6 +19,7 @@
         type="password"
         value=""
         onkeyup="validatePassword(this.value)"
+        required
       />
       <p id="passwordMessage" class="error"></p>
     </div>
@@ -29,17 +30,25 @@
         name="phone"
         placeholder="핸드폰 번호 입력 (숫자만)"
         value="010-0000-0000"
+        required
       />
     </div>
 
     <div class="grid gap-2">
       <label for="realname">실명</label>
-      <input name="realname" placeholder="실명 입력" value=" " />
+      <input name="realname" placeholder="실명 입력" value=" " required />
     </div>
 
     <div class="grid gap-2">
       <label for="email">본인 확인 이메일 (필수)</label>
-      <input id="email" placeholder="이메일 입력" type="email" value="" />
+      <input
+        id="email"
+        name="email"
+        placeholder="이메일 입력"
+        type="email"
+        value=""
+        required
+      />
     </div>
 
     <div
@@ -52,6 +61,7 @@
         id="verificationCode"
         name="verificationCode"
         placeholder="인증 코드 입력"
+        required
       />
     </div>
 

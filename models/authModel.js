@@ -3,24 +3,6 @@ const db = require("../config/db.js");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-const checkUsernameExists = async (params) => {
-  try {
-    const rawQuery = `
-      SELECT COUNT(*) as count FROM resident WHERE r_username = ?;
-    `;
-    const res = await db.query(rawQuery, [params.username]);
-    res[0][0].count > 0;
-    const rawQuery2 = `
-      SELECT COUNT(*) as count FROM agent WHERE a_username = ?;
-    `;
-    const res2 = await db.query(rawQuery, [params.username]);
-    return res[0][0].count > 0;
-  } catch (err) {
-    console.error("🚀 ~ err:", err);
-    return false;
-  }
-};
-
 module.exports = {
   registerResident: async (params, result) => {
     try {

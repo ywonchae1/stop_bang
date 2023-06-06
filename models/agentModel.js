@@ -6,17 +6,18 @@ const saltRounds = 10;
 module.exports = {
   getAgentProfile: async (ra_regno) => {
     try {
-    const res = await db.query(`
+      const res = await db.query(
+        `
     SELECT agentList.rdealer_nm, agentList.cmp_nm, agentList.address, agent.a_profile_image
     FROM agentList
     LEFT JOIN agent ON agentList.ra_regno = agent.agentList_ra_regno
     WHERE agentList.ra_regno = ?;`,
-    [ra_regno]
-    );
-    return res[0];
-  } catch (error) {
-    return error;
-  }
+        [ra_regno]
+      );
+      return res[0];
+    } catch (error) {
+      return error;
+    }
   },
 
   getMainInfo: async (ra_regno) => {
@@ -33,7 +34,7 @@ module.exports = {
   getEnteredAgent: async (ra_regno) => {
     try {
       const res = await db.query(
-      `
+        `
 			SELECT a_office_hours, contact_number, telno, ra_regno
 			FROM agent_contact
 			RIGHT OUTER JOIN agentList
@@ -41,12 +42,12 @@ module.exports = {
 			LEFT OUTER JOIN agent
 			ON agentList.ra_regno = agent.agentList_ra_regno
 			WHERE ra_regno = ?;`,
-			[ra_regno]
-			);
-			return res
-		} catch (error) {
-			return error
-		}
+        [ra_regno]
+      );
+      return res;
+    } catch (error) {
+      return error;
+    }
   },
 
   getReviewByRaRegno: async (ra_regno) => {
@@ -64,14 +65,14 @@ module.exports = {
       WHERE ra_regno=?;`;
       let res = await db.query(rawQuery, [ra_regno]);
       return res[0];
-    } catch(err) {
-      return err
+    } catch (err) {
+      return err;
     }
   },
 
-	//신고된 후기는 별점 반영X
-	getRating: async (ra_regno) => {
-		let rawQuery = `
+  //신고된 후기는 별점 반영X
+  getRating: async (ra_regno) => {
+    let rawQuery = `
 		SELECT TRUNCATE(AVG(rating), 1) AS agentRating
 		FROM review
 		RIGHT OUTER JOIN agentList
@@ -87,12 +88,12 @@ module.exports = {
 			GROUP BY rv_id
 			HAVING cnt >= 7) newTable
 		);`;
-		let res = await db.query(rawQuery, [ra_regno, ra_regno]);
-		return res[0][0].agentRating;
+    let res = await db.query(rawQuery, [ra_regno, ra_regno]);
+    return res[0][0].agentRating;
   },
 
-	getReport: async (ra_regno, a_username) => {
-		let rawQuery = `
+  getReport: async (ra_regno, a_username) => {
+    let rawQuery = `
 		SELECT repo_rv_id
 		FROM review
 		JOIN (
@@ -102,46 +103,54 @@ module.exports = {
 		ON reporter=a_username
 		) newTable
 		ON rv_id=repo_rv_id
-		WHERE newTable.agentList_ra_regno=? AND a_username=?;`
-		let res = await db.query(rawQuery, [ra_regno, a_username]);
-		return res[0];
-	},
+		WHERE newTable.agentList_ra_regno=? AND a_username=?;`;
+    let res = await db.query(rawQuery, [ra_regno, a_username]);
+    return res[0];
+  },
 
-	reportProcess: async (req, a_username) => {
-		let rawQuery = `
+  reportProcess: async (req, a_username) => {
+    let rawQuery = `
 		INSERT
 		INTO report(reporter, repo_rv_id, reportee, reason) 
-		VALUES(?, ?, ?, ?)`
-		let getReportee = `
+		VALUES(?, ?, ?, ?)`;
+    let getReportee = `
 		SELECT r_username
 		FROM review
 		JOIN resident
 		ON resident_r_username=r_username
-		WHERE rv_id=?`
-		let getReporter = `
+		WHERE rv_id=?`;
+    let getReporter = `
 		SELECT a_username
 		FROM agent
-		WHERE a_username=?`
-		let getRaRegno = `
+		WHERE a_username=?`;
+    let getRaRegno = `
 		SELECT agentList_ra_regno
 		FROM review
-		WHERE rv_id=?`
-		
-		let reporter = await db.query(getReporter, [a_username]);
-		let reportee = await db.query(getReportee, [req.params.rv_id]);
-		await db.query(rawQuery, [reporter[0][0].a_username, req.params.rv_id, reportee[0][0].r_username, req.query.reason]);
-		return await db.query(getRaRegno, [req.params.rv_id]);
-	},
+		WHERE rv_id=?`;
+
+    let reporter = await db.query(getReporter, [a_username]);
+    let reportee = await db.query(getReportee, [req.params.rv_id]);
+    await db.query(rawQuery, [
+      reporter[0][0].a_username,
+      req.params.rv_id,
+      reportee[0][0].r_username,
+      req.query.reason,
+    ]);
+    return await db.query(getRaRegno, [req.params.rv_id]);
+  },
 
   updateMainInfo: async (ra_regno, files, body, result) => {
     try {
       const res = await db.query(
         `UPDATE agent SET a_image1=?, a_image2=?, a_image3=?, a_introduction=?
 			WHERE agentList_ra_regno=?`,
-        [files.myImage1 ? files.myImage1[0].filename : null,
-         files.myImage2 ? files.myImage2[0].filename : null,
-         files.myImage3 ? files.myImage3[0].filename : null,
-         body.introduction, ra_regno]
+        [
+          files.myImage1 ? files.myImage1[0].filename : null,
+          files.myImage2 ? files.myImage2[0].filename : null,
+          files.myImage3 ? files.myImage3[0].filename : null,
+          body.introduction,
+          ra_regno,
+        ]
       );
       result(res);
     } catch (error) {
@@ -239,7 +248,7 @@ module.exports = {
       const password = passwordResult[0][0].a_password;
       const test = await bcrypt.compare(body.oldpassword, password);
       if (!test) {
-        console.log(test);
+        console.log("here!", test);
         result(null, "pwerror");
       } else {
         const res = await db.query(
