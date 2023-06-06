@@ -8,7 +8,10 @@
 
 </head>
 <body>
-  <h1>부동산 소개글 수정하기</h1>
+  <h3 class="uk-text-bold">
+    <div class="uk-text-center"><%- title %></div>
+  </h3>
+  <br>
   <div class="container">
     <form action="/agent/<%= agentId %>/edit_process" method="POST" enctype="multipart/form-data">
       <input type='hidden' name='agentId' value=<%- agentId %>>

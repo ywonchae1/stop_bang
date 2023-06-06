@@ -8,9 +8,11 @@
 
 </head>
 <body>
-  <h1>부동산 프로필 수정하기</h1>
+  <h3 class="uk-text-bold">
+    <div class="uk-text-center"><%- title %></div>
+  </h3>
+  <br>
   <div class="container">
-    <%= typeof msg != 'undefined' ? msg : '' %>
     <form action="/agent/<%= agentId %>/update_process" method="POST" enctype="multipart/form-data">
       <input type='hidden' name='agentId' value=<%- agentId %>>
         <div class="file-field input-field">
