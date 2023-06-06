@@ -4,7 +4,7 @@
     <div class="left">
       <div class="photo-left">
         <% if(agent.a_profile_image == null) { %>
-            <div></div>
+            <img class = "photo" src="/images/none-image-status.jpg">
         <% } else { %>
             <img class = "photo" src="/uploads/<%= agent.a_profile_image %>" />
             <% } %>

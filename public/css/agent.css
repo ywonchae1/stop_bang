@@ -30,7 +30,6 @@
   .photo {
     width: 200px;
     height: 200px;
-    background: url("public/uploads/보라색배경.jpg") center no-repeat;
     margin-top: 100px;
     border-radius: 100px;
     border: 4px solid #fff;
