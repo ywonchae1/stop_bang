@@ -151,13 +151,13 @@ module.exports = {
       res.cookie("authToken", token, {
         maxAge: 86400_000,
         httpOnly: true,
-      }).redirect("/");
-      // res
-      //   .cookie("userType", isAgent ? 0 : 1, {
-      //     maxAge: 86400_000,
-      //     httpOnly: true,
-      //   })
-      //   .redirect("/");
+      });
+      res
+        .cookie("userType", isAgent ? 0 : 1, {
+          maxAge: 86400_000,
+          httpOnly: true,
+        })
+        .redirect("/");
       }
       
     });
