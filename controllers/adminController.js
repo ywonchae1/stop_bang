@@ -24,7 +24,7 @@ const adminModel = require("../models/adminModel");
       console.error(err.stack);
     }
   }),
-  (exports.getAdmin = async (r_id) => {
+  (exports.getAdmin = async (r_username) => {
     try {
       const is_admin = await adminModel.getAdminModel(r_username);
       //console.log("print admin !!!!: "+is_admin.r_isadmin);

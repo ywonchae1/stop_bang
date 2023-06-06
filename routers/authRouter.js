@@ -88,7 +88,7 @@ router.post("/send-mail", async (req, res, next) => {
       var type = "success";
       var msg = "Email already verified";
 
-      console.log(result[0]);
+      console.log("jjj", result[0]);
 
       if (result.length > 0) {
         var token = randtoken.generate(20);
@@ -137,7 +137,7 @@ router.get("/verify-email", function (req, res, next) {
       var type;
       var msg;
 
-      console.log(result[0].verify);
+      console.log("lll", result[0].verify);
 
       if (result[0].verify == 0) {
         if (result.length > 0) {

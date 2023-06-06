@@ -38,18 +38,17 @@ module.exports = {
   registerResident: (req, res) => {
     // Check if required fields are missing
     const body = req.body;
-    console.log(!body.username);
 
-    if (
-      !body.username ||
-      !body.password ||
-      !body.phone ||
-      !body.realname ||
-      !body.email ||
-      !body.birth
-    ) {
-      return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
-    }
+    // if (
+    //   !body.username ||
+    //   !body.password ||
+    //   !body.phone ||
+    //   !body.realname ||
+    //   !body.email ||
+    //   !body.birth
+    // ) {
+    //   return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
+    // }
 
     if (!checkPasswordCorrect(body.password))
       return res.status(400).send("비밀번호 제약을 확인해주세요");
@@ -66,16 +65,14 @@ module.exports = {
           return res.status(400).send("회원가입 실패");
         } else {
           const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
-        // Store user's userId in the cookie upon successful registration
-        res
-          .cookie("authToken", token, {
-            maxAge: 86400_000,
-            httpOnly: true,
-          })
-          .redirect("/");
+          // Store user's userId in the cookie upon successful registration
+          res
+            .cookie("authToken", token, {
+              maxAge: 86400_000,
+              httpOnly: true,
+            })
+            .redirect("/");
         }
-
-        
       });
     });
   },
@@ -111,18 +108,16 @@ module.exports = {
       authModel.registerAgent(req.body, (userId) => {
         if (!userId) {
           return res.status(400).send("회원가입 실패");
-        }
-        else {
+        } else {
           const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
-        // Store agent's userId in the cookie upon successful registration
-        res
-          .cookie("authToken", token, {
-            maxAge: 86400_000,
-            httpOnly: true,
-          })
-          .redirect("/");
+          // Store agent's userId in the cookie upon successful registration
+          res
+            .cookie("authToken", token, {
+              maxAge: 86400_000,
+              httpOnly: true,
+            })
+            .redirect("/");
         }
-        
       });
     });
   },
@@ -144,22 +139,20 @@ module.exports = {
       // Error during login
       if (!userId) {
         return res.render("users/login");
-      }
-      else {
+      } else {
         const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
-      // Store user/agent's userId in the cookie upon successful login
-      res.cookie("authToken", token, {
-        maxAge: 86400_000,
-        httpOnly: true,
-      });
-      res
-        .cookie("userType", isAgent ? 0 : 1, {
+        // Store user/agent's userId in the cookie upon successful login
+        res.cookie("authToken", token, {
           maxAge: 86400_000,
           httpOnly: true,
-        })
-        .redirect("/");
+        });
+        res
+          .cookie("userType", isAgent ? 0 : 1, {
+            maxAge: 86400_000,
+            httpOnly: true,
+          })
+          .redirect("/");
       }
-      
     });
   },
 
