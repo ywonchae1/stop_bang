@@ -152,14 +152,15 @@ module.exports = {
       });
   },
 
-  updatingMainInfo: (req, res) => {
+  updatingMainInfo: (req, res, next) => {
     agentModel.updateMainInfo(req.params.id, req.files, req.body, () => {
       if (res === null) {
         if (error === "imageError") {
           res.render('notFound.ejs', {message: "이미지 크기가 너무 큽니다. 다른 사이즈로 시도해주세요."})
         }
       } else {
-        res.redirect(`agent/agenMainInfo`);
+        res.locals.redirect = `/agent/${req.params.id}`;
+        next();
       }
     });
   },
