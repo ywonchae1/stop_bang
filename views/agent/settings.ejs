@@ -8,52 +8,46 @@
   function checkPassword() {
     let pw = document.getElementById("newpw").value;
     let pw2 = document.getElementById("newpw2").value;
+    let passwordMessage = document.getElementById("checkpw");
+    const minLength = 8;
+    const hasUppercase = /[A-Z]/.test(pw);
+    const hasLowercase = /[a-z]/.test(pw);
+    const hasNumber = /[0-9]/.test(pw);
+    const hasSpecial = /^(?=.*[!@#%&])/.test(pw);
     if (pw !== pw2) {
-      document.getElementById("checkpw").innerText =
+      passwordMessage.innerText =
         "비밀번호를 다시 확인해주세요.";
       return false;
-    } else if (pw.length < 6) {
-      document.getElementById("checkpw").innerText =
-        "비밀번호를 5자 이상으로 설정해주세요.";
-      return false;
+    } else if (pw.length < minLength) {
+      passwordMessage.innerText = `비밀번호는 ${minLength}자 이상이어야 합니다.`;
+    } else if (!hasUppercase) {
+      passwordMessage.innerText = "비밀번호에는 대문자가 포함되어야 합니다.";
+    } else if (!hasLowercase) {
+      passwordMessage.innerText = "비밀번호에는 소문자가 포함되어야 합니다.";
+    } else if (!hasNumber) {
+      passwordMessage.innerText = "비밀번호에는 숫자가 포함되어야 합니다.";
+    } else if (!hasSpecial) {
+      passwordMessage.innerText = "비밀번호에는 특수기호가 포함되어야 합니다";
     } else {
-      document.getElementById("checkpw").innerText = "";
+      passwordMessage.innerText = "";
       return true;
     }
+    return false;
   }
 </script>
 <div class="mypage-container">
   <h3 class="mypage-hr">계정 정보</h3>
   <form classname="user-setting" action="/agent/settings/update" method="post">
     <label class="user-label">🧸 아이디</label>
-    <input
-      class="uk-input uk-form-width-medium"
-      name="username"
-      value="<%= agent.a_username %>"
-      placeholder="아이디"
-      readonly="true"
-    />
+    <input class="uk-input uk-form-width-medium" name="username" value="<%= agent.a_username %>" placeholder="아이디" readonly="true" />
     <br />
     <label class="user-label">✅ 실명</label>
-    <input
-      class="uk-input uk-form-width-medium"
-      value="<%= agent.a_realname %>"
-      required
-    />
+    <input class="uk-input uk-form-width-medium" value="<%= agent.a_realname %>" required />
     <br />
     <label class="user-label">📬 이메일</label>
-    <input
-      class="uk-input uk-form-width-medium"
-      name="email"
-      value="<%= agent.a_email %>"
-      type="email"
-    />
+    <input class="uk-input uk-form-width-medium" name="email" value="<%= agent.a_email %>" type="email" />
     <br />
-    <button
-      class="user-submit-button uk-button uk-button-default"
-      type="submit"
-      onclick="return checkSetting()"
-    >
+    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkSetting()">
       변경 내용 저장하기
     </button>
   </form>
@@ -64,47 +58,24 @@
     <label class="user-label">🔑 현재 비밀번호</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input
-        class="uk-input uk-form-width-medium"
-        name="oldpassword"
-        type="password"
-        aria-label="Not clickable icon"
-        required
-      />
+      <input class="uk-input uk-form-width-medium" name="oldpassword" type="password" aria-label="Not clickable icon" required />
     </div>
     <br />
 
     <label class="user-label">🔓 새 비밀번호</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input
-        id="newpw"
-        name="password"
-        class="uk-input uk-form-width-medium"
-        type="password"
-        aria-label="Not clickable icon"
-        required
-      />
+      <input id="newpw" name="password" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
     </div>
     <br />
     <label class="user-label">🔒 새 비밀번호 확인</label>
     <div class="uk-inline">
       <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-      <input
-        id="newpw2"
-        class="uk-input uk-form-width-medium"
-        type="password"
-        aria-label="Not clickable icon"
-        required
-      />
+      <input id="newpw2" class="uk-input uk-form-width-medium" type="password" aria-label="Not clickable icon" required />
     </div>
     <label id="checkpw"></label>
     <br />
-    <button
-      class="user-submit-button uk-button uk-button-default"
-      type="submit"
-      onclick="return checkPassword()"
-    >
+    <button class="user-submit-button uk-button uk-button-default" type="submit" onclick="return checkPassword()">
       비밀번호 변경하기
     </button>
   </form>

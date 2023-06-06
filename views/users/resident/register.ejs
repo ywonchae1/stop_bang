@@ -39,16 +39,6 @@
 
     <div class="grid gap-2">
       <label for="email">본인 확인 이메일 (필수)</label>
-      <input
-        name="email"
-        placeholder="이메일 입력"
-        type="email"
-        value="email@gmail.com"
-      />
-    </div>
-
-    <div class="grid gap-2">
-      <label for="email">본인 확인 이메일 (필수)</label>
       <input id="email" placeholder="이메일 입력" type="email" value="" />
     </div>
 
@@ -120,16 +110,6 @@
     } else {
       passwordMessage.innerText = "";
     }
-  }
-
-  async function generateActivationCode() {
-    const response = await fetch("/randomBytes?length=16");
-    const randomBytes = await response.arrayBuffer();
-    const hexString = Array.from(new Uint8Array(randomBytes))
-      .map((byte) => byte.toString(16).padStart(2, "0"))
-      .join("");
-
-    return hexString;
   }
 
   async function sendVerificationEmail() {

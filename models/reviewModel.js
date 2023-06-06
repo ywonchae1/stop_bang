@@ -14,11 +14,16 @@ module.exports = {
 		result(res[0][0]);
     },
 
-  	createReviewProcess: async (r_id, params, body, result) => {
+  	createReviewProcess: async (r_username, params, body, result) => {
 		let raRegno = params.ra_regno;
 		let rate = body.rate;
 		let description = body.description;
 		let tags = Array.isArray(body.tag) ? body.tag.join("") : body.tag;
+
+		let findRId = `
+		SELECT r_id
+		FROM resident
+		WHERE r_username=?;`;
 
 		let createReviewRawQuery = `
 			INSERT 
@@ -38,16 +43,18 @@ module.exports = {
 			THEN r_point+5
 			ELSE r_point+3
 			END
-			WHERE r_id=?;
+			WHERE r_username=?;
 			`;
+		
+		found = await db.query(findRId, [r_username]);
 		await db.query(createReviewRawQuery, [
-		r_id,
+		found[0][0].r_id,
 		raRegno,
 		rate,
 		description,
 		tags,
 		]);
-		await db.query(pointRawQuery, [raRegno, r_id]);
+		await db.query(pointRawQuery, [raRegno, r_username]);
 		result();
 	},
 
@@ -70,11 +77,13 @@ module.exports = {
 		let desc = body.originDesc;
 		if(body.description !== "\n")
 			desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
-
-		let tags = body.tag === undefined ? body.checkedTags : Array.isArray(body.tag)
-			? body.tag.join("") + body.checkedTags
-			: body.tag + body.checkedTags;
-
+		
+		let tags = body.checkedTags;
+		if(body.tag !== undefined) {
+			tags += Array.isArray(body.tag)
+				? body.tag.join("")
+				: body.tag;
+		}
 		let rawQuery = `
 			UPDATE review
 			SET rating=?, content=?, tags=? WHERE rv_id=?`;

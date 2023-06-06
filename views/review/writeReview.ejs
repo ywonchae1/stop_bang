@@ -15,7 +15,7 @@
   <h3><%= realtor.cmp_nm %> 후기 작성하기</h3>
   <form action='/review/<%- realtor.ra_regno %>/create_process' method='post'>
     <input type='hidden' name='raRegno' value=<%- realtor.ra_regno %>>
-    <input id="review-rate" type="hidden" name="rate" value=<%= rate %>>
+    <input id="review-rate" type="hidden" name="rate" required value=<%= rate %>>
     <div class="layout-row">
       <span id="review-star1" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(1)"></span>
       <span id="review-star2" class="" uk-icon="icon: star; ratio:1.5" onclick="onStarClick(2)"></span>

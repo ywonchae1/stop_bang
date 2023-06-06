@@ -1,33 +1,33 @@
-<table width="50%">
-    <tr>
-        <% if(agent.a_profile_image == null) { %>
-            <td>프로필 이미지 미등록</td>
-        <% } else { %>
-            <td><%= agent.a_profile_image %></td>
-        <% } %>
-    </tr>
-    <tr>
-        <% if(agent.rdealer_nm == null) { %>
-            <td>null</td>
-        <% } else { %>
-            <td><%= agent.rdealer_nm %></td>
-        <% } %>
-    </tr>
-    <tr>
-        <% if(agent.cmp_nm == null) { %>
-            <td>null</td>
-        <% } else { %>
-            <td><%= agent.cmp_nm %></td>
-        <% } %>
-    </tr>
-    <tr>
-        <% if(agent.address == null) { %>
-            <td>null</td>
-        <% } else { %>
-            <td><%= agent.address %></td>
-        <% } %>
-    </tr>
-</table>
+<link rel="stylesheet" href="/css/agent.css">
 
-<span>평균 별점</span>
-<span class="uk-badge"><%= rating %></span>
+<div class="row">
+    <div class="left">
+      <div class="photo-left">
+        <% if(agent.a_profile_image == null) { %>
+            <div></div>
+        <% } else { %>
+            <img class = "photo" src="/uploads/<%= agent.a_profile_image %>" />
+            <% } %>
+      </div>
+      
+      <% if(agent.rdealer_nm == null) { %>
+        <div>정보없음</div>
+      <% } else { %>
+        <h4 class="name"><%= agent.rdealer_nm %></h4>
+        <% } %>
+
+    <% if(agent.cmp_nm == null) { %>
+        <div></div>
+    <% } else { %>
+        <p class="info"><%= agent.cmp_nm %></p>
+    <% } %>
+
+    <% if(agent.address == null) { %>
+        <div></div>
+    <% } else { %>
+        <p class="info"><%= agent.address %></p>
+    <% } %>
+
+    <span>평균 별점</span>
+    <span class="uk-badge"><%= rating %></span>
+</div>

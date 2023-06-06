@@ -1,22 +1,19 @@
-<table width="50%">
+<link rel="stylesheet" href="/css/agent.css">
+<table style="margin-top:340px; text-align: left; margin-bottom: 20px; ">
     <tr>
-        <td>영업시간</td>
+        <th>영업시간</th>
         <td>
             <% if(agent.a_id === null) { %>
             <p>정보없음</p>
             <% } else { %>
-                <%= agent.a_office_hour %>
+                <%= agent.a_office_hours %>
             <% } %>
         </td>
     </tr>
     <tr>
         <th>부동산 연락처</th>
         <td>
-            <% if(agent.contact_number === null) { %>
-                <%= agent.telno%>
-            <% } else { %>
-                <%= agent.contact_number%>
-            <% } %>
+            <%= agent.telno%>
         </td>
     </tr>
     <tr>
@@ -34,5 +31,3 @@
         </td>
     </tr>
 </table>
-
-<!-- <a href="/agent/<%= agent.ra_regno %>/update %>">수정</a> -->
