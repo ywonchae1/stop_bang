@@ -64,9 +64,8 @@ module.exports = {
         // Error during registration
         if (!userId) {
           return res.status(400).send("회원가입 실패");
-        }
-
-        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
+        } else {
+          const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
         // Store user's userId in the cookie upon successful registration
         res
           .cookie("authToken", token, {
@@ -74,6 +73,9 @@ module.exports = {
             httpOnly: true,
           })
           .redirect("/");
+        }
+
+        
       });
     });
   },
@@ -110,7 +112,8 @@ module.exports = {
         if (!userId) {
           return res.status(400).send("회원가입 실패");
         }
-        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
+        else {
+          const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
         // Store agent's userId in the cookie upon successful registration
         res
           .cookie("authToken", token, {
@@ -118,6 +121,8 @@ module.exports = {
             httpOnly: true,
           })
           .redirect("/");
+        }
+        
       });
     });
   },
@@ -140,18 +145,21 @@ module.exports = {
       if (!userId) {
         return res.render("users/login");
       }
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
+      else {
+        const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
       // Store user/agent's userId in the cookie upon successful login
       res.cookie("authToken", token, {
         maxAge: 86400_000,
         httpOnly: true,
-      });
-      res
-        .cookie("userType", isAgent ? 0 : 1, {
-          maxAge: 86400_000,
-          httpOnly: true,
-        })
-        .redirect("/");
+      }).redirect("/");
+      // res
+      //   .cookie("userType", isAgent ? 0 : 1, {
+      //     maxAge: 86400_000,
+      //     httpOnly: true,
+      //   })
+      //   .redirect("/");
+      }
+      
     });
   },
 

@@ -135,7 +135,6 @@ module.exports = {
 
   updateMainInfo: async (ra_regno, files, body, result) => {
     try {
-      console.log(files);
       const res = await db.query(
         `UPDATE agent SET a_image1=?, a_image2=?, a_image3=?, a_introduction=?
 			WHERE agentList_ra_regno=?`,
@@ -146,7 +145,7 @@ module.exports = {
       );
       result(res);
     } catch (error) {
-      result(null, error);
+      result(null, "imageError");
     }
   },
 
