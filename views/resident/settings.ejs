@@ -14,6 +14,12 @@
     }
   }
 
+  const autoHyphen2 = (target) => {
+    target.value = target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+  }
+
   function checkPassword() {
     let pw = document.getElementById("newpw").value;
     let pw2 = document.getElementById("newpw2").value;
@@ -54,7 +60,7 @@
     <input class="uk-input uk-form-width-medium" value="<%= resident.r_realname %>" required />
     <br />
     <label class="user-label">📞 전화번호</label>
-    <input id="residentPhone" class="uk-input uk-form-width-medium" name="phone" value="<%= resident.r_phone %>" />
+    <input oninput="autoHyphen2(this)" maxlength="13" id="residentPhone" class="uk-input uk-form-width-medium" name="phone" value="<%= resident.r_phone %>" />
     <label id="checkPhoneMessage"></label>
     <br />
     <label class="user-label">📬 이메일</label>

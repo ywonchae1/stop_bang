@@ -1,108 +1,137 @@
-<main>
+<div class="uk-position-center">
+  <h2 style="margin-top: 150px;">🏦공인중개사님, 환영합니다!🏦</h2>
   <form
     action="/auth/register/agent"
-    class="grid gap-4"
     name="register"
     method="post"
     id="register"
   >
-    <div class="grid gap-2">
-      <label for="username">아이디</label>
-      <input name="username" placeholder="아이디 입력" />
-    </div>
+    <table class="uk-table uk-table-divider">
+      <tr>
+        <td><label for="username">아이디</label></td>
+        <td><input class="uk-input" name="username" placeholder="아이디 입력" /></td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="password">비밀번호</label>
-      <input
-        name="password"
-        placeholder="비밀번호 입력"
-        type="password"
-        value="password!A"
-        onkeyup="validatePassword(this.value)"
-      />
-      <p id="passwordMessage" class="error"></p>
-    </div>
+      <tr>
+        <td><label for="password">비밀번호</label></td>
+        <td>
+          <input
+            class="uk-input"
+            name="password"
+            placeholder="비밀번호 입력"
+            type="password"
+            value="password!A"
+            onkeyup="validatePassword(this.value)"
+          />
+          <p id="passwordMessage" class="error"></p>
+        </td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="phone">핸드폰 번호 (필수)</label>
-      <input
-        name="phone"
-        placeholder="핸드폰 번호 입력 (숫자만)"
-        value="010-1111-1111"
-      />
-    </div>
+      <tr>
+        <td><label for="phone">핸드폰 번호 (필수)</label></td>
+        <td>
+          <input
+            class="uk-input"
+            oninput="autoHyphen2(this)"
+            maxlength="13"
+            id="residentPhone"
+            name="phone"
+            placeholder="010-0000-0000"
+          />
+        </td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="realname">실명</label>
-      <input name="realname" placeholder="실명 입력" value="김김김" />
-    </div>
+      <tr>
+        <td><label for="realname">실명</label></td>
+        <td><input class="uk-input" name="realname" placeholder="실명 입력" /></td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="agentList_ra_regno">raregno</label>
-      <input
-        id="agentList_ra_regno"
-        name="agentList_ra_regno"
-        placeholder="111-33-4444"
-        value="00599"
-      />
-    </div>
+      <tr>
+        <td><label for="agentList_ra_regno">raregno</label></td>
+        <td>
+          <input
+            class="uk-input"
+            id="agentList_ra_regno"
+            name="agentList_ra_regno"
+            placeholder="111-33-4444"
+          />
+        </td>
+      </tr>
 
-    <button onclick="getAgentPhoneNumber()" type="button">
-      핸드폰 번호 불러오기
-    </button>
+      <tr>
+        <td>
+          <button class="uk-button uk-button-default" onclick="getAgentPhoneNumber()" type="button">
+            핸드폰 번호 불러오기
+          </button>
+        </td>
 
-    <p id="agent_phone_number"></p>
+        <td><p id="agent_phone_number"></p></td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="email">본인 확인 이메일 (필수)</label>
-      <input id="email" placeholder="이메일 입력" type="email" value="" />
-    </div>
+      <tr>
+        <td><label for="email">본인 확인 이메일 (필수)</label></td>
+        <td><input class="uk-input" id="email" placeholder="이메일 입력" type="email" value="" /></td>
+      </tr>
 
-    <div
-      id="verificationCodeContainer"
-      class="grid gap-2"
-      style="display: none"
-    >
-      <label for="verificationCode">이메일 인증 코드</label>
-      <input
-        id="verificationCode"
-        name="verificationCode"
-        placeholder="인증 코드 입력"
-      />
-    </div>
+      <tr>
+        <td><label for="verificationCode">이메일 인증 코드</label></td>
+        <td>
+          <input
+            class="uk-input"
+            id="verificationCode"
+            name="verificationCode"
+            placeholder="인증 코드 입력"
+          />
+        </td>
+      </tr>
 
-    <button onclick="sendVerificationEmail()" type="button">
-      이메일 인증 코드 전송
-    </button>
+      <tr>
+        <td>
+          <button class="uk-button uk-button-default" onclick="sendVerificationEmail()" type="button">
+            이메일 인증 코드 전송
+          </button>
+        </td>
 
-    <button onclick="verifyEmail()" type="button" style="display: none">
-      이메일 인증 확인 하기
-    </button>
+        <td>
+          <button class="uk-button uk-button-default" onclick="verifyEmail()" type="button" style="display: none">
+            이메일 인증 확인 하기
+          </button>
+          <div id="verificationStatus"></div>
+        </td>
+      </tr>
 
-    <div id="verificationStatus"></div>
+      <tr>
+        <td><label>생년월일 (선택)</label></td>
+        <td>
+          <input
+            class="uk-input"
+            type="date"
+            name="bday"
+            required
+            pattern="\d{4}-\d{2}-\d{2}"
+            value="1999-11-11"
+          />
+          <span class="validity"></span>
+        </td>
+        </label>
 
-    <div class="grid gap-2">
-      <label
-        >생년월일 (선택) <br />
-        <input
-          type="date"
-          name="bday"
-          required
-          pattern="\d{4}-\d{2}-\d{2}"
-          value="1999-11-11"
-        />
-        <span class="validity"></span>
-      </label>
-
-      <!-- <label for="birth">생년월일 (선택)</label>
-      <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
-    </div>
-    <br />
-    <button type="submit" form="register">회원가입</button>
-  </form>
-</main>
+        <!-- <label for="birth">생년월일 (선택)</label>
+        <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
+      </tr>
+      <tr>
+        <td colspan="2" align="center"><button class="uk-button uk-button-default" type="submit" form="register">회원가입</button></td>
+      </tr>
+    </form>
+  </table>
+</div>
 
 <script>
+  const autoHyphen2 = (target) => {
+    target.value = target.value
+      .replace(/[^0-9]/g, '')
+      .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+  }
+
   function validatePassword(password) {
     const passwordMessage = document.getElementById("passwordMessage");
 

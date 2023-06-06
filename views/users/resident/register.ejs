@@ -1,101 +1,109 @@
-<main>
+<div class="uk-position-center">
+  <h2>🏘회원님, 환영합니다!🏘</h2>
   <form
     action="/auth/register/resident"
-    class="grid gap-4"
     name="register"
     method="post"
     id="register"
   >
-    <div class="grid gap-2">
-      <label for="username">아이디</label>
-      <input name="username" placeholder="아이디 입력" required />
-    </div>
+    <table class="uk-table uk-table-divider">
+      <tr>
+        <td><label for="username">아이디</label></td>
+        <td><input class="uk-input" name="username" placeholder="아이디 입력" /></td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="password">비밀번호</label>
-      <input
-        name="password"
-        placeholder="비밀번호 입력"
-        type="password"
-        value=""
-        onkeyup="validatePassword(this.value)"
-        required
-      />
-      <p id="passwordMessage" class="error"></p>
-    </div>
+      <tr>
+        <td><label for="password">비밀번호</label></td>
+        <td>
+          <input
+            class="uk-input"
+            name="password"
+            placeholder="비밀번호 입력"
+            type="password"
+            value=""
+            onkeyup="validatePassword(this.value)"
+          />
+          <p id="passwordMessage" class="error"></p>
+        </td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="phone">핸드폰 번호 (필수)</label>
-      <input
-        name="phone"
-        placeholder="핸드폰 번호 입력 (숫자만)"
-        value="010-0000-0000"
-        required
-      />
-    </div>
+      <tr>
+        <td><label for="phone">핸드폰 번호 (필수)</label></td>
+        <td>
+          <input
+            class="uk-input"
+            name="phone"
+            placeholder="핸드폰 번호 입력 (숫자만)"
+            value="010-0000-0000"
+          />
+        </td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="realname">실명</label>
-      <input name="realname" placeholder="실명 입력" value=" " required />
-    </div>
+      <tr>
+        <td><label for="realname">실명</label></td>
+        <td><input class="uk-input" name="realname" placeholder="실명 입력" value=" "  /></td>
+      </tr>
 
-    <div class="grid gap-2">
-      <label for="email">본인 확인 이메일 (필수)</label>
-      <input
-        id="email"
-        name="email"
-        placeholder="이메일 입력"
-        type="email"
-        value=""
-        required
-      />
-    </div>
+      <tr>
+        <td><label for="email">본인 확인 이메일 (필수)</label></td>
+        <td><input class="uk-input" id="email" placeholder="이메일 입력" type="email" value="" /></td>
+      </tr>
 
-    <div
-      id="verificationCodeContainer"
-      class="grid gap-2"
-      style="display: none"
-    >
-      <label for="verificationCode">이메일 인증 코드</label>
-      <input
-        id="verificationCode"
-        name="verificationCode"
-        placeholder="인증 코드 입력"
-        required
-      />
-    </div>
+      <tr
+        id="verificationCodeContainer"
+        class="grid gap-2"
+        style="display: none"
+      >
+        <td><label for="verificationCode">이메일 인증 코드</label></td>
+        <td>
+            <input
+              class="uk-input"
+              id="verificationCode"
+              name="verificationCode"
+              placeholder="인증 코드 입력"
+            />
+        </td>
+      </tr>
 
-    <button onclick="sendVerificationEmail()" type="button">
-      이메일 인증 코드 전송
-    </button>
-
-    <button onclick="verifyEmail()" type="button" style="display: none">
-      이메일 인증 확인 하기
-    </button>
-
-    <div id="verificationStatus"></div>
-
-    <div class="grid gap-2">
-      <label
-        >생년월일 (선택) <br />
-        <input
-          type="date"
-          name="bday"
-          required
-          pattern="\d{4}-\d{2}-\d{2}"
-          value="1999-11-11"
-        />
-        <span class="validity"></span>
-      </label>
-
-      <!-- <label for="birth">생년월일 (선택)</label>
-      <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
-    </div>
-    <br />
-    <br />
-    <button type="submit" form="register">회원가입</button>
-  </form>
-</main>
+      <tr>
+        <td>
+          <button class="uk-button uk-button-default" onclick="sendVerificationEmail()" type="button">
+            이메일 인증 코드 전송
+          </button>
+        </td>
+        <td>
+          <button class="uk-button uk-button-default" onclick="verifyEmail()" type="button" style="display: none">
+            이메일 인증 확인 하기
+          </button>
+          <div id="verificationStatus"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>생년월일 (선택)</label>
+        </td>
+        <td>
+          <input
+            class="uk-input"
+            type="date"
+            name="bday"
+            required
+            pattern="\d{4}-\d{2}-\d{2}"
+            value=""
+          />
+          <span class="validity"></span>
+        </td>
+        <!-- <label for="birth">생년월일 (선택)</label>
+        <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
+      </tr>
+      <tr>
+        <td colspan="2" align="center">
+          <button class="uk-button uk-button-default" type="submit" form="register">회원가입</button>
+        </td>
+      </tr>
+    </form>
+  </table>
+</div>
 
 <script>
   function validatePassword(password) {
