@@ -11,7 +11,7 @@
     <table class="uk-table uk-table-divider">
       <tr>
         <td style="width:40%"><label for="username">아이디</label></td>
-        <td><input class="uk-input" name="username" placeholder="아이디 입력" /></td>
+        <td><input class="uk-input" name="username" placeholder="아이디 입력" required/></td>
       </tr>
 
       <tr>
@@ -24,6 +24,7 @@
             type="password"
             value=""
             onkeyup="validatePassword(this.value)"
+            required
           />
           <p id="passwordMessage" class="error"></p>
         </td>
@@ -37,18 +38,19 @@
             class="uk-input"
             name="phone"
             placeholder="010-0000-0000"
+            required
           />
         </td>
       </tr>
 
       <tr>
         <td><label for="realname">실명</label></td>
-        <td><input class="uk-input" name="realname" placeholder="실명 입력" value=" "  /></td>
+        <td><input class="uk-input" name="realname" placeholder="실명 입력" value=" " required /></td>
       </tr>
 
       <tr>
         <td><label for="email">본인 확인 이메일 (필수)</label></td>
-        <td><input class="uk-input" id="email" placeholder="이메일 입력" type="email" value="" /></td>
+        <td><input class="uk-input" id="email" placeholder="이메일 입력" name="email" type="email" value="" required/></td>
       </tr>
 
       <tr
@@ -62,6 +64,7 @@
               id="verificationCode"
               name="verificationCode"
               placeholder="인증 코드 입력"
+              required
             />
         </td>
       </tr>
@@ -87,15 +90,12 @@
           <input
             class="uk-input"
             type="date"
-            name="bday"
-            required
+            name="birth"
             pattern="\d{4}-\d{2}-\d{2}"
             value=""
           />
           <span class="validity"></span>
         </td>
-        <!-- <label for="birth">생년월일 (선택)</label>
-        <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
       </tr>
       <tr>
         <td colspan="2" align="center">
@@ -159,12 +159,6 @@
       "button[onclick='verifyEmail()']"
     );
 
-    // const activationCode = await generateActivationCode();
-
-    // console.log("Activation Code:", activationCode);
-
-    // verificationCodeElement.value = activationCode;
-
     verificationCodeContainer.style.display = "";
     verifyEmailButton.style.display = "block";
   }
@@ -183,11 +177,6 @@
         code: verificationCodeElement.value,
       }),
     });
-
-    // const storedVerificationCode = verificationCodeElement.value.trim();
-    // const userVerificationCode = prompt(
-    //   "Enter the verification code from your email:"
-    // );
 
     const verificationStatusElement =
       document.getElementById("verificationStatus");
