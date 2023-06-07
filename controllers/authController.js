@@ -39,17 +39,6 @@ module.exports = {
     // Check if required fields are missing
     const body = req.body;
 
-    // if (
-    //   !body.username ||
-    //   !body.password ||
-    //   !body.phone ||
-    //   !body.realname ||
-    //   !body.email ||
-    //   !body.birth
-    // ) {
-    //   return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
-    // }
-
     if (!checkPasswordCorrect(body.password))
       return res.status(400).send("비밀번호 제약을 확인해주세요");
 
@@ -71,7 +60,13 @@ module.exports = {
               maxAge: 86400_000,
               httpOnly: true,
             })
-            .redirect("/");
+
+          res
+          .cookie("userType", 1, {
+            maxAge: 86400_000,
+            httpOnly: true,
+          })
+          .redirect("/");
         }
       });
     });
@@ -116,7 +111,13 @@ module.exports = {
               maxAge: 86400_000,
               httpOnly: true,
             })
-            .redirect("/");
+
+          res
+          .cookie("userType", 0, {
+            maxAge: 86400_000,
+            httpOnly: true,
+          })
+          .redirect("/");
         }
       });
     });
