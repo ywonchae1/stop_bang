@@ -59,10 +59,8 @@ module.exports = {
             .cookie("authToken", token, {
               maxAge: 86400_000,
               httpOnly: true,
-            })
-
-          res
-          .cookie("userType", 1, {
+            });
+          res.cookie("userType", 1, {
             maxAge: 86400_000,
             httpOnly: true,
           })
@@ -80,16 +78,6 @@ module.exports = {
     // Check if required fields are missing
     const body = req.body;
 
-    if (
-      !body.username ||
-      !body.password ||
-      !body.realname ||
-      !body.email ||
-      !body.phone ||
-      !body.agentList_ra_regno
-    ) {
-      return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
-    }
 
     if (!checkPasswordCorrect(body.password))
       return res.status(400).send("비밀번호 제약을 확인해주세요");
@@ -110,10 +98,8 @@ module.exports = {
             .cookie("authToken", token, {
               maxAge: 86400_000,
               httpOnly: true,
-            })
-
-          res
-          .cookie("userType", 0, {
+            });
+          res.cookie("userType", 0, {
             maxAge: 86400_000,
             httpOnly: true,
           })
@@ -128,13 +114,6 @@ module.exports = {
   },
 
   login: (req, res) => {
-    // Check if required fields are missing
-    const body = req.body;
-
-    if (!body.username || !body.password) {
-      return res.render("notFound.ejs", { message: "필수 항목 빠짐" });
-    }
-
     // Login
     authModel.getUser(req.body, (userId, isAgent) => {
       // Error during login
@@ -147,12 +126,11 @@ module.exports = {
           maxAge: 86400_000,
           httpOnly: true,
         });
-        res
-          .cookie("userType", isAgent ? 0 : 1, {
-            maxAge: 86400_000,
-            httpOnly: true,
-          })
-          .redirect("/");
+        res.cookie("userType", isAgent ? 0 : 1, {
+          maxAge: 86400_000,
+          httpOnly: true,
+        })
+        .redirect("/");
       }
     });
   },
@@ -162,6 +140,7 @@ module.exports = {
   },
 
   logout: (req, res) => {
+    res.clearCookie("userType");
     res.clearCookie("authToken").redirect("/");
   },
 };

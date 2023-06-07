@@ -9,7 +9,7 @@
     <table class="uk-table uk-table-divider">
       <tr>
         <td style="width:40%"><label for="username">아이디</label></td>
-        <td><input class="uk-input" name="username" placeholder="아이디 입력" /></td>
+        <td><input class="uk-input" name="username" placeholder="아이디 입력" required /></td>
       </tr>
 
       <tr>
@@ -20,6 +20,7 @@
             name="password"
             placeholder="비밀번호 입력"
             type="password"
+            value=""
             onkeyup="validatePassword(this.value)"
           />
           <p id="passwordMessage" class="error"></p>
@@ -42,7 +43,7 @@
 
       <tr>
         <td><label for="realname">실명</label></td>
-        <td><input class="uk-input" name="realname" placeholder="실명 입력" /></td>
+        <td><input class="uk-input" name="realname" placeholder="실명 입력" required /></td>
       </tr>
 
       <tr>
@@ -53,6 +54,7 @@
             id="agentList_ra_regno"
             name="agentList_ra_regno"
             placeholder="111-33-4444"
+            required
           />
         </td>
       </tr>
@@ -69,7 +71,7 @@
 
       <tr>
         <td><label for="email">본인 확인 이메일 (필수)</label></td>
-        <td><input class="uk-input" id="email" placeholder="이메일 입력" type="email" value="" /></td>
+        <td><input class="uk-input" name="email" id="email" placeholder="이메일 입력" type="email" value=""required /></td>
       </tr>
 
       <tr
@@ -83,6 +85,7 @@
             id="verificationCode"
             name="verificationCode"
             placeholder="인증 코드 입력"
+            required
           />
         </td>
       </tr>
@@ -101,24 +104,6 @@
         </td>
       </tr>
 
-      <tr>
-        <td><label>생년월일 (선택)</label></td>
-        <td>
-          <input
-            class="uk-input"
-            type="date"
-            name="bday"
-            required
-            pattern="\d{4}-\d{2}-\d{2}"
-            value=""
-          />
-          <span class="validity"></span>
-        </td>
-        </label>
-
-        <!-- <label for="birth">생년월일 (선택)</label>
-        <input name="birth" placeholder="생년월일 입력" value="19980412" /> -->
-      </tr>
       <tr>
         <td colspan="2" align="center"><button class="uk-button uk-button-default" type="submit" form="register">회원가입</button></td>
       </tr>

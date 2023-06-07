@@ -20,9 +20,10 @@ module.exports = {
         params.phone,
         params.realname,
         params.email,
-        params.birth,
+        params.birth !== '' ? params.birth : null
       ]);
 
+      // 새로 생성된 사용자 id 가져오기
       return result(params.username);
     } catch (err) {
       console.error("🚀 ~ err:", err);
@@ -48,7 +49,6 @@ module.exports = {
         params.phone,
         params.agentList_ra_regno,
       ]);
-      
       return result(params.username);
     } catch (err) {
       console.error("🚀 ~ err:", err);
