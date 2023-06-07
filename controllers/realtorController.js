@@ -37,6 +37,7 @@ module.exports = {
       if (r_username === null)
         res.render("notFound.ejs", { message: "로그인이 필요합니다" });
       res.locals.r_username = r_username;
+      console.log(res.locals.r_username);
       try {
         let who = await realtorModel.whoAreYou(r_username);
         let agent = await realtorModel.getRealtorProfile(req.params.ra_regno);

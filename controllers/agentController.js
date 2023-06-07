@@ -183,15 +183,15 @@ module.exports = {
 
     let profileImage = getEnteredAgent[0][0].a_profile_image;
     let officeHour = getEnteredAgent[0][0].a_office_hours;
-    let hours = officeHour.split(' ');
+    let hours = officeHour != null ? officeHour.split(' ') : null;
 
     let title = `부동산 정보 수정하기`;
     res.render("agent/updateAgentInfo.ejs", {
       title: title,
       agentId: req.params.id,
       profileImage: profileImage,
-      officeHourS: hours[0],
-      officeHourE: hours[2]
+      officeHourS: hours != null ? hours[0] : null,
+      officeHourE: hours != null ? hours[2] : null
     });
   },
 
