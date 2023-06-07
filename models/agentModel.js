@@ -52,17 +52,27 @@ module.exports = {
 
   getReviewByRaRegno: async (ra_regno) => {
     try {
+      //입주민 회원이 작성한 후기 평균을 가져오느라 조인 많이~
       let rawQuery = `
-      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
+      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
       FROM agentList
       JOIN(
-      SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, review.created_time AS created_time
+      SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, avgRRating, newTable3.created_time AS created_time
       FROM resident
-      JOIN review
+      JOIN (
+      SELECT *
+      FROM review
+      LEFT OUTER JOIN (
+      SELECT resident_r_id AS review_r_id, TRUNCATE(AVG(rating), 1) AS avgRRating
+      FROM review
+      GROUP BY resident_r_id
+      ) newTable2
+      ON resident_r_id=review_r_id
+      ) newTable3
       ON r_id=resident_r_id
       ) newTable
       ON agentList_ra_regno=ra_regno
-      WHERE ra_regno=?;`;
+      WHERE ra_regno=?`;
       let res = await db.query(rawQuery, [ra_regno]);
       return res[0];
     } catch (err) {
@@ -94,7 +104,7 @@ module.exports = {
 
   getReport: async (ra_regno, a_username) => {
     let rawQuery = `
-		SELECT repo_rv_id
+    SELECT repo_rv_id
 		FROM review
 		JOIN (
 		SELECT *
@@ -117,21 +127,16 @@ module.exports = {
 		SELECT r_username
 		FROM review
 		JOIN resident
-		ON resident_r_username=r_username
+		ON resident_r_id=r_id
 		WHERE rv_id=?`;
-    let getReporter = `
-		SELECT a_username
-		FROM agent
-		WHERE a_username=?`;
     let getRaRegno = `
 		SELECT agentList_ra_regno
 		FROM review
 		WHERE rv_id=?`;
 
-    let reporter = await db.query(getReporter, [a_username]);
     let reportee = await db.query(getReportee, [req.params.rv_id]);
     await db.query(rawQuery, [
-      reporter[0][0].a_username,
+      a_username,
       req.params.rv_id,
       reportee[0][0].r_username,
       req.query.reason,
@@ -190,12 +195,12 @@ module.exports = {
 
   updateEnterdAgentInfo: async (ra_regno, file, body, result) => {
     try {
+      const office_hour = body.office_hour_start + " to " + body.office_hour_end;
       const res = await db.query(
         `UPDATE agent SET a_profile_image=?, a_office_hours=? 
 			WHERE agentList_ra_regno=?`,
-        [file ? file.filename : null, body.office_hour, ra_regno]
+        [file ? file.filename : null, office_hour, ra_regno]
       );
-      console.log(res);
       result(res);
     } catch (error) {
       console.error(error);

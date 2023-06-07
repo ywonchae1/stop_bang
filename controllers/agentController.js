@@ -70,6 +70,19 @@ module.exports = {
     },
   }),
 
+  getAgentPhoneNumber: async (req, res) => {
+    if (!req.query.raRegno) return res.send("Requires `raRegno`");
+    try {
+      const agent = await db.query(
+        `SELECT telno FROM agentList WHERE ra_regno = ?`,
+        [req.query.raRegno]
+      );
+      return res.send({ phoneNumber: agent[0][0].telno });
+    } catch (error) {
+      return res.send(error.message);
+    }
+  },
+
   //후기 신고
 	reporting: async (req, res) => {
 		//쿠키로부터 로그인 계정 알아오기
@@ -170,17 +183,20 @@ module.exports = {
 
     let profileImage = getEnteredAgent[0][0].a_profile_image;
     let officeHour = getEnteredAgent[0][0].a_office_hours;
+    let hours = officeHour != null ? officeHour.split(' ') : null;
 
     let title = `부동산 정보 수정하기`;
     res.render("agent/updateAgentInfo.ejs", {
       title: title,
       agentId: req.params.id,
       profileImage: profileImage,
-      officeHour: officeHour,
+      officeHourS: hours != null ? hours[0] : null,
+      officeHourE: hours != null ? hours[2] : null
     });
   },
 
   updatingEnteredInfo: (req, res, next) => {
+    console.log(req.file);
     agentModel.updateEnterdAgentInfo(req.params.id, req.file, req.body, () => {
       console.log(req.params.id);
       res.locals.redirect = `/agent/${req.params.id}`;

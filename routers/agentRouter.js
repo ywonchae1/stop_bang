@@ -4,6 +4,8 @@ const router = express.Router();
 //Controllers
 const agentController = require("../controllers/agentController.js");
 
+router.get("/phoneNumber", agentController.getAgentPhoneNumber);
+
 //agent 사용자 정보 확인용
 router.get("/settings", agentController.settings, agentController.settingsView);
 router.post(

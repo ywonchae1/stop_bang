@@ -20,16 +20,11 @@ module.exports = {
         params.phone,
         params.realname,
         params.email,
-        params.birth,
+        params.birth !== '' ? params.birth : null
       ]);
 
       // 새로 생성된 사용자 id 가져오기
-      const q = `
-        SELECT r_id FROM resident WHERE r_username = ?;
-        `;
-      let res2 = await db.query(q, [params.username]);
-
-      return result(res2[0][0].r_id);
+      return result(params.username);
     } catch (err) {
       console.error("🚀 ~ err:", err);
       return result(null);
@@ -54,14 +49,7 @@ module.exports = {
         params.phone,
         params.agentList_ra_regno,
       ]);
-
-      // 새로 생성된 공인중개사의 id 가져오기
-      const q = `
-        SELECT a_id FROM agent WHERE a_username = ?;
-        `;
-      let res2 = await db.query(q, [params.username]);
-
-      return result(res2[0][0].a_id);
+      return result(params.username);
     } catch (err) {
       console.error("🚀 ~ err:", err);
       return result(null);
