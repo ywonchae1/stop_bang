@@ -28,7 +28,7 @@ header h3 {
 }
 
 a {
-  color: black !important;
+  color: black;
   text-decoration: none;
 }
 
