@@ -38,6 +38,7 @@ module.exports = {
       let rate = residentReview.rating;
       let description = residentReview.content;
       let updatedTime = residentReview.check_point;
+      console.log(updatedTime);
       let checkedTags = residentReview.tags;
 
       let title = `${cmpName} - ${userName}님의 후기 수정하기`;
