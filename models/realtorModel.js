@@ -220,18 +220,11 @@ module.exports = {
 		JOIN resident
 		ON resident_r_id=r_id
 		WHERE rv_id=?`;
-    /*
-    let getReporter = `
-		SELECT r_username
-		FROM resident
-		WHERE r_id=?`;
-    */
     let getRaRegno = `
 		SELECT agentList_ra_regno
 		FROM review
 		WHERE rv_id=?`;
 
-    //let reporter = await db.query(getReporter, [r_id]);
     let reportee = await db.query(getReportee, [req.params.rv_id]);
     await db.query(rawQuery, [
       r_username,

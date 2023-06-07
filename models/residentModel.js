@@ -39,18 +39,21 @@ let residentModel = {
   getOpenedReviewById: async (r_username, result) => {
     try {
       const res = await sql.query(`
-      SELECT r_username, review_rv_id as rv_id, cmp_nm, address, agentList_ra_regno, rating, content, tags, opened_review.created_time AS created_time 
-      FROM opened_review 
-      INNER JOIN (
-      SELECT r_username, rv_id, agentList_ra_regno, rating, content, tags, review.created_time AS created_time
-      FROM review
+      SELECT r_id, r_username, rv_id, cmp_nm, address, agentList_ra_regno, rating AS rating, content, tags, newTable2.created_time AS created_time
+      FROM agentList
+      JOIN (
+      SELECT r_id, r_username, rv_id, rating, content, tags, agentList_ra_regno, newTable.created_time AS created_time
+      FROM (
+      SELECT opened_review.resident_r_id as resident_r_id, review.rv_id AS rv_id, rating, content, tags, agentList_ra_regno, opened_review.created_time AS created_time
+      FROM opened_review
+      JOIN review
+      ON review_rv_id=rv_id
+      ) newTable
       JOIN resident
       ON resident_r_id=r_id
-      ) newTable
-      ON opened_review.review_rv_id = newTable.rv_id 
-      INNER JOIN agentList
-      ON agentList_ra_regno=agentList.ra_regno
-      WHERE r_username = ?`,
+      WHERE r_username=?
+      ) newTable2
+      ON agentList_ra_regno=agentList.ra_regno`,
         [r_username]
       );
       result(res);

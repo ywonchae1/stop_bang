@@ -104,28 +104,17 @@ module.exports = {
 
   getReport: async (ra_regno, a_username) => {
     let rawQuery = `
-		SELECT repo_rv_id, r_username, r_id, agentList_ra_regno,
-		CASE
-		WHEN repo_rv_id IN (
-		SELECT repo_rv_id
-		FROM report
-		GROUP BY repo_rv_id
-		HAVING COUNT(repo_rv_id) >= 7)
-		THEN 0
-		ELSE 1
-		END AS check_repo
+    SELECT repo_rv_id
 		FROM review
 		JOIN (
-		SELECT repo_rv_id, r_id, r_username
+		SELECT *
 		FROM report
-		JOIN resident
-		ON reporter=r_username
-		WHERE r_username=?
+		JOIN agent
+		ON reporter=a_username
 		) newTable
 		ON rv_id=repo_rv_id
-		GROUP BY rv_id
-		HAVING agentList_ra_regno=?`;
-    let res = await db.query(rawQuery, [a_username, ra_regno]);
+		WHERE newTable.agentList_ra_regno=? AND a_username=?;`;
+    let res = await db.query(rawQuery, [ra_regno, a_username]);
     return res[0];
   },
 
@@ -138,21 +127,16 @@ module.exports = {
 		SELECT r_username
 		FROM review
 		JOIN resident
-		ON resident_r_username=r_username
+		ON resident_r_id=r_id
 		WHERE rv_id=?`;
-    let getReporter = `
-		SELECT a_username
-		FROM agent
-		WHERE a_username=?`;
     let getRaRegno = `
 		SELECT agentList_ra_regno
 		FROM review
 		WHERE rv_id=?`;
 
-    let reporter = await db.query(getReporter, [a_username]);
     let reportee = await db.query(getReportee, [req.params.rv_id]);
     await db.query(rawQuery, [
-      reporter[0][0].a_username,
+      a_username,
       req.params.rv_id,
       reportee[0][0].r_username,
       req.query.reason,
