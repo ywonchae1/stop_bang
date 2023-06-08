@@ -25,7 +25,7 @@
                                         <% for (let i=0; i < reports.length; i++) { %>
 
                                         <ul class="report--comment--item">
-                                            <li class="s_user_name"><a href="/admin/reports/confirm/<%= reports[i].rv_id %>">리뷰 <%= reports[i].repo_rv_id %>번에 대한 신고</a></li>
+                                            <li class="s_user_name"><a href=<%= `/admin/reports/confirm/${reports[i].rv_id}/${reports[i].reporter}` %>>리뷰 <%= reports[i].repo_rv_id %>번에 대한 신고</a></li>
                                             <li class="s_user_id">신고자 아이디 : <%= reports[i].reporter %></li>
                                             <%
                                                 function r_array(num) {

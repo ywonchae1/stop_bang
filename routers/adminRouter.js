@@ -59,10 +59,11 @@ router.get("/", async (req, res, next) => {
       console.log(error);
     }
   }),
-  router.get("/reports/confirm/:rvid", async (req, res, next) => {
+  router.get("/reports/confirm/:rvid/:reporter", async (req, res, next) => {
     try {
       const rvid = req.params.rvid;
-      const result = await adminControl.getOneReport(rvid);
+      const reporter = req.params.reporter;
+      const result = await adminControl.getOneReport(rvid, reporter);
       const reports = result[0];
       res.render("admin/adminReportConfirm", { reports: reports });
     } catch (error) {

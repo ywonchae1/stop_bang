@@ -45,9 +45,9 @@ const adminModel = require("../models/adminModel");
       return rows;
     } catch (err) {}
   }),
-  (exports.getOneReport = async (rvid) => {
+  (exports.getOneReport = async (rvid, reporter) => {
     try {
-      const rows = await adminModel.getOneReportModel(rvid);
+      const rows = await adminModel.getOneReportModel(rvid, reporter);
       console.log("Rows !!! :" + rows);
       return rows;
     } catch (err) {}

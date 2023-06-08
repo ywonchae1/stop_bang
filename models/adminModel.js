@@ -45,11 +45,12 @@ exports.getReportModel = async () => {
     throw err;
   }
 },
-exports.getOneReportModel = async (rvid) => {
+exports.getOneReportModel = async (rvid, reporter) => {
 
   try {
-    const query = ` select * from report p left join review v on p.repo_rv_id = v.rv_id where v.rv_id =?`;
-    const [rows, fields] = await db.query(query,[rvid]);
+    //report 테이블 기본키가 (repo_rv_id, reporter)라서 repo_rv_id만으로는 구분되지 않았던 것!
+    const query = ` select * from report p left join review v on p.repo_rv_id = v.rv_id where p.repo_rv_id =? and p.reporter=?`;
+    const [rows, fields] = await db.query(query,[rvid, reporter]);
     console.log("get report model : ", rows);
     return rows;
   } catch (err) {
