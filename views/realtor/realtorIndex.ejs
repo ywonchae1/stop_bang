@@ -57,10 +57,7 @@
     <% } %>
   <% } else { %>
   <% agentReviewData.forEach(review => { %>
-  <% let flag = true; %>
-  <% report.forEach(repo => { %>
-  <% if(repo.check_repo === 0 && repo.repo_rv_id === review.rv_id) flag = false; }); %>
-  <% if(flag === true) { %>
+  <% if(review.check_repo === 1) { %>
     <%- include('./realtorReview.ejs', {r_username: r_username, review: review, report: report, opened: openedReviewData, canOpen: canOpen, who: who, tags: review.tags, tagsData: tagsData}); %>
     <% } else { %>
     <%- include('./realtorRepoReview.ejs', {review: review}); %>

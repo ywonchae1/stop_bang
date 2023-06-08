@@ -53,8 +53,20 @@ module.exports = {
   getReviewByRaRegno: async (ra_regno) => {
     try {
       //입주민 회원이 작성한 후기 평균을 가져오느라 조인 많이~
+      //7회 이상 신고된 후기 case when절로 확인
+      //check_repo 값이 0인 후기는 나쁜 후기로,
+      //🚨신고가 7회 누적되어 더이상 접근할 수 없는 후기입니다.🚨 표시
       let rawQuery = `
-      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
+      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time,
+      CASE
+      WHEN rv_id IN (
+      SELECT repo_rv_id
+      FROM report
+      GROUP BY repo_rv_id
+      HAVING COUNT(repo_rv_id) >= 7)
+      THEN 0
+      ELSE 1
+      END AS check_repo
       FROM agentList
       JOIN(
       SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, avgRRating, newTable3.created_time AS created_time
@@ -102,6 +114,7 @@ module.exports = {
     return res[0][0].agentRating;
   },
 
+  //agent 본인이 본인의 부동산 페이지의 후기를 신고했다면 🚔신고완료 표시
   getReport: async (ra_regno, a_username) => {
     let rawQuery = `
     SELECT repo_rv_id
@@ -111,10 +124,11 @@ module.exports = {
 		FROM report
 		JOIN agent
 		ON reporter=a_username
+    WHERE a_username=?
 		) newTable
 		ON rv_id=repo_rv_id
-		WHERE newTable.agentList_ra_regno=? AND a_username=?;`;
-    let res = await db.query(rawQuery, [ra_regno, a_username]);
+		WHERE newTable.agentList_ra_regno=?;`;
+    let res = await db.query(rawQuery, [a_username, ra_regno]);
     return res[0];
   },
 

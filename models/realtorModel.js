@@ -77,8 +77,20 @@ module.exports = {
   getReviewByRaRegno: async (ra_regno, r_username) => {
     try {
       //입주민 회원이 작성한 후기 평균을 가져오느라 조인 많이~
+      //7회 이상 신고된 후기는 case when절로 확인
+      //check_repo 값이 0인 후기는 나쁜 후기로,
+      //🚨신고가 7회 누적되어 더이상 접근할 수 없는 후기입니다.🚨 표시
       let rawQuery = `
-      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time
+      SELECT cmp_nm, ra_regno, rv_id, r_id, r_username, rating, content, tags, avgRRating, DATE_FORMAT(newTable.created_time,'%Y-%m-%d') AS created_time,
+      CASE
+      WHEN rv_id IN (
+      SELECT repo_rv_id
+      FROM report
+      GROUP BY repo_rv_id
+      HAVING COUNT(repo_rv_id) >= 7)
+      THEN 0
+      ELSE 1
+      END AS check_repo
       FROM agentList
       JOIN(
       SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, avgRRating, newTable3.created_time AS created_time
@@ -137,30 +149,21 @@ module.exports = {
     }
   },
 
-  //7회 이상 신고된 후기인지 표시하는 check_repo 컬럼 SELECT문에 추가(나쁜후기 0 좋은후기 1)
+  //페이지에 방문한 resident 회원이 신고한 후기라면 🚔신고완료 표시를 위해 resident 테이블과 reporter(신고자)에 대해 JOIN
+  //agent는 다른 부동산의 후기를 신고할 수 없으므로 이 경우 고려할 필요 없음
   getReport: async (params, r_username) => {
     let rawQuery = `
-		SELECT repo_rv_id, r_username, r_id, agentList_ra_regno,
-		CASE
-		WHEN repo_rv_id IN (
-		SELECT repo_rv_id
-		FROM report
-		GROUP BY repo_rv_id
-		HAVING COUNT(repo_rv_id) >= 7)
-		THEN 0
-		ELSE 1
-		END AS check_repo
+		SELECT repo_rv_id, r_username, r_id, agentList_ra_regno
 		FROM review
 		JOIN (
 		SELECT repo_rv_id, r_id, r_username
 		FROM report
 		JOIN resident
 		ON reporter=r_username
-		WHERE r_username=?
+    WHERE r_username=?
 		) newTable
 		ON rv_id=repo_rv_id
-		GROUP BY rv_id
-		HAVING agentList_ra_regno=?`;
+		WHERE agentList_ra_regno=?`;
     let res = await db.query(rawQuery, [r_username, params.ra_regno]);
     return res[0];
   },

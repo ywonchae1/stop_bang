@@ -49,7 +49,7 @@ module.exports = {
           req.params.ra_regno,
           r_username
         );
-        let getReport = await realtorModel.getReport(req.params, r_username);
+        let getMyReport = await realtorModel.getReport(req.params, r_username);
         let statistics = makeStatistics(getReviews);
         let getRating = await realtorModel.getRating(req.params);
 
@@ -58,7 +58,7 @@ module.exports = {
         res.locals.agentMainInfo = agentMainInfo;
         res.locals.agentSubInfo = agentSubInfo[0][0];
         res.locals.agentReviewData = getReviews;
-        res.locals.report = getReport;
+        res.locals.report = getMyReport;
         res.locals.statistics = statistics;
 
         res.locals.title = `${res.locals.agent.cmp_nm}의 후기`;

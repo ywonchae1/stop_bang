@@ -37,7 +37,11 @@
 		<div class="a--m--text" style="color:black; padding: 10px 0px;">아직 후기가 없습니다😥</div>
 	<% } else { %>
 		<% agentReviewData.forEach(review => { %>
-		<%- include('./agentReview.ejs', {review: review, tags: review.tags, tagsData: tagsData}) %>
+			<% if(review.check_repo === 1) { %>
+				<%- include('./agentReview.ejs', {review: review, tags: review.tags, tagsData: tagsData}) %>
+			<% } else { %>
+				<%- include('./agentRepoReview.ejs', {review: review}); %>
+    		<% } %>
 		<% }); %>
 	<% } %>
 </div>
