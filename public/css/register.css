@@ -1,6 +1,14 @@
 .rg-container {
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    min-height: 100vh;
+    margin: 0 auto;
+    padding-top: 30px;
+    width: 50%;
+}
+
+/*화면 사이즈가 625px 이하가 되었을 때 적용되는 CSS*/
+@media screen and (max-width: 625px) {
+    .rg-container {
+        margin: 0 auto;
+        padding: 20px;
+        width: 100%;
+    }
 }

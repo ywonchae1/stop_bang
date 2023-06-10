@@ -7,3 +7,12 @@
     text-align: center;
     margin: 30px;
 }
+
+/*화면 사이즈가 625px 이하가 되었을 때 적용되는 CSS*/
+@media screen and (max-width: 625px) {
+    .auth-box {
+        margin: 0 auto;
+        width: 100%;
+        padding: 0 10px;
+    }
+}
