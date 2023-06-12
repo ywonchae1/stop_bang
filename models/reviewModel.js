@@ -75,7 +75,7 @@ module.exports = {
 
 	updateReviewProcess: async (params, body, result) => {
 		let desc = body.originDesc;
-		if(body.description !== "\n")
+		if(body.description !== "")
 			desc = body.originDesc + "\n" + body.updatedTime + "\n" + body.description;
 		
 		let tags = body.checkedTags;
