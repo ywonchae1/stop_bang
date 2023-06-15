@@ -7,6 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, 
+  maximum-scale=1.0, minimum-scale=1.0">
   <!-- Remixicon CSS -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
   <!-- UIkit CSS -->
@@ -19,7 +21,7 @@
   <!-- Bootstrap icons-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
   <!-- Core theme CSS (includes Bootstrap)-->
-  <link href="css/styles.css" rel="stylesheet" />
+  <link href="/css/styles.css" rel="stylesheet" />
 
   <title>멈춰방</title>
 </head>
@@ -36,7 +38,7 @@
         <a href="#"> 예약 </a>
       </div>
       <div>
-        <a href="#"> 이달의 공인중개사 </a>
+        <a href="/search"> 부동산 검색 </a>
       </div>
 
       <% if(auth) { %>
@@ -44,7 +46,7 @@
         <a href=<%= userType === "1" ? "/resident/settings" : "/agent/settings"%>> 마이페이지 </a>
       </div>
       <% if(is_admin == 1) { %>
-         <div> <a href="/admin"> 관리자 </a> </div> <% } %>
+      <div> <a href="/admin"> 관리자 </a> </div> <% } %>
       <div>
         <a href="/auth/logout"> 로그아웃 </a>
       </div>
@@ -56,10 +58,47 @@
       <div>
         <a href="/auth/login"> 로그인 </a>
       </div>
-
       <% } %>
     </div>
+    <!--모바일 햄버거-->
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+      <i class="fas ri-menu-line"></i>
+    </a>
+  </div>
+  <!--모바일 미니메뉴 -->
+  <div id="minimenu" class="hidden">
+    <% if(auth) { %>
+    <li>
+      <a href=<%= userType === "1" ? "/resident/settings" : "/agent/settings"%>> 마이페이지 </a>
+    </li>
+    <% if(is_admin == 1) { %>
+    <li> <a href="/admin"> 관리자 </a> </li> <% } %>
+    <li>
+      <a href="/auth/logout"> 로그아웃 </a>
+    </li>
+
+    <% } else { %>
+    <li>
+      <a href="/auth/register"> 회원가입 </a>
+    </li>
+    <li>
+      <a href="/auth/login"> 로그인 </a>
+    </li>
+    <% } %>
+    <li><a href="#"> 예약 </a></li>
+    <li><a href="#"> 이달의 공인중개사 </a></li>
   </div>
 </header>
+<!--모바일 햄버거 아이콘 눌렀을 때 발동-->
+<script>
+  const bars = document.querySelector(".fas");
+  const minimenu = document.querySelector("#minimenu");
+
+  function onClick() {
+    minimenu.classList.toggle("hidden");
+  }
+
+  bars.addEventListener("click", onClick);
+</script>
 
 </html>

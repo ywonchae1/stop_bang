@@ -79,7 +79,7 @@ module.exports = {
 
     // 사용자/공인중개사 비밀번호 유효성 확인하기
     const passwordHash = isAgent ? res[0][0].a_password : res[0][0].r_password;
-    const res2 = bcrypt.compare(params.password, passwordHash);
+    const res2 = await bcrypt.compare(params.password, passwordHash);
     if (!res2) return result(null);
 
     result(isAgent ? res[0][0].a_username : res[0][0].r_username, isAgent);
