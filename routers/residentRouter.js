@@ -39,4 +39,9 @@ router.post(
   residentController.redirectView
 );
 
+router.post(
+  "/deleteAccount",
+  residentController.deleteAccount
+);
+
 module.exports = router;

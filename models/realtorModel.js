@@ -2,6 +2,7 @@
 const db = require("../config/db.js");
 
 module.exports = {
+  //입주민 회원인지 공인중개사 회원인지 확인
   whoAreYou: async (r_username) => {
     try {
       let rawQuery = `
@@ -16,6 +17,7 @@ module.exports = {
     }
   },
 
+  //공인중개사의 프로필 가져오기
   getRealtorProfile: async (ra_regno) => {
     try {
       const res = await db.query(
@@ -32,6 +34,7 @@ module.exports = {
     }
   },
 
+  //부동산의 사진, 소개글 가져오기
   getMainInfo: async (ra_regno) => {
     let rawQuery = `
 		SELECT ra_regno, a_image1, a_image2, a_image3, a_introduction
@@ -62,6 +65,7 @@ module.exports = {
     }
   },
 
+  //부동산 페이지에 방문한 입주민이 해당 부동산을 북마크 했는지 확인
   getBookmarkByIdnRegno: async (ra_regno, r_username) => {
     try {
       const res = await db.query(
@@ -95,7 +99,7 @@ module.exports = {
       JOIN(
       SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, avgRRating, newTable3.created_time AS created_time
       FROM resident
-      JOIN (
+      RIGHT JOIN (
       SELECT *
       FROM review
       LEFT OUTER JOIN (
