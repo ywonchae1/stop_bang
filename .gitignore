@@ -1,3 +1,3 @@
 node_modules/
 .env
-./modules/mailer/config.js
+modules/mailer/config.js
