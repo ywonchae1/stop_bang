@@ -38,7 +38,7 @@
         <a href="#"> 예약 </a>
       </div>
       <div>
-        <a href="#"> 이달의 공인중개사 </a>
+        <a href="/search"> 부동산 검색 </a>
       </div>
 
       <% if(auth) { %>
@@ -46,7 +46,7 @@
         <a href=<%= userType === "1" ? "/resident/settings" : "/agent/settings"%>> 마이페이지 </a>
       </div>
       <% if(is_admin == 1) { %>
-         <div> <a href="/admin"> 관리자 </a> </div> <% } %>
+      <div> <a href="/admin"> 관리자 </a> </div> <% } %>
       <div>
         <a href="/auth/logout"> 로그아웃 </a>
       </div>
@@ -72,7 +72,7 @@
       <a href=<%= userType === "1" ? "/resident/settings" : "/agent/settings"%>> 마이페이지 </a>
     </li>
     <% if(is_admin == 1) { %>
-       <li> <a href="/admin"> 관리자 </a> </li> <% } %>
+    <li> <a href="/admin"> 관리자 </a> </li> <% } %>
     <li>
       <a href="/auth/logout"> 로그아웃 </a>
     </li>
@@ -99,6 +99,6 @@
   }
 
   bars.addEventListener("click", onClick);
-  </script>
+</script>
 
 </html>
