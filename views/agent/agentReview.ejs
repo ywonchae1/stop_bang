@@ -11,7 +11,11 @@
 <div class="uk-card uk-card-default uk-card-hover uk-card-body layout-row" style="display: flex; margin-bottom: 15px; max-width: 80%;">
 	<span style="margin-right: auto; width: 80%;">
 	  <div class="layout-row">
+		<% if (review.r_username != null) { %>
 		<p style="margin-right:10px"><%- review.r_username %></p>
+		<% } else { %>
+		<p style="margin-right:10px">(알수없음)</p>
+		<% } %>
 		<% for( let index = 0; index < 5; index++ ) { %>
 		  <% if (index < review.rating) { %>
 		  <p>★</p>

@@ -1,3 +1,4 @@
+const { raw } = require("body-parser");
 const sql = require("../config/db");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -137,6 +138,19 @@ let residentModel = {
       result(null, error);
     }
   },
+
+  deleteAccountProcess: async (r_username) => {
+    try {
+      const rawQuery = `
+      DELETE FROM resident
+      WHERE r_username=?
+      `;
+      await sql.query(rawQuery, [r_username]);
+      return 1;
+    } catch (error) {
+      return null;
+    }
+  }
 };
 
 module.exports = residentModel;

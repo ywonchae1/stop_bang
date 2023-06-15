@@ -14,6 +14,7 @@ module.exports = {
 		result(res[0][0]);
     },
 
+	//후기 테이블에 저장
   	createReviewProcess: async (r_username, params, body, result) => {
 		let raRegno = params.ra_regno;
 		let rate = body.rate;
@@ -58,6 +59,7 @@ module.exports = {
 		result();
 	},
 
+	//후기 id 값으로 후기 1개 찾아오기
     getReviewByRvId: async (params, result) => {
 		let reviewId = params.rv_id;
 		let rawQuery = `
@@ -73,6 +75,7 @@ module.exports = {
 		result(res[0][0]);
 	},
 
+	//후기 수정 사항 테이블에 반영
 	updateReviewProcess: async (params, body, result) => {
 		let desc = body.originDesc;
 		if(body.description !== "")
