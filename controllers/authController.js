@@ -40,18 +40,18 @@ module.exports = {
     const body = req.body;
 
     if (!checkPasswordCorrect(body.password))
-      return res.status(400).send("비밀번호 제약을 확인해주세요");
+      return res.render('notFound.ejs', {message: "비밀번호 제약을 확인해주세요"});
 
     checkUsernameExists(body.username, (usernameExists) => {
       if (usernameExists) {
-        return res.status(400).send("이미 사용중인 아이디입니다.");
+        return res.render('notFound.ejs', {message: "이미 사용중인 아이디입니다."});
       }
 
       // Save new user information to the database
       authModel.registerResident(req.body, (userId) => {
         // Error during registration
         if (!userId) {
-          return res.status(400).send("회원가입 실패");
+          return res.render('notFound.ejs', {message: "회원가입 실패"});
         } else {
           const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
           // Store user's userId in the cookie upon successful registration
@@ -80,17 +80,17 @@ module.exports = {
 
 
     if (!checkPasswordCorrect(body.password))
-      return res.status(400).send("비밀번호 제약을 확인해주세요");
+      return res.render('notFound.ejs', {message: "비밀번호 제약을 확인해주세요"});
 
     checkUsernameExists(body.username, (usernameExists) => {
       if (usernameExists) {
-        return res.status(400).send("이미 사용중인 아이디입니다.");
+        return res.render('notFound.ejs', {message: "이미 사용중인 아이디입니다."});
       }
 
       // Save new agent information to the database
       authModel.registerAgent(req.body, (userId) => {
         if (!userId) {
-          return res.status(400).send("회원가입 실패");
+          return res.render('notFound.ejs', {message: "회원가입 실패"});
         } else {
           const token = jwt.sign({ userId }, process.env.JWT_SECRET_KEY);
           // Store agent's userId in the cookie upon successful registration

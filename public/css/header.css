@@ -73,3 +73,58 @@ a:hover {
 .topbar {
   border-bottom: 2px solid black;
 }
+
+.hidden {
+  display: none;
+}
+
+@media screen and (min-width: 625px) {
+  
+  .fab {
+    font-size: 35px;
+    color: #1DA1F2;
+  }
+
+  .fas {
+    display: none;
+  }
+}
+
+/*화면 사이즈가 625px 이하가 되었을 때 적용되는 CSS*/
+@media screen and (max-width: 625px) {
+
+  .nav {
+    padding: 30px 40px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .fab {
+    display : none;
+  }
+
+  .fas {
+    margin: 0 1em;
+    font-size: 2em;
+  }
+
+  #minimenu {
+    width: 100%;
+    background-color: white;
+  }
+
+  #minimenu > li {
+    font-size: 18px;
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #minimenu > li:hover {
+    color: var(--purple);
+  }
+}
