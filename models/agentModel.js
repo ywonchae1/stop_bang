@@ -71,7 +71,7 @@ module.exports = {
       JOIN(
       SELECT rv_id, r_id, r_username, agentList_ra_regno, rating, tags, content, avgRRating, newTable3.created_time AS created_time
       FROM resident
-      JOIN (
+      RIGHT JOIN (
       SELECT *
       FROM review
       LEFT OUTER JOIN (
@@ -283,4 +283,17 @@ module.exports = {
       result(null, error);
     }
   },
+
+  deleteAccountProcess: async (a_username) => {
+    try {
+      const rawQuery = `
+      DELETE FROM agent
+      WHERE a_username=?
+      `;
+      await sql.query(rawQuery, [a_username]);
+      return 1;
+    } catch (error) {
+      return null;
+    }
+  }
 };

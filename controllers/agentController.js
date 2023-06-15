@@ -277,4 +277,29 @@ module.exports = {
     if (redirectPath !== undefined) res.redirect(redirectPath);
     else next();
   },
+
+  deleteAccount: async (req, res) => {
+    try {
+      if (req.cookies.authToken == undefined)
+        res.render("notFound.ejs", { message: "로그인이 필요합니다" });
+      else {
+        const decoded = jwt.verify(
+        req.cookies.authToken,
+        process.env.JWT_SECRET_KEY
+        );
+        let a_username = decoded.userId;
+
+        try {
+          await agentModel.deleteAccountProcess(a_username);
+          res.clearCookie("userType");
+          res.clearCookie("authToken").redirect("/");
+          res.redirect(`/`);
+        } catch (error) {
+          res.render("notFound.ejs", { message: error });
+        }
+      }
+    } catch (error) {
+      res.render("notFound.ejs", { message: error });
+    }
+  }
 };

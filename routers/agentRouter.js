@@ -46,4 +46,9 @@ router.post(
 //후기 신고
 router.get('/report/:rv_id', agentController.reporting);
 
+router.post(
+  "/deleteAccount",
+  agentController.deleteAccount
+);
+
 module.exports = router;
