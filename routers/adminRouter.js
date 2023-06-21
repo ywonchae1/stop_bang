@@ -4,6 +4,9 @@ const db = require("../config/db");
 const adminControl = require("../controllers/adminController");
 
 router.get("/", async (req, res, next) => {
+  //쿠키로부터 로그인 계정 알아오기
+  if (req.cookies.authToken == undefined)
+  res.render("notFound.ejs", { message: "로그인이 필요합니다" });
   try {
     const result1 = await adminControl.getNewUsersCount();
     const result2 = await adminControl.getNewAgent();
