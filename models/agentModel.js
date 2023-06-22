@@ -290,7 +290,7 @@ module.exports = {
       DELETE FROM agent
       WHERE a_username=?
       `;
-      await sql.query(rawQuery, [a_username]);
+      await db.query(rawQuery, [a_username]);
       return 1;
     } catch (error) {
       return null;
