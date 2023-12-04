@@ -5,7 +5,6 @@
 .resident-menu,
 .agent-menu {
   float: left;
-  /* flex: 1; */
   width: 15%;
   height: 100vh;
   min-width: fit-content;
