@@ -1,0 +1,21 @@
+node {
+    def app
+    stage('Clone repository') {
+        git 'https://github.com/MinYeongPark/stop_bang.git'
+    }
+    stage('Build Image') {
+        app = docker.build('ywonchae1/stopbang')
+    }
+    stage('Test Image') {
+        app.inside {
+            sh node
+            console.log('hello world~')
+        }
+    }
+    stage('Push Image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'pjbear') {
+            app.push('${env.BUILD_NUMBER}')
+            app.push('latest')
+        }
+    }
+}
