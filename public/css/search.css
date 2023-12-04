@@ -95,11 +95,6 @@
 select:focus {
   outline: none;
 }
-/*
-.s-form{
-      display: flex;
-    
-}*/
 
 input {
   padding: 9px;
