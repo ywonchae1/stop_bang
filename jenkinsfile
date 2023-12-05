@@ -4,7 +4,7 @@ node {
         git 'https://github.com/MinYeongPark/stop_bang.git'
     }
     stage('Build Image') {
-        app = docker.build('minyeongpark5/stopbang')
+        app = docker.build('minyeongpark5/stop_bang')
     }
     stage('Push Image') {
         docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
