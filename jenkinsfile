@@ -6,12 +6,6 @@ node {
     stage('Build Image') {
         app = docker.build('ywonchae1/stopbang')
     }
-    stage('Test Image') {
-        app.inside {
-            sh node
-            console.log('hello world~')
-        }
-    }
     stage('Push Image') {
         docker.withRegistry('https://registry.hub.docker.com', 'pjbear') {
             app.push('${env.BUILD_NUMBER}')
