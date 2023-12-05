@@ -4,10 +4,10 @@ node {
         git 'https://github.com/MinYeongPark/stop_bang.git'
     }
     stage('Build Image') {
-        app = docker.build('ywonchae1/stopbang')
+        app = docker.build('minyeongpark5/stopbang')
     }
     stage('Push Image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'ywonchae1') {
+        docker.withRegistry('https://registry.hub.docker.com', 'minyeongpark5') {
             app.push('${env.BUILD_NUMBER}')
             app.push('latest')
         }
