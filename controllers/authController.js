@@ -1,5 +1,4 @@
 const authModel = require("../models/authModel");
-// const passwordSchema = require("../models/passwordValidator");
 const passwordValidator = require("password-validator");
 const passwordSchema = new passwordValidator();
 const residentModel = require("../models/residentModel");
