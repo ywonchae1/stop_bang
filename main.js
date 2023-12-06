@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const express = require("express");
 //const morgan = require("morgan"); //추가적인 로그 볼수있게
 const cookieParser = require("cookie-parser");
-const session = require("express-session");
 const path = require("path");
 const app = express();
 const bodyParser = require("body-parser"); //post에서 body 받기
