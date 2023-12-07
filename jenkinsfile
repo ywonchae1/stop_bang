@@ -14,16 +14,27 @@ node {
         CERTIFICATION_EMAIL="${CERTIFICATION_EMAIL}"
         JWT_SECRET_KEY="${JWT_SECRET_KEY}"
     }
-    stage('Clone repository') {
-        git 'https://github.com/MinYeongPark/stop_bang.git'
-    }
-    stage('Build Image') {
-        app = docker.build('minyeongpark5/stop_bang')
-    }
-    stage('Push Image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
-            app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
+    stages {
+        stage('Clone repository') {
+            git 'https://github.com/MinYeongPark/stop_bang.git'
+        }
+        stage('Build Image') {
+            app = docker.build('minyeongpark5/stop_bang')
+        }
+        stage('Push Image') {
+            docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
+            }
+        }
+        stage('Deploy to GKE') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh "sed -i 's/stop_bang:latest/stop_bang:${env.BUILD_ID}/g' Deployment.yaml"
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+            }
         }
     }
 }

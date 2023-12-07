@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stopbang
+  labels:
+    app: stopbang
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: stopbang
+  template:
+    metadata:
+      labels:
+        app: stopbang
+        tier: stopbang
+    spec:
+      containers:
+      - name: stopbang
+        image: minyeongpark5/stop_bang:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          name: stopbang
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stopbang
+  labels:
+    app: stopbang
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: stopbang
+    tier: stopbang
+  type: LoadBalancer
