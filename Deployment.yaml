@@ -21,15 +21,6 @@ spec:
       - name: stopbang
         image: minyeongpark5/stop_bang:latest
         imagePullPolicy: Always
-        env:
-        - name: env.PROJECT_ID
-          value: encoded-victory-407118
-        - name: env.CLUSTER_NAME
-          value: k8s
-        - name: env.LOCATION
-          value: asia-northeast3-a
-        - name: env.CREDENTIALS_ID
-          value: minyeonggithub
         ports:
         - containerPort: 3000
           name: stopbang
