@@ -8,16 +8,12 @@ pipeline {
         DB_NAME="${env.DB_NAME}"
 
         COOKIE_SECRET_KEY="${env.COOKIE_SECRET_KEY}"
-        NODEMAILER_ID="${env.NODEMAILER_ID}"
-        NODEMAILER_PW="${env.NODEMAILER_PW}"
+        MAILER_ID="${env.MAILER_ID}"
+        MAILER_PW="${env.MAILER_PW}"
         MAILER_HOST="${env.MAILER_HOST}"
+        MAILER_PORT="${env.MAILER_PORT}"
         CERTIFICATION_EMAIL="${env.CERTIFICATION_EMAIL}"
         JWT_SECRET_KEY="${env.JWT_SECRET_KEY}"
-
-        PROJECT_ID = 'encoded-victory-407118'
-        CLUSTER_NAME = 'k8s'
-        LOCATION = 'asia-northeast3-a'
-        CREDENTIALS_ID = 'c663d67d-8805-4b22-a655-2f9f2edf6293'	
     }
     stages {
         stage('Build Image') {
@@ -44,7 +40,7 @@ pipeline {
             steps {
                 sh "pwd"
                 sh "sed -i 's/stop_bang:latest/stop_bang:${env.BUILD_ID}/g' Deployment.yaml"
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: false])
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
     }
