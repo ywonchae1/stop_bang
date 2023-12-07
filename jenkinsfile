@@ -15,6 +15,13 @@ pipeline {
         JWT_SECRET_KEY="${JWT_SECRET_KEY}"
     }
     stages {
+        stage('Build Image') {
+            steps {
+                script {
+                    app = docker.build("minyeongpark5/stop_bang:${env.BUILD_ID}")
+                }
+            }
+        }
         stage('Push Image') {
             steps {
                 script {
