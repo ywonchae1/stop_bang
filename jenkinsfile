@@ -16,15 +16,21 @@ node {
     }
     stages {
         stage('Clone repository') {
-            git 'https://github.com/MinYeongPark/stop_bang.git'
+            steps {
+                git 'https://github.com/MinYeongPark/stop_bang.git'
+            }
         }
         stage('Build Image') {
-            app = docker.build('minyeongpark5/stop_bang')
+            steps {
+                app = docker.build('minyeongpark5/stop_bang')
+            }
         }
         stage('Push Image') {
-            docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
-                app.push("${env.BUILD_NUMBER}")
-                app.push("latest")
+            steps {
+                docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
+                    app.push("${env.BUILD_NUMBER}")
+                    app.push("latest")
+                }
             }
         }
         stage('Deploy to GKE') {
