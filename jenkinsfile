@@ -22,14 +22,16 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                app = docker.build('minyeongpark5/stop_bang')
+                app = docker.build("minyeongpark5/stop_bang:${env.BUILD_ID}")
             }
         }
         stage('Push Image') {
             steps {
-                docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
-                    app.push("${env.BUILD_NUMBER}")
-                    app.push("latest")
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'minyeongdockerhub') {
+                        app.push("${env.BUILD_NUMBER}")
+                        app.push("latest")
+                    }
                 }
             }
         }
