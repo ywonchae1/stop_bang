@@ -15,21 +15,6 @@ pipeline {
         JWT_SECRET_KEY="${JWT_SECRET_KEY}"
     }
     stages {
-        stage('Clone repository') {
-            when {
-                branch 'main'
-            }
-            steps {
-                git 'https://github.com/MinYeongPark/stop_bang.git'
-            }
-        }
-        stage('Build Image') {
-            steps {
-                script {
-                    app = docker.build("minyeongpark5/stop_bang:${env.BUILD_ID}")
-                }
-            }
-        }
         stage('Push Image') {
             steps {
                 script {
