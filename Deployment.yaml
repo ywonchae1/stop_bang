@@ -22,26 +22,26 @@ spec:
         image: minyeongpark5/stop_bang:latest
         imagePullPolicy: Always
       env:
-        - name: MAILER_ID
-          valueFrom:
-            configMapKeyRef:
-              name: my-configmap
-              key: MAILER_ID
-        - name: MAILER_PW
-          valueFrom:
-            configMapKeyRef:
-              name: my-configmap
-              key: MAILER_PW
-        - name: MAILER_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: my-configmap
-              key: MAILER_HOST
-        - name: MAILER_PORT
-          valueFrom:
-            configMapKeyRef:
-              name: my-configmap
-              key: MAILER_PORT
+      - name: MAILER_ID
+        valueFrom:
+          configMapKeyRef:
+            name: my-configmap
+            key: MAILER_ID
+      - name: MAILER_PW
+        valueFrom:
+          configMapKeyRef:
+            name: my-configmap
+            key: MAILER_PW
+      - name: MAILER_HOST
+        valueFrom:
+          configMapKeyRef:
+            name: my-configmap
+            key: MAILER_HOST
+      - name: MAILER_PORT
+        valueFrom:
+          configMapKeyRef:
+            name: my-configmap
+            key: MAILER_PORT
         ports:
         - containerPort: 3000
           name: stopbang
