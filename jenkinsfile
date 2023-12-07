@@ -13,6 +13,8 @@ pipeline {
         MAILER_HOST="${MAILER_HOST}"
         CERTIFICATION_EMAIL="${CERTIFICATION_EMAIL}"
         JWT_SECRET_KEY="${JWT_SECRET_KEY}"
+
+        BRANCH_NAME="main"
     }
     stages {
         stage('Clone repository') {
