@@ -13,10 +13,16 @@ pipeline {
         MAILER_HOST="${MAILER_HOST}"
         CERTIFICATION_EMAIL="${CERTIFICATION_EMAIL}"
         JWT_SECRET_KEY="${JWT_SECRET_KEY}"
-
-        BRANCH_NAME="main"
     }
     stages {
+        stage('Clone repository') {
+            when {
+                branch 'main'
+            }
+            steps {
+                git 'https://github.com/MinYeongPark/stop_bang.git'
+            }
+        }
         stage('Build Image') {
             steps {
                 script {
@@ -40,9 +46,8 @@ pipeline {
             }
             steps {
                 sh "pwd"
-                sh "ls -a"
-                sh "sed -i 's/stop_bang:latest/stop_bang:${env.BUILD_ID}/g' Deployment.yaml"
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+                sh "sed -i 's/stop_bang:latest/stop_bang:${env.BUILD_ID}/g' deployment.yaml"
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
             }
         }
     }
