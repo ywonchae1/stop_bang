@@ -1,18 +1,18 @@
 pipeline {
     agent any
     environment {
-        DB_HOST="${DB_HOST}"
-        DB_USER="${DB_USER}"
-        DB_PW="${DB_PW}"
-        DB_PORT="${DB_PORT}"
-        DB_NAME="${DB_NAME}"
+        DB_HOST="${env.DB_HOST}"
+        DB_USER="${env.DB_USER}"
+        DB_PW="${env.DB_PW}"
+        DB_PORT="${env.DB_PORT}"
+        DB_NAME="${env.DB_NAME}"
 
-        COOKIE_SECRET_KEY="${COOKIE_SECRET_KEY}"
-        NODEMAILER_ID="${NODEMAILER_ID}"
-        NODEMAILER_PW="${NODEMAILER_PW}"
-        MAILER_HOST="${MAILER_HOST}"
-        CERTIFICATION_EMAIL="${CERTIFICATION_EMAIL}"
-        JWT_SECRET_KEY="${JWT_SECRET_KEY}"
+        COOKIE_SECRET_KEY="${env.COOKIE_SECRET_KEY}"
+        NODEMAILER_ID="${env.NODEMAILER_ID}"
+        NODEMAILER_PW="${env.NODEMAILER_PW}"
+        MAILER_HOST="${env.MAILER_HOST}"
+        CERTIFICATION_EMAIL="${env.CERTIFICATION_EMAIL}"
+        JWT_SECRET_KEY="${env.JWT_SECRET_KEY}"
     }
     stages {
         stage('Build Image') {
