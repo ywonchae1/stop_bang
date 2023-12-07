@@ -22,7 +22,9 @@ pipeline {
         }
         stage('Build Image') {
             steps {
-                app = docker.build("minyeongpark5/stop_bang:${env.BUILD_ID}")
+                script {
+                    app = docker.build("minyeongpark5/stop_bang:${env.BUILD_ID}")
+                }
             }
         }
         stage('Push Image') {
