@@ -14,6 +14,11 @@ pipeline {
         MAILER_PORT="${env.MAILER_PORT}"
         CERTIFICATION_EMAIL="${env.CERTIFICATION_EMAIL}"
         JWT_SECRET_KEY="${env.JWT_SECRET_KEY}"
+
+        PROJECT_ID="${env.PROJECT_ID}"
+        CLUSTER_NAME="${env.CLUSTER_NAME}"
+        LOCATION="${env.LOCATION}"
+        CREDENTIALS_ID="${env.CREDENTIALS_ID}"
     }
     stages {
         stage('Build Image') {
