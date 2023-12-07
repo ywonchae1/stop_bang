@@ -17,11 +17,6 @@ pipeline {
         BRANCH_NAME="main"
     }
     stages {
-        stage('Clone repository') {
-            steps {
-                git 'https://github.com/MinYeongPark/stop_bang.git'
-            }
-        }
         stage('Build Image') {
             steps {
                 script {
